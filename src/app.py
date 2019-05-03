@@ -11,7 +11,6 @@ external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-
 np.random.seed(0)
 df = pd.DataFrame(
     {"Column {}".format(i): np.random.rand(30) + i * 10 for i in range(6)}
@@ -151,7 +150,7 @@ app.callback(
         Input("g2", "selectedData"),
     ],
 )(highlight("Column 4", "Column 5"))
-   
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
