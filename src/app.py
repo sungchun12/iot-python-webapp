@@ -86,10 +86,7 @@ def highlight(x, y):
         }
 
         # Display a rectangle to highlight the previously selected region
-        shape = {
-            "type": "rect",
-            "line": {"width": 1, "dash": "dot", "color": "green"},
-        }
+        shape = {"type": "rect", "line": {"width": 1, "dash": "dot", "color": "green"}}
         if selectedDatas[0] and selectedDatas[0]["range"]:
             figure["layout"]["shapes"] = [
                 dict(
@@ -153,4 +150,4 @@ app.callback(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, host="0.0.0.0", port="8050")
