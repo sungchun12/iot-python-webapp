@@ -1,8 +1,8 @@
 FROM python:3.7
 
 # setup the default port and environment variable to override on build time
-ARG port_var=8080
-ENV port_override=$port_var
+ARG PORT_VAR=8080
+ENV port_override=$PORT_VAR
 
 #copy the contents of the current directory 
 COPY . /app
@@ -17,10 +17,10 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 RUN chmod 644 app.py
 
 #expose the port for the web application
-EXPOSE $port_var
+EXPOSE $PORT_VAR
 
 #set the worker and thread variables and bind entrypoint to port
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 app:app
+# ENTRYPOINT [ "exec gunicorn --bind :8080 --workers 1 --threads 8 app:app" ] 
 
 #run the web application
 CMD ["python", "app.py"]

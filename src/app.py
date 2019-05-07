@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -150,4 +151,4 @@ app.callback(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, host="0.0.0.0", port="8080")
+    app.run_server(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
