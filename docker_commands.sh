@@ -22,3 +22,8 @@ docker tag <image-id> gcr.io/<project-id>/<image-name>
 
 #push image to google container registry
 docker push gcr.io/<project-id>/<image-name>
+
+# https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app#step_5_deploy_your_application
+kubectl run dash-demo --image=gcr.io/iconic-range-220603/dash-demo --port 8080
+
+# https://cloud.google.com/run/docs/quickstarts/build-and-deploy
