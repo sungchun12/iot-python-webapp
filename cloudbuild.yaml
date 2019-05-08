@@ -11,7 +11,7 @@ steps:
         "deploy",
         "dash-cloudrun-demo",
         "--image",
-        "gcr.io/$PROJECT_ID/dash-demo:${SHORT_SHA}",
+        "gcr.io/$PROJECT_ID/dash-cloudrun-demo:${SHORT_SHA}",
         "--region",
         "us-central1",
         "--allow-unauthenticated",
