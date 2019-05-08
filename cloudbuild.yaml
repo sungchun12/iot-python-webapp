@@ -20,5 +20,4 @@ steps:
         "--allow-unauthenticated",
       ]
 
-images:
-  - "gcr.io/$PROJECT_ID/dash-cloudrun-demo" #save image to google container registry
+images: ["gcr.io/$PROJECT_ID/dash-cloudrun-demo"] #save image to google container registry
