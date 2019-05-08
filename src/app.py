@@ -87,7 +87,7 @@ def highlight(x, y):
         }
 
         # Display a rectangle to highlight the previously selected region
-        shape = {"type": "rect", "line": {"width": 1, "dash": "dot", "color": "green"}}
+        shape = {"type": "rect", "line": {"width": 1, "dash": "dot", "color": "blue"}}
         if selectedDatas[0] and selectedDatas[0]["range"]:
             figure["layout"]["shapes"] = [
                 dict(
