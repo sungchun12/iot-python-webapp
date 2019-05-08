@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker' #
+  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/dash-demo', '.' ] #build docker image and project id will be 
+images:
+- 'gcr.io/$PROJECT_ID/dash-demo'
