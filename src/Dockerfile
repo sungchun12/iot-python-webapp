@@ -1,14 +1,9 @@
 FROM python:3.7
 
-# setup the default port and environment variable to override on build time
-ARG PORT_VAR=8080
-ENV port_override=$PORT_VAR
-
-#copy the contents of the current directory 
-COPY . /app
-
-#set the working directory
-WORKDIR /app
+# Copy local code to the container image.
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+COPY . .
 
 #install packages/dependencies
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
@@ -17,10 +12,11 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 RUN chmod 644 app.py
 
 #expose the port for the web application
-EXPOSE $PORT_VAR
+EXPOSE $PORT
 
-#set the worker and thread variables and bind entrypoint to port
-# ENTRYPOINT [ "exec gunicorn --bind :8080 --workers 1 --threads 8 app:app" ] 
-
-#run the web application
-CMD ["python", "app.py"]
+# Run the web service on container startup. Here we use the gunicorn
+# webserver, with one worker process and 8 threads.
+# For environments with multiple CPU cores, increase the number of workers
+# to be equal to the cores available.
+# https://community.plot.ly/t/error-with-gunicorn/8247
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 app:app.server
