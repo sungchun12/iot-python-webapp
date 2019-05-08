@@ -39,4 +39,4 @@ gcloud beta run deploy --image gcr.io/iconic-range-220603/dash-demo
 kubectl run dash-demo --image=gcr.io/iconic-range-220603/dash-demo --port 8080
 
 # https://cloud.google.com/run/docs/quickstarts/build-and-deploy
-#check m
+#check 
