@@ -3,6 +3,9 @@ steps:
     args:
       ["build", "-t", "gcr.io/$PROJECT_ID/dash-cloudrun-demo:${SHORT_SHA}", "."]
 
+  - name: "gcr.io/cloud-builders/docker" #push docker image to container registry
+    args: ["push", "gcr.io/$PROJECT_ID/cloudrun-demo"]
+
   - name: "gcr.io/cloud-builders/gcloud" #gcloud command to deploy newly built image to cloud run, must set cloudbuild service account with Cloud Run Admin role
     args:
       [
