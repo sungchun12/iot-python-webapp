@@ -1,6 +1,7 @@
 steps:
   - name: "gcr.io/cloud-builders/docker" #build docker image in target project with tag
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/dash-demo:test", "."]
+    args:
+      ["build", "-t", "gcr.io/$PROJECT_ID/dash-cloudrun-demo:${SHORT_SHA}", "."]
 
   - name: "gcr.io/cloud-builders/gcloud" #gcloud command to deploy newly built image to cloud run, must set cloudbuild service account with Cloud Run Admin role
     args:
@@ -8,13 +9,13 @@ steps:
         "beta",
         "run",
         "deploy",
-        "cloudrun-demo",
+        "dash-cloudrun-demo",
         "--image",
-        "gcr.io/$PROJECT_ID/dash-demo:test",
+        "gcr.io/$PROJECT_ID/dash-demo:${SHORT_SHA}",
         "--region",
         "us-central1",
         "--allow-unauthenticated",
       ]
 
 images:
-  - "gcr.io/$PROJECT_ID/dash-demo" #save image to google container registry
+  - "gcr.io/$PROJECT_ID/dash-cloudrun-demo" #save image to google container registry
