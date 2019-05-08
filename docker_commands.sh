@@ -1,9 +1,6 @@
 #build the docker image locally
 docker build -t dash-demo .
 
-#build with gcloud cli
-gcloud builds submit --tag gcr.io/iconic-range-220603/dash-demo
-
 #run it on port 8080 for cloud run even though 8050 is the default port
 #https://cloud.google.com/run/docs/reference/container-contract#port
 docker run -it --rm -p 8080:8080 dash-demo
@@ -28,7 +25,13 @@ docker tag 43a265500959 gcr.io/iconic-range-220603/dash-demo
 # docker push gcr.io/<project-id>/<image-name>
 docker push gcr.io/iconic-range-220603/dash-demo
 
-#deploy to cloud run
+#build and push docker image to google container registry with gcloud cli
+gcloud builds submit --tag gcr.io/iconic-range-220603/dash-demo
+
+#use cloud build steps to build docker image based on specific configurations
+gcloud builds submit --config cloudbuild.yaml .
+
+#deploy to cloud run with gcloud cli
 # gcloud beta run deploy --image gcr.io/[PROJECT-ID]/[IMAGE-NAME]
 gcloud beta run deploy --image gcr.io/iconic-range-220603/dash-demo
 
