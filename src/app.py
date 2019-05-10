@@ -1,153 +1,96 @@
 # -*- coding: utf-8 -*-
-import os
+import datetime
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-
-import numpy as np
-import pandas as pd
+import plotly
 from dash.dependencies import Input, Output
+
+# pip install pyorbital
+from pyorbital.orbital import Orbital
+
+satellite = Orbital("TERRA")
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
-np.random.seed(0)
-df = pd.DataFrame(
-    {"Column {}".format(i): np.random.rand(30) + i * 10 for i in range(6)}
-)
-
 app.layout = html.Div(
-    [
-        html.Div(
-            dcc.Graph(id="g1", config={"displayModeBar": False}),
-            className="four columns",
-        ),
-        html.Div(
-            dcc.Graph(id="g2", config={"displayModeBar": False}),
-            className="four columns",
-        ),
-        html.Div(
-            dcc.Graph(id="g3", config={"displayModeBar": False}),
-            className="four columns",
-        ),
-    ],
-    className="row",
+    html.Div(
+        [
+            html.H4("TERRA Satellite Live Feed"),
+            html.Div(id="live-update-text"),
+            dcc.Graph(id="live-update-graph"),
+            dcc.Interval(
+                id="interval-component",
+                interval=1 * 1000,  # in milliseconds
+                n_intervals=0,
+            ),
+        ]
+    )
 )
 
 
-def highlight(x, y):
-    def callback(*selectedDatas):
-        selectedpoints = df.index
-        for i, selected_data in enumerate(selectedDatas):
-            if selected_data is not None:
-                selected_index = [p["customdata"] for p in selected_data["points"]]
-                if len(selected_index) > 0:
-                    selectedpoints = np.intersect1d(selectedpoints, selected_index)
-
-        # set which points are selected with the `selectedpoints` property
-        # and style those points with the `selected` and `unselected`
-        # attribute. see
-        # https://medium.com/@plotlygraphs/notes-from-the-latest-plotly-js-release-b035a5b43e21
-        # for an explanation
-
-        figure = {
-            "data": [
-                {
-                    "x": df[x],
-                    "y": df[y],
-                    "text": df.index,
-                    "textposition": "top",
-                    "selectedpoints": selectedpoints,
-                    "customdata": df.index,
-                    "type": "scatter",
-                    "mode": "markers+text",
-                    "marker": {
-                        "color": "rgba(0, 116, 217, 0.7)",
-                        "size": 12,
-                        "line": {"color": "rgb(0, 116, 217)", "width": 0.5},
-                    },
-                    "textfont": {"color": "rgba(30, 30, 30, 1)"},
-                    "unselected": {
-                        "marker": {"opacity": 0.3},
-                        "textfont": {
-                            # make text transparent when not selected
-                            "color": "rgba(0, 0, 0, 0)"
-                        },
-                    },
-                }
-            ],
-            "layout": {
-                "clickmode": "event+select",
-                "margin": {"l": 15, "r": 0, "b": 15, "t": 5},
-                "dragmode": "select",
-                "hovermode": "closest",
-                "showlegend": False,
-            },
-        }
-
-        # Display a rectangle to highlight the previously selected region
-        shape = {"type": "rect", "line": {"width": 1, "dash": "dot", "color": "blue"}}
-        if selectedDatas[0] and selectedDatas[0]["range"]:
-            figure["layout"]["shapes"] = [
-                dict(
-                    {
-                        "x0": selectedDatas[0]["range"]["x"][0],
-                        "x1": selectedDatas[0]["range"]["x"][1],
-                        "y0": selectedDatas[0]["range"]["y"][0],
-                        "y1": selectedDatas[0]["range"]["y"][1],
-                    },
-                    **shape
-                )
-            ]
-        else:
-            figure["layout"]["shapes"] = [
-                dict(
-                    {
-                        "type": "rect",
-                        "x0": np.min(df[x]),
-                        "x1": np.max(df[x]),
-                        "y0": np.min(df[y]),
-                        "y1": np.max(df[y]),
-                    },
-                    **shape
-                )
-            ]
-
-        return figure
-
-    return callback
+@app.callback(
+    Output("live-update-text", "children"), [Input("interval-component", "n_intervals")]
+)
+def update_metrics(n):
+    lon, lat, alt = satellite.get_lonlatalt(datetime.datetime.now())
+    style = {"padding": "5px", "fontSize": "16px"}
+    return [
+        html.Span("Longitude: {0:.2f}".format(lon), style=style),
+        html.Span("Latitude: {0:.2f}".format(lat), style=style),
+        html.Span("Altitude: {0:0.2f}".format(alt), style=style),
+    ]
 
 
-# app.callback is a decorator which means that it takes a function
-# as its argument.
-# highlight is a function "generator": it's a function that returns function
-app.callback(
-    Output("g1", "figure"),
-    [
-        Input("g1", "selectedData"),
-        Input("g2", "selectedData"),
-        Input("g3", "selectedData"),
-    ],
-)(highlight("Column 0", "Column 1"))
+# Multiple components can update everytime interval gets fired.
+@app.callback(
+    Output("live-update-graph", "figure"), [Input("interval-component", "n_intervals")]
+)
+def update_graph_live(n):
+    satellite = Orbital("TERRA")
+    data = {"time": [], "Latitude": [], "Longitude": [], "Altitude": []}
 
-app.callback(
-    Output("g2", "figure"),
-    [
-        Input("g2", "selectedData"),
-        Input("g1", "selectedData"),
-        Input("g3", "selectedData"),
-    ],
-)(highlight("Column 2", "Column 3"))
+    # Collect some data
+    for i in range(180):
+        time = datetime.datetime.now() - datetime.timedelta(seconds=i * 20)
+        lon, lat, alt = satellite.get_lonlatalt(time)
+        data["Longitude"].append(lon)
+        data["Latitude"].append(lat)
+        data["Altitude"].append(alt)
+        data["time"].append(time)
 
-app.callback(
-    Output("g3", "figure"),
-    [
-        Input("g3", "selectedData"),
-        Input("g1", "selectedData"),
-        Input("g2", "selectedData"),
-    ],
-)(highlight("Column 4", "Column 5"))
+    # Create the graph with subplots
+    fig = plotly.tools.make_subplots(rows=2, cols=1, vertical_spacing=0.2)
+    fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
+    fig["layout"]["legend"] = {"x": 0, "y": 1, "xanchor": "left"}
+
+    fig.append_trace(
+        {
+            "x": data["time"],
+            "y": data["Altitude"],
+            "name": "Altitude",
+            "mode": "lines+markers",
+            "type": "scatter",
+        },
+        1,
+        1,
+    )
+    fig.append_trace(
+        {
+            "x": data["Longitude"],
+            "y": data["Latitude"],
+            "text": data["time"],
+            "name": "Longitude vs Latitude",
+            "mode": "lines+markers",
+            "type": "scatter",
+        },
+        2,
+        1,
+    )
+
+    return fig
 
 
 if __name__ == "__main__":
