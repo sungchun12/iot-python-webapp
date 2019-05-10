@@ -1,5 +1,5 @@
 steps:
-  # pull image from container registry to build from cache
+  # pull image from container registry to build from cache, bypasses error if first time building image
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "bash"
     args:
