@@ -1,5 +1,6 @@
 steps:
-  #build docker image in target project with git commit tag
+  # build docker image in target project with git commit tag
+  # cache the previous build as a starting point for subsequent builds
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -11,11 +12,11 @@ steps:
         ".",
       ]
 
-    #push docker image with git commit to container registry
+    # push docker image with git commit to container registry
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
 
-    #gcloud command to deploy newly built image to cloud run, must set cloudbuild service account with Cloud Run Admin role
+    # gcloud command to deploy newly built image to cloud run, must set cloudbuild service account with Cloud Run Admin role
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
@@ -30,4 +31,4 @@ steps:
         "--allow-unauthenticated",
       ]
 
-images: ["gcr.io/$PROJECT_ID/dash-cloudrun-demo"] #save image to google container registry
+images: ["gcr.io/$PROJECT_ID/dash-cloudrun-demo"] # save image to google container registry
