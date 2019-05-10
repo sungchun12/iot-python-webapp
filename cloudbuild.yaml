@@ -1,4 +1,12 @@
 steps:
+  # pull image from container registry to build from cache
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        docker pull gcr.io/$PROJECT_ID/dash-cloudrun-demo:latest || exit 0
+
   # build docker image in target project with git commit tag
   # cache the previous build as a starting point for subsequent builds
   - name: "gcr.io/cloud-builders/docker"
