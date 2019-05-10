@@ -5,7 +5,7 @@ steps:
     args:
       - "-c"
       - |
-        docker pull gcr.io/$PROJECT_ID/dash-cloudrun-demo:latest || exit 0
+        docker pull gcr.io/$PROJECT_ID/dash-cloudrun-demo || exit 0
 
   # build docker image in target project with git commit tag
   # cache the previous build as a starting point for subsequent builds
@@ -16,7 +16,7 @@ steps:
         "-t",
         "gcr.io/$PROJECT_ID/dash-cloudrun-demo:${SHORT_SHA}",
         "--cache-from",
-        "gcr.io/$PROJECT_ID/dash-cloudrun-demo:latest",
+        "gcr.io/$PROJECT_ID/dash-cloudrun-demo",
         ".",
       ]
 
