@@ -16,7 +16,7 @@ steps:
         "-t",
         "gcr.io/$PROJECT_ID/dash-cloudrun-demo:${SHORT_SHA}",
         "--cache-from",
-        "gcr.io/$PROJECT_ID/dash-cloudrun-demo",
+        "gcr.io/$PROJECT_ID/dash-cloudrun-demo:a9d848e",
         ".",
       ]
 
