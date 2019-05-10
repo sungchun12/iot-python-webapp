@@ -3,3 +3,4 @@ dash-daq==0.1.0
 pandas
 numpy
 pyorbital
+tensorflow
