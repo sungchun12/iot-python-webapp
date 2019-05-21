@@ -26,7 +26,8 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
 
-    # gcloud command to deploy newly built image to cloud run, must set cloudbuild service account with Cloud Run Admin role
+    # gcloud command to deploy newly built image to cloud run
+    # must set cloudbuild service account with Cloud Run Admin role
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
