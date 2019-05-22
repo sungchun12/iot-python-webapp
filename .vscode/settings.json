@@ -1,3 +1,9 @@
 {
-  "python.pythonPath": "venv\\Scripts\\python.exe"
+  "python.pythonPath": "venv\\Scripts\\python.exe",
+  "python.testing.pyTestArgs": [
+    "terraform"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.nosetestsEnabled": false,
+  "python.testing.pyTestEnabled": true
 }
