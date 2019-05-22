@@ -4,9 +4,9 @@ import re
 
 import tftest
 
-
+# path to terraform storage module
 TF = tftest.TerraformTest(
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "foo")
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "modules/storage")
 )
 
 
@@ -16,8 +16,11 @@ def setup():
 
 def test_resources():
     """Test that plan contains all expected resources."""
-    values = re.findall(r"(?m)^\s*\+\s+(null_resource\S+)\s*^", TF.setup_output)
-    assert values == ["null_resource.foo_resource"], values
+    values = re.findall(r"(?m)^\s*\+\s+(google_storage_bucket\S+)\s*^", TF.setup_output)
+    assert values == [
+        "google_storage_bucket.data-store",
+        "google_storage_bucket.dataflow-staging",
+    ], values
 
 
 def test_attributes():
@@ -31,4 +34,3 @@ def test_attributes_tfvars():
     plan = TF.plan(tf_vars={"foo_var": '["foo", "spam"]'})
     values = re.findall(r'(?m)^\s*triggers\.foo:\s*"(\S+)"\s*^', plan)
     assert values == ["foo", "spam"], values
-
