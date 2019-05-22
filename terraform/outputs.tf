@@ -6,3 +6,7 @@ output "data-store-metadata" {
 output "dataflow-staging-metadata" {
   value = "${module.storage.dataflow-staging-metadata}"
 }
+
+output "data-pipeline-topic-metadata" {
+  value = "${module.data_pipeline.data-pipeline-topic-metadata}"
+}
