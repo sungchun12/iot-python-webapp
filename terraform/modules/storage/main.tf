@@ -2,7 +2,7 @@ resource "google_storage_bucket" "data-store" {
   name = "iot-raw-data-sung"
 
   location      = "${var.location}"
-  project       = "${var.project_id}"
+  project       = "${var.project}"
   storage_class = "REGIONAL"
 
   versioning {
@@ -23,7 +23,7 @@ resource "google_storage_bucket" "dataflow-staging" {
   name = "iot-dataflow-stage-sung"
 
   location      = "${var.location}"
-  project       = "${var.project_id}"
+  project       = "${var.project}"
   storage_class = "REGIONAL"
 
   versioning {
