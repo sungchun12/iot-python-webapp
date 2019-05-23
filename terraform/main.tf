@@ -20,4 +20,5 @@ module "data_pipeline" {
   # pass the root module variables to child  module
   project  = "${var.project}"
   location = "${var.location}"
+  zone     = "${var.zone}"
 }
