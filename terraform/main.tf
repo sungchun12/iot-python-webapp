@@ -23,8 +23,8 @@ module "data_pipeline" {
   zone     = "${var.zone}"
 }
 
-module "compute" {
-  source  = "./modules/compute"
+module "iot_compute" {
+  source  = "./modules/iot_compute"
   version = "0.0.1"
 
   #pass the root module variables ot child module
