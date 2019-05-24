@@ -26,3 +26,23 @@ output "data-pipeline-bigtable-metadata" {
 output "data-pipeline-bigtable-table-metadata" {
   value = "${module.data_pipeline.data-pipeline-bigtable-table-metadata}"
 }
+
+output "iot-device-1-metadata" {
+  value = "${module.iot_compute.iot-device-1-metadata}"
+}
+
+output "iot-device-2-metadata" {
+  value = "${module.iot_compute.iot-device-2-metadata}"
+}
+
+output "iot-device-3-metadata" {
+  value = "${module.iot_compute.iot-device-3-metadata}"
+}
+
+output "vpc-network-metadata" {
+  value = "${module.iot_compute.vpc-network-metadata}"
+}
+
+output "ssh-access-firewall-metadata" {
+  value = "${module.iot_compute.ssh-access-firewall-metadata}"
+}
