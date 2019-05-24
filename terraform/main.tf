@@ -1,7 +1,7 @@
 provider "google" {
   project = "${var.project}"
   region  = "${var.location}"
-  zone    = "us-central1-c"
+  zone    = "${var.zone}"
 }
 
 module "storage" {
@@ -18,6 +18,16 @@ module "data_pipeline" {
   version = "0.0.1"
 
   # pass the root module variables to child  module
+  project  = "${var.project}"
+  location = "${var.location}"
+  zone     = "${var.zone}"
+}
+
+module "compute" {
+  source  = "./modules/compute"
+  version = "0.0.1"
+
+  #pass the root module variables ot child module
   project  = "${var.project}"
   location = "${var.location}"
   zone     = "${var.zone}"
