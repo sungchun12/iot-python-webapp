@@ -20,10 +20,6 @@ resource "google_compute_instance" "iot-device-1" {
     access_config = {}
   }
 
-  metadata = {
-    foo = "bar"
-  }
-
   metadata_startup_script = "echo hi > /test.txt"
 
   service_account {
