@@ -12,6 +12,9 @@ git branch -d feature_branch # delete branch
 
 # hot fix workflow
 git checkout prod
+# or checkout the last known good branch commit
+git log -n1 #lists previous commit
+git checkout <sha1> #checkout specific branch with commit tag
 git checkout -b hotfix_branch # work happens on hotfix branch
 #merge into prod
 git checkout prod
