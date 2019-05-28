@@ -1,5 +1,13 @@
+output "iot-registry-metadata" {
+  value = "${google_cloudiot_registry.iot-registry.name}"
+}
+
 output "data-pipeline-topic-metadata" {
   value = "${google_pubsub_topic.data-pipeline-topic.name}"
+}
+
+output "iot-device-status-metadata" {
+  value = "${google_pubsub_topic.iot-device-status.name}"
 }
 
 output "data-pipeline-dataset-metadata" {
