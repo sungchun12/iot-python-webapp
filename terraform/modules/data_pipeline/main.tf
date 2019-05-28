@@ -1,12 +1,13 @@
-resource "google_cloudiot_registry" "iot-device-status" {
-  name = "default-registry"
+resource "google_cloudiot_registry" "iot-registry" {
+  name   = "iot-registry"
+  region = "${var.location}"
 
   event_notification_config = {
-    pubsub_topic_name = "${google_pubsub_topic.data-pipelin-topic.name}"
+    pubsub_topic_name = "${google_pubsub_topic.data-pipeline-topic.id}"
   }
 
   state_notification_config = {
-    pubsub_topic_name = "${google_pubsub_topic.iot-device-status.name}"
+    pubsub_topic_name = "${google_pubsub_topic.iot-device-status.id}"
   }
 
   http_config = {
