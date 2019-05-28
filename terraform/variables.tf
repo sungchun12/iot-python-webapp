@@ -9,3 +9,4 @@ variable "location" {
 variable "zone" {
   default = "us-central1-b"
 }
+
