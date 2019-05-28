@@ -1,7 +1,8 @@
 provider "google" {
-  project = "${var.project}"
-  region  = "${var.location}"
-  zone    = "${var.zone}"
+  credentials = "${file("service_account.json")}"
+  project     = "${var.project}"
+  region      = "${var.location}"
+  zone        = "${var.zone}"
 }
 
 module "storage" {
