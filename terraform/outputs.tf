@@ -7,6 +7,14 @@ output "dataflow-staging-metadata" {
   value = "${module.storage.dataflow-staging-metadata}"
 }
 
+output "iot-registry-metadata" {
+  value = "${module.data_pipeline.iot-registry-metadata}"
+}
+
+output "iot-device-status-metadata" {
+  value = "${module.data_pipeline.iot-device-status-metadata}"
+}
+
 output "data-pipeline-topic-metadata" {
   value = "${module.data_pipeline.data-pipeline-topic-metadata}"
 }
