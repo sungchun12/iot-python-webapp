@@ -1,2 +1,6 @@
-variable "project" {}
-variable "location" {}
+variable "project" {
+}
+
+variable "location" {
+}
+
