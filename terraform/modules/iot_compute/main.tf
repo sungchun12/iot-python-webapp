@@ -22,7 +22,7 @@ resource "google_compute_instance" "iot-device-1" {
     }
   }
 
-  metadata_startup_script = "echo hi > /test.txt"
+  metadata_startup_script = "startup_script.sh"
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
@@ -52,7 +52,7 @@ resource "google_compute_instance" "iot-device-2" {
     }
   }
 
-  metadata_startup_script = "echo hi > /test.txt"
+  metadata_startup_script = "startup_script.sh"
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
@@ -82,7 +82,7 @@ resource "google_compute_instance" "iot-device-3" {
     }
   }
 
-  metadata_startup_script = "echo hi > /test.txt"
+  metadata_startup_script = "startup_script.sh"
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
