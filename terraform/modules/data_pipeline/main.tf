@@ -18,12 +18,12 @@ resource "google_cloudiot_registry" "iot-registry" {
     mqtt_enabled_state = "MQTT_ENABLED"
   }
 
-  credentials {
-    public_key_certificate = {
-      format      = "X509_CERTIFICATE_PEM"
-      certificate = "rsa_cert.pem"
-    }
-  }
+  # credentials {
+  #   public_key_certificate = {
+  #     format      = "X509_CERTIFICATE_PEM"
+  #     certificate = "rsa_cert.pem"
+  #   }
+  # }
 }
 
 resource "google_pubsub_topic" "data-pipeline-topic" {
@@ -71,7 +71,7 @@ resource "google_bigquery_table" "iot_raw_data" {
 
 resource "google_bigtable_instance" "iot-stream-database" {
   name          = "iot-stream-database"
-  instance_type = "DEVELOPMENT"
+  instance_type = "DEVELOPMENT" #changed to PRODUCTION when ready
 
   cluster {
     cluster_id = "iot-stream-database-cluster"
