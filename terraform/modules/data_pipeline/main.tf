@@ -17,14 +17,13 @@ resource "google_cloudiot_registry" "iot-registry" {
   mqtt_config = {
     mqtt_enabled_state = "MQTT_ENABLED"
   }
-  credentials = [
-    {
-      public_key_certificate = {
-        format      = "X509_CERTIFICATE_PEM"
-        certificate = "rsa_cert.pem"
-      }
-    },
-  ]
+
+  credentials {
+    public_key_certificate = {
+      format      = "X509_CERTIFICATE_PEM"
+      certificate = "rsa_cert.pem"
+    }
+  }
 }
 
 resource "google_pubsub_topic" "data-pipeline-topic" {
