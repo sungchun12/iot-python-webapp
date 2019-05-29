@@ -1,35 +1,36 @@
 provider "google" {
-  credentials = "${file("service_account.json")}"
-  project     = "${var.project}"
-  region      = "${var.location}"
-  zone        = "${var.zone}"
+  credentials = "service_account.json"
+  project     = var.project
+  region      = var.location
+  zone        = var.zone
 }
 
 module "storage" {
-  source  = "./modules/storage"
-  version = "0.0.1"
+  source = "./modules/storage"
+  # version = "0.0.1"
 
   # pass the root module variables to child module
-  project  = "${var.project}"
-  location = "${var.location}"
+  project  = var.project
+  location = var.location
 }
 
 module "data_pipeline" {
-  source  = "./modules/data_pipeline"
-  version = "0.0.1"
+  source = "./modules/data_pipeline"
+  # version = "0.0.1"
 
   # pass the root module variables to child  module
-  project  = "${var.project}"
-  location = "${var.location}"
-  zone     = "${var.zone}"
+  project  = var.project
+  location = var.location
+  zone     = var.zone
 }
 
 module "iot_compute" {
-  source  = "./modules/iot_compute"
-  version = "0.0.1"
+  source = "./modules/iot_compute"
+  # version = "0.0.1"
 
   #pass the root module variables ot child module
-  project  = "${var.project}"
-  location = "${var.location}"
-  zone     = "${var.zone}"
+  project  = var.project
+  location = var.location
+  zone     = var.zone
 }
+
