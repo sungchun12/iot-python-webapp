@@ -1,13 +1,13 @@
 resource "google_cloudiot_registry" "iot-registry" {
   name   = "iot-registry"
-  region = "${var.location}"
+  region = var.location
 
   event_notification_config = {
-    pubsub_topic_name = "${google_pubsub_topic.data-pipeline-topic.id}"
+    pubsub_topic_name = google_pubsub_topic.data-pipeline-topic.id
   }
 
   state_notification_config = {
-    pubsub_topic_name = "${google_pubsub_topic.iot-device-status.id}"
+    pubsub_topic_name = google_pubsub_topic.iot-device-status.id
   }
 
   http_config = {
@@ -17,7 +17,6 @@ resource "google_cloudiot_registry" "iot-registry" {
   mqtt_config = {
     mqtt_enabled_state = "MQTT_ENABLED"
   }
-
   # credentials = [
   #   {
   #     public_key_certificate = {
@@ -30,7 +29,7 @@ resource "google_cloudiot_registry" "iot-registry" {
 
 resource "google_pubsub_topic" "data-pipeline-topic" {
   name    = "data-pipeline-topic"
-  project = "${var.project}"
+  project = var.project
 
   labels = {
     version = "demo"
@@ -39,7 +38,7 @@ resource "google_pubsub_topic" "data-pipeline-topic" {
 
 resource "google_pubsub_topic" "iot-device-status" {
   name    = "iot-device-status"
-  project = "${var.project}"
+  project = var.project
 
   labels = {
     version = "demo"
@@ -49,7 +48,7 @@ resource "google_pubsub_topic" "iot-device-status" {
 resource "google_bigquery_dataset" "iot_dataset" {
   dataset_id  = "iot_dataset"
   description = "iot data warehouse"
-  project     = "${var.project}"
+  project     = var.project
   location    = "US"
 
   labels = {
@@ -58,7 +57,7 @@ resource "google_bigquery_dataset" "iot_dataset" {
 }
 
 resource "google_bigquery_table" "iot_raw_data" {
-  dataset_id  = "${google_bigquery_dataset.iot_dataset.dataset_id}"
+  dataset_id  = google_bigquery_dataset.iot_dataset.dataset_id
   table_id    = "iot_raw_data"
   description = "table that accumulates all raw iot streaming data"
 
@@ -77,7 +76,7 @@ resource "google_bigtable_instance" "iot-stream-database" {
 
   cluster {
     cluster_id = "iot-stream-database-cluster"
-    zone       = "${var.zone}"
+    zone       = var.zone
 
     # num_nodes    = 0
     storage_type = "SSD"
@@ -86,6 +85,7 @@ resource "google_bigtable_instance" "iot-stream-database" {
 
 resource "google_bigtable_table" "iot-stream-table" {
   name          = "iot-stream-table"
-  instance_name = "${google_bigtable_instance.iot-stream-database.name}"
+  instance_name = google_bigtable_instance.iot-stream-database.name
   split_keys    = ["a", "b", "c"]
 }
+
