@@ -12,16 +12,17 @@ resource "google_compute_instance" "iot-device-1" {
   }
 
   # Local SSD disk
-  scratch_disk {}
+  scratch_disk {
+  }
 
   network_interface {
     # link creatd vpc network
-    network       = "${google_compute_network.demo-network.self_link}"
-    access_config = {}
+    network = google_compute_network.demo-network.self_link
+    access_config {
+    }
   }
 
   metadata_startup_script = "echo hi > /test.txt"
-
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
@@ -41,16 +42,17 @@ resource "google_compute_instance" "iot-device-2" {
   }
 
   # Local SSD disk
-  scratch_disk {}
+  scratch_disk {
+  }
 
   network_interface {
     # link creatd vpc network
-    network       = "${google_compute_network.demo-network.self_link}"
-    access_config = {}
+    network = google_compute_network.demo-network.self_link
+    access_config {
+    }
   }
 
   metadata_startup_script = "echo hi > /test.txt"
-
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
@@ -70,16 +72,17 @@ resource "google_compute_instance" "iot-device-3" {
   }
 
   # Local SSD disk
-  scratch_disk {}
+  scratch_disk {
+  }
 
   network_interface {
     # link creatd vpc network
-    network       = "${google_compute_network.demo-network.self_link}"
-    access_config = {}
+    network = google_compute_network.demo-network.self_link
+    access_config {
+    }
   }
 
   metadata_startup_script = "echo hi > /test.txt"
-
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
@@ -93,7 +96,7 @@ resource "google_compute_network" "demo-network" {
 resource "google_compute_firewall" "ssh-access-firewall" {
   name        = "ssh-access-firewall"
   description = "allow ssh access to VM within the project"
-  network     = "${google_compute_network.demo-network.self_link}"
+  network     = google_compute_network.demo-network.self_link
   direction   = "INGRESS"
 
   # need to configure ssh access from a variable IP address I'll specify
@@ -105,3 +108,4 @@ resource "google_compute_firewall" "ssh-access-firewall" {
     ports    = ["22"]
   }
 }
+

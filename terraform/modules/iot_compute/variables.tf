@@ -1,3 +1,9 @@
-variable "project" {}
-variable "location" {}
-variable "zone" {}
+variable "project" {
+}
+
+variable "location" {
+}
+
+variable "zone" {
+}
+
