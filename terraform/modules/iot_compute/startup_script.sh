@@ -19,11 +19,11 @@ sudo pip install pyjwt paho-mqtt cryptography
 git clone http://github.com/GoogleCloudPlatform/training-data-analyst
 
 #export environment variabes
-export PROJECT_ID = iconic-range-220603
-export MY_REGION = us-central1
+export PROJECT_ID=iconic-range-220603
+export MY_REGION=us-central1
 
 #create RSA cryptographic keypair
-cd $HOME/training-data-analyst/quests/iotlab/
+cd $IOT_DIR/training-data-analyst/quests/iotlab/
 openssl req -x509 -newkey rsa:2048 -keyout rsa_private.pem \
 -nodes -out rsa_cert.pem -subj "/CN=unused"
 
@@ -40,11 +40,11 @@ gcloud beta iot devices create temp-sensor-istanbul \
 --public-key path=rsa_cert.pem,type=rs256
 
 #download the CA root certificates from pki.google.com to the appropriate directory
-cd $HOME/training-data-analyst/quests/iotlab/
-wget https://pki.google.com/roots.pem
+cd $IOT_DIR/training-data-analyst/quests/iotlab/
+sudo wget https://pki.google.com/roots.pem
 
 # run the simulated device in the background
-python cloudiot_mqtt_example_json.py \
+sudo python cloudiot_mqtt_example_json.py \
 --project_id=$PROJECT_ID \
 --cloud_region=$MY_REGION \
 --registry_id=iot-registry \
@@ -53,7 +53,7 @@ python cloudiot_mqtt_example_json.py \
 --message_type=event \
 --algorithm=RS256 > buenos-aires-log.txt 2>&1 &
 
-python cloudiot_mqtt_example_json.py \
+sudo python cloudiot_mqtt_example_json.py \
 --project_id=$PROJECT_ID \
 --cloud_region=$MY_REGION \
 --registry_id=iot-registry \
