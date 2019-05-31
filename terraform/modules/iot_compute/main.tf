@@ -21,16 +21,13 @@ resource "google_compute_instance" "iot-device-1" {
     access_config {
     }
   }
-  # the script works and then stops at git clone command
-  # maybe I need to create an empty directory first
+
   metadata_startup_script = <<SCRIPT
-    #define environment path variables
+    #define temporary environment path variables
     iot_directory="/home/sungwon_chung1/iot"
     files_directory="/training-data-analyst/quests/iotlab/"
     demo_directory="$iot_directory$files_directory"
 
-    temp_cmd="export $iot_directory"
-    eval $temp_cmd
     #update the system information about Debian Linux package repositories
     sudo apt-get update
 
@@ -41,24 +38,23 @@ resource "google_compute_instance" "iot-device-1" {
     sudo pip install pyjwt paho-mqtt cryptography
 
     #make a new directory
-    sudo mkdir /home/sungwon_chung1/iot
+    sudo mkdir $iot_directory
 
     #add data to analyze
-    cd /home/sungwon_chung1/iot; git clone https://github.com/GoogleCloudPlatform/training-data-analyst.git
+    cd $iot_directory; git clone https://github.com/GoogleCloudPlatform/training-data-analyst.git
 
     #create RSA cryptographic keypair
-    cd /home/sungwon_chung1/iot/training-data-analyst/quests/iotlab/
+    cd $demo_directory
     sudo openssl req -x509 -newkey rsa:2048 -keyout rsa_private.pem \
     -nodes -out rsa_cert.pem -subj "/CN=unused"
 
     #download the CA root certificates from pki.google.com to the appropriate directory
-    # cd /home/sungwon_chung1/iot/training-data-analyst/quests/iotlab/
     sudo wget https://pki.google.com/roots.pem
     SCRIPT
 
   service_account {
     email = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
-    scopes = ["https://www.googleapis.com/auth/compute", "https://www.googleapis.com/auth/pubsub"]
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 }
 
