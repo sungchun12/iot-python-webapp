@@ -93,9 +93,11 @@ resource "google_compute_instance" "iot-device-3" {
   metadata_startup_script = <<SCRIPT
   ${file("${path.module}/startup_script.sh")}
   SCRIPT
-  # service_account {
-  #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
-  # }
+  
+  service_account {
+    email = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
 }
 
 resource "google_compute_network" "demo-network" {
