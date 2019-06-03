@@ -82,7 +82,8 @@ resource "google_compute_instance" "iot-device-2" {
     }
   }
 
-  metadata_startup_script = "startup_script.sh"
+  metadata_startup_script = ${file("${path.module}/startup_script.sh")}
+
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
@@ -112,7 +113,7 @@ resource "google_compute_instance" "iot-device-3" {
     }
   }
 
-  metadata_startup_script = "startup_script.sh"
+  metadata_startup_script = "terraform/modules/iot_compute/startup_script.sh"
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
