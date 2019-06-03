@@ -1,63 +1,27 @@
-#! /bin/bash
-
-# initial gcloud sdk
-gcloud init
-
-#install beta components
-gcloud components install beta
+#define temporary environment path variables
+iot_directory="/home/sungwon_chung1/iot"
+files_directory="/training-data-analyst/quests/iotlab/"
+demo_directory="$iot_directory$files_directory"
 
 #update the system information about Debian Linux package repositories
 sudo apt-get update
 
 #install in scope packages
-sudo apt-get install python-pip openssl git -y
+sudo apt-get install python-pip openssl git git-core -y
 
 #use pip for needed Python components
 sudo pip install pyjwt paho-mqtt cryptography
 
-#add data to analyze for lab
-git clone http://github.com/GoogleCloudPlatform/training-data-analyst
+#make a new directory
+sudo mkdir $iot_directory
 
-#export environment variabes
-export PROJECT_ID=iconic-range-220603
-export MY_REGION=us-central1
+#add data to analyze
+cd $iot_directory; git clone https://github.com/GoogleCloudPlatform/training-data-analyst.git
 
 #create RSA cryptographic keypair
-cd $IOT_DIR/training-data-analyst/quests/iotlab/
-openssl req -x509 -newkey rsa:2048 -keyout rsa_private.pem \
+cd $demo_directory
+sudo openssl req -x509 -newkey rsa:2048 -keyout rsa_private.pem \
 -nodes -out rsa_cert.pem -subj "/CN=unused"
 
-gcloud beta iot devices create temp-sensor-buenos-aires \
---project=$PROJECT_ID \
---region=$MY_REGION \
---registry=iot-registry \
---public-key path=rsa_cert.pem,type=rs256
-
-gcloud beta iot devices create temp-sensor-istanbul \
---project=$PROJECT_ID \
---region=$MY_REGION \
---registry=iot-registry \
---public-key path=rsa_cert.pem,type=rs256
-
 #download the CA root certificates from pki.google.com to the appropriate directory
-cd $IOT_DIR/training-data-analyst/quests/iotlab/
 sudo wget https://pki.google.com/roots.pem
-
-# run the simulated device in the background
-sudo python cloudiot_mqtt_example_json.py \
---project_id=$PROJECT_ID \
---cloud_region=$MY_REGION \
---registry_id=iot-registry \
---device_id=temp-sensor-buenos-aires \
---private_key_file=rsa_private.pem \
---message_type=event \
---algorithm=RS256 > buenos-aires-log.txt 2>&1 &
-
-sudo python cloudiot_mqtt_example_json.py \
---project_id=$PROJECT_ID \
---cloud_region=$MY_REGION \
---registry_id=iot-registry \
---device_id=temp-sensor-istanbul \
---private_key_file=rsa_private.pem \
---message_type=event \
---algorithm=RS256
