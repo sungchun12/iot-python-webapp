@@ -89,7 +89,9 @@ resource "google_compute_instance" "iot-device-3" {
     }
   }
 
-  metadata_startup_script = "terraform/modules/iot_compute/startup_script.sh"
+  metadata_startup_script = <<SCRIPT
+  ${file("${path.module}/startup_script.sh")}
+  SCRIPT
   # service_account {
   #   scopes = ["service-157930433863@compute-system.iam.gserviceaccount.com", "compute-ro", "storage-ro"]
   # }
