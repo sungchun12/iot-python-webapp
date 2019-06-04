@@ -1,3 +1,4 @@
+#! /bin/bash
 #define temporary environment path variables
 iot_directory="/home/sungwon_chung1/iot"
 files_directory="/training-data-analyst/quests/iotlab/"
