@@ -51,4 +51,4 @@ sudo python cloudiot_mqtt_example_json.py \
 --device_id=$DEVICE_ID \
 --private_key_file=rsa_private.pem \
 --message_type=event \
---algorithm=RS256 > $DEVICE_ID.txt 2>&1 &
+--algorithm=RS256 > $DEVICE_ID-log.txt 2>&1 &
