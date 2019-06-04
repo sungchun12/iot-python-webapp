@@ -42,3 +42,13 @@ gcloud beta iot devices create $DEVICE_ID \
 --region=$MY_REGION \
 --registry=$IOT_REGISTRY \
 --public-key path=rsa_cert.pem,type=rs256
+
+# run the simulated device in the background
+sudo python cloudiot_mqtt_example_json.py \
+--project_id=$PROJECT_ID \
+--cloud_region=$MY_REGION \
+--registry_id=$IOT_REGISTRY \
+--device_id=$DEVICE_ID \
+--private_key_file=rsa_private.pem \
+--message_type=event \
+--algorithm=RS256 > $DEVICE_ID.txt 2>&1 &
