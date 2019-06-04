@@ -32,6 +32,7 @@ sudo apt-get install google-cloud-sdk
 #set environment variables for creating devices on IOT registry
 PROJECT_ID=iconic-range-220603
 MY_REGION=us-central1
+IOT_REGISTRY=iot-registry
 
 #create example temperature sensor
 gcloud beta iot devices create temp-sensor-buenos-aires \
