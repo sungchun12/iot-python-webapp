@@ -25,3 +25,10 @@ sudo openssl req -x509 -newkey rsa:2048 -keyout rsa_private.pem \
 
 #download the CA root certificates from pki.google.com to the appropriate directory
 sudo wget https://pki.google.com/roots.pem
+
+#install gcloud sdk for cli commands
+sudo apt-get install google-cloud-sdk
+
+#set environment variables for creating devices on IOT registry
+PROJECT_ID=iconic-range-220603
+MY_REGION=us-central1
