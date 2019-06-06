@@ -12,3 +12,6 @@ variable "zone" {
 }
 
 #storage variables
+variable "storage_class" {
+  default = "REGIONAL"
+}
