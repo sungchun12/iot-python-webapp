@@ -29,5 +29,9 @@ variable "storage_class" {
   default = "REGIONAL"
 }
 
+variable "versioning_enabled" {
+  default = true
+}
+
 
 ##############################
