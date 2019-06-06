@@ -24,3 +24,4 @@ variable "main_page_suffix" {
 
 variable "not_found_page" {
 }
+
