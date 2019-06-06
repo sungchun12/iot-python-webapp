@@ -1,3 +1,4 @@
+##############################
 #project-wide variables
 variable "project" {
   default = "iconic-range-220603"
@@ -14,8 +15,8 @@ variable "zone" {
 variable "version_label" {
   default = "demo"
 }
-
-#storage variables
+##############################
+# storage variables
 variable "raw_bucket_name" {
   default = "iot-raw-data-sung"
 }
@@ -27,3 +28,6 @@ variable "staging_bucket_name" {
 variable "storage_class" {
   default = "REGIONAL"
 }
+
+
+##############################
