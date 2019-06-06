@@ -11,6 +11,10 @@ variable "zone" {
   default = "us-central1-b"
 }
 
+variable "version_label" {
+  default = "demo"
+}
+
 #storage variables
 variable "storage_class" {
   default = "REGIONAL"
