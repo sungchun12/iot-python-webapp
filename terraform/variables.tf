@@ -50,5 +50,8 @@ variable "not_found_page" {
   default     = "404.html"
   description = "custom object to return when a requested resource is not found"
 }
+##############################
+# iot_compute variables
+
 
 ##############################
