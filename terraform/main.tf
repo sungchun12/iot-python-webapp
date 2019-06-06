@@ -7,7 +7,6 @@ provider "google" {
 
 module "storage" {
   source = "./modules/storage"
-  # version = "0.0.1"
 
   # pass the root module variables to child module
   project             = var.project
@@ -23,7 +22,6 @@ module "storage" {
 
 module "data_pipeline" {
   source = "./modules/data_pipeline"
-  # version = "0.0.1"
 
   # pass the root module variables to child  module
   project  = var.project
@@ -33,7 +31,6 @@ module "data_pipeline" {
 
 module "iot_compute" {
   source = "./modules/iot_compute"
-  # version = "0.0.1"
 
   #pass the root module variables ot child module
   project  = var.project
