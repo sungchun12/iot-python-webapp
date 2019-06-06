@@ -52,6 +52,43 @@ variable "not_found_page" {
 }
 ##############################
 # iot_compute variables
+variable "device_name_1" {
+  default     = "iot-device-1"
+  description = "name of the VM to simulate an IOT device"
+}
 
+variable "device_name_2" {
+  default     = "iot-device-2"
+  description = "name of the VM to simulate an IOT device"
+}
 
+variable "device_name_3" {
+  default     = "iot-device-2"
+  description = "name of the VM to simulate an IOT device"
+}
+
+variable "machine_type" {
+  default     = "n1-standard-1"
+  description = "we'll go with a small, standard VM"
+}
+
+variable "os_image" {
+  default     = "debian-cloud/debian-9"
+  description = "Typically a linux image, debian is lightweight"
+}
+
+variable "service_account_email" {
+  default     = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
+  description = "Service account used for VMs"
+}
+
+variable "service_account_scopes" {
+  default     = ["https://www.googleapis.com/auth/cloud-platform"]
+  description = "GCP access rights for VM which will override service account permissions if more limited"
+}
+
+variable "network_name" {
+  default     = "demo-network"
+  description = "Name of the VPC network for VMs to reside within"
+}
 ##############################
