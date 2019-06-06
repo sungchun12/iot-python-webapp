@@ -4,6 +4,9 @@ variable "project" {
 variable "location" {
 }
 
+variable "version_label" {
+}
+
 variable "raw_bucket_name" {
 }
 
