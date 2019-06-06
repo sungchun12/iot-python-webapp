@@ -1,42 +1,44 @@
 resource "google_storage_bucket" "data-store" {
-  name = "iot-raw-data-sung"
+
+  name = var.raw_bucket_name
 
   location      = var.location
   project       = var.project
-  storage_class = "REGIONAL"
+  storage_class = var.storage_class
 
   versioning {
-    enabled = true
+    enabled = var.versioning_enabled
   }
 
   website {
-    main_page_suffix = "index.html"
-    not_found_page   = "404.html"
+    main_page_suffix = var.main_page_suffix
+    not_found_page   = var.not_found_page
   }
 
   labels = {
-    version = "demo"
+    version = var.version_label
   }
 }
 
 resource "google_storage_bucket" "dataflow-staging" {
-  name = "iot-dataflow-stage-sung"
+  
+  name = var.staging_bucket_name
 
   location      = var.location
   project       = var.project
-  storage_class = "REGIONAL"
+  storage_class = var.storage_class
 
   versioning {
-    enabled = true
+    enabled = var.versioning_enabled
   }
 
   website {
-    main_page_suffix = "index.html"
-    not_found_page   = "404.html"
+    main_page_suffix = var.main_page_suffix
+    not_found_page   = var.not_found_page
   }
 
   labels = {
-    version = "demo"
+    version = var.version_label
   }
 }
 
