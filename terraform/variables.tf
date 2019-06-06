@@ -16,6 +16,14 @@ variable "version_label" {
 }
 
 #storage variables
+variable "raw_bucket_name" {
+  default = "iot-raw-data-sung"
+}
+
+variable "staging_bucket_name" {
+  default = "iot-dataflow-stage-sung"
+}
+
 variable "storage_class" {
   default = "REGIONAL"
 }
