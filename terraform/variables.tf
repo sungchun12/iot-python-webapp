@@ -22,22 +22,22 @@ variable "version_label" {
 ##############################
 # storage variables
 variable "raw_bucket_name" {
-  default = "iot-raw-data-sung"
+  default     = "iot-raw-data-sung"
   description = "bucket name where all the raw streaming data is stored"
 }
 
 variable "staging_bucket_name" {
-  default = "iot-dataflow-stage-sung"
+  default     = "iot-dataflow-stage-sung"
   description = "bucket name where dataflow stages data during transformations"
 }
 
 variable "storage_class" {
-  default = "REGIONAL"
+  default     = "REGIONAL"
   description = "type of storage depending on frequency of data use"
 }
 
 variable "versioning_enabled" {
-  default = true
+  default     = true
   description = "you typically want to enable bucket versioning"
 }
 
