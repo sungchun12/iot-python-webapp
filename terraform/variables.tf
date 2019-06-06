@@ -33,5 +33,14 @@ variable "versioning_enabled" {
   default = true
 }
 
+variable "main_page_suffix" {
+  default = "index.html"
+  description = "behaves as bucket's directory index"
+}
+
+variable "not_found_page" {
+  default = "404.html"
+  description = "custom object to return when a requested resource is not found"
+}
 
 ##############################
