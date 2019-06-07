@@ -33,15 +33,15 @@ resource "google_compute_instance" "iot-device-1" {
 }
 
 resource "google_compute_instance" "iot-device-2" {
-  name = "iot-device-2"
-  machine_type = "n1-standard-1"
-  zone = "us-east1-b"
+  name = var.device_name_2_zone
+  machine_type = var.machine_type
+  zone = var.device_name_2_zone
 
-  tags = ["demo"]
+  tags = [var.version_label]
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = var.os_image
     }
   }
 
@@ -61,8 +61,8 @@ resource "google_compute_instance" "iot-device-2" {
   SCRIPT
 
   service_account {
-    email  = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    email  = var.service_account_email
+    scopes = var.service_account_scopes
   }
 }
 
