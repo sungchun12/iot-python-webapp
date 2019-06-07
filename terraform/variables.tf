@@ -118,7 +118,7 @@ variable "allow_protocol" {
 }
 
 variable "allow_ports" {
-  default     = "tcp"
-  description = "type of ssh protocol: rdp or tcp"
+  default     = ["22"]
+  description = "port to ssh into"
 }
 ##############################
