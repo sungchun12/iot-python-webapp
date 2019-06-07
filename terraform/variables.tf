@@ -73,7 +73,7 @@ variable "device_name_2_zone" {
 }
 
 variable "device_name_3" {
-  default     = "iot-device-2"
+  default     = "iot-device-3"
   description = "name of the VM to simulate an IOT device"
 }
 
