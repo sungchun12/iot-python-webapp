@@ -152,3 +152,23 @@ variable "device_status_topic_name" {
   default     = "iot-device-status"
   description = "Name of pubsub topic for device status streams"
 }
+
+variable "dataset_name" {
+  default     = "iot_dataset"
+  description = "Name of BigQuery dataset for data streams"
+}
+
+variable "dataset_desc" {
+  default     = "iot data warehouse"
+  description = "Description of BigQuery dataset for data streams"
+}
+
+variable "table_name" {
+  default     = "iot_raw_data"
+  description = "Name of BigQuery table for raw data streams"
+}
+
+variable "table_desc" {
+  default     = "table that accumulates all raw iot streaming data"
+  description = "Description of BigQuery table for raw data streams"
+}
