@@ -107,7 +107,7 @@ resource "google_compute_network" "demo-network" {
 
 resource "google_compute_firewall" "ssh-access-firewall" {
   name = var.firewall_ssh_name
-  description = "allow ssh access to VM within the project"
+  description = var.firewall_ssh_description
   network = google_compute_network.demo-network.self_link
   direction = "INGRESS"
 
