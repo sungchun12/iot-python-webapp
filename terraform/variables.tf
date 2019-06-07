@@ -57,14 +57,29 @@ variable "device_name_1" {
   description = "name of the VM to simulate an IOT device"
 }
 
+variable "device_name_1_zone" {
+  default     = "us-central1-a"
+  description = "zone for IOT device"
+}
+
 variable "device_name_2" {
   default     = "iot-device-2"
   description = "name of the VM to simulate an IOT device"
 }
 
+variable "device_name_2_zone" {
+  default     = "us-east1-b"
+  description = "zone for IOT device"
+}
+
 variable "device_name_3" {
   default     = "iot-device-2"
   description = "name of the VM to simulate an IOT device"
+}
+
+variable "device_name_3_zone" {
+  default     = "europe-west2-a"
+  description = "zone for IOT device"
 }
 
 variable "machine_type" {
