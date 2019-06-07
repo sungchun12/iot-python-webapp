@@ -27,6 +27,7 @@ module "data_pipeline" {
   project                   = var.project
   location                  = var.location
   zone                      = var.zone
+  version_label             = var.version_label
   iot_registry_name         = var.iot_registry_name
   http_config_state         = var.http_config_state
   mqtt_config_state         = var.mqtt_config_state
