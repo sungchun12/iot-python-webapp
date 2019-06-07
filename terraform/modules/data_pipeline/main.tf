@@ -71,7 +71,7 @@ resource "google_bigquery_table" "iot_raw_data" {
 
 resource "google_bigtable_instance" "iot-stream-database" {
   name          = "iot-stream-database"
-  instance_type = "DEVELOPMENT" #changed to PRODUCTION when ready
+  instance_type = "DEVELOPMENT" #change to PRODUCTION when ready
 
   cluster {
     cluster_id = "iot-stream-database-cluster"
