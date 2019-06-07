@@ -133,3 +133,22 @@ variable "iot_registry_name" {
   description = "Name of IOT registry to manage devices"
 }
 
+variable "http_config_state" {
+  default     = "HTTP_DISABLED"
+  description = "Enable or disable http protocol"
+}
+
+variable "mqtt_config_state" {
+  default     = "MQTT_ENABLED"
+  description = "Enable or disable mqtt protocol"
+}
+
+variable "data_pipeline_topic_name" {
+  default     = "data-pipeline-topic"
+  description = "Name of pubsub topic for raw device data streams"
+}
+
+variable "device_status_topic_name" {
+  default     = "iot-device-status"
+  description = "Name of pubsub topic for device status streams"
+}
