@@ -1,4 +1,5 @@
 resource "google_storage_bucket" "data-store" {
+
   name = var.raw_bucket_name
 
   location      = var.location
@@ -20,6 +21,7 @@ resource "google_storage_bucket" "data-store" {
 }
 
 resource "google_storage_bucket" "dataflow-staging" {
+  
   name = var.staging_bucket_name
 
   location      = var.location

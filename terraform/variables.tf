@@ -127,6 +127,7 @@ variable "allow_ports" {
   description = "port to ssh into"
 }
 ##############################
+
 # data_pipeline variables
 variable "iot_registry_name" {
   default     = "iot-registry"
@@ -202,3 +203,4 @@ variable "bigtable_table_split_keys" {
   default     = ["a", "b", "c"]
   description = "define table partition keys"
 }
+
