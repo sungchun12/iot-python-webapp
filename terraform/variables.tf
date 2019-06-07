@@ -112,6 +112,11 @@ variable "firewall_ssh_name" {
   description = "Name of the firewall allowing ssh access"
 }
 
+variable "firewall_ssh_description" {
+  default     = "allow ssh access to VM within the project"
+  description = "description for firewall"
+}
+
 variable "allow_protocol" {
   default     = "tcp"
   description = "type of ssh protocol: rdp or tcp"
