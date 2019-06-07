@@ -24,9 +24,24 @@ module "data_pipeline" {
   source = "./modules/data_pipeline"
 
   # pass the root module variables to child  module
-  project  = var.project
-  location = var.location
-  zone     = var.zone
+  project                   = var.project
+  location                  = var.location
+  zone                      = var.zone
+  iot_registry_name         = var.iot_registry_name
+  http_config_state         = var.http_config_state
+  mqtt_config_state         = var.mqtt_config_state
+  data_pipeline_topic_name  = var.data_pipeline_topic_name
+  device_status_topic_name  = var.device_status_topic_name
+  dataset_name              = var.dataset_name
+  dataset_desc              = var.dataset_desc
+  table_name                = var.table_name
+  table_desc                = var.table_desc
+  bigtable_db_name          = var.bigtable_db_name
+  bigtable_db_instance_type = var.bigtable_db_instance_type
+  bigtable_db_cluster_name  = var.bigtable_db_cluster_name
+  bigtable_db_storage_type  = var.bigtable_db_storage_type
+  bigtable_table_name       = var.bigtable_table_name
+  bigtable_table_split_keys = var.bigtable_table_split_keys
 }
 
 module "iot_compute" {
