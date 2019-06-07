@@ -91,4 +91,19 @@ variable "network_name" {
   default     = "demo-network"
   description = "Name of the VPC network for VMs to reside within"
 }
+
+variable "firewall_ssh_name" {
+  default     = "ssh-access-firewall"
+  description = "Name of the firewall allowing ssh access"
+}
+
+variable "allow_protocol" {
+  default     = "tcp"
+  description = "type of ssh protocol: rdp or tcp"
+}
+
+variable "allow_ports" {
+  default     = "tcp"
+  description = "type of ssh protocol: rdp or tcp"
+}
 ##############################
