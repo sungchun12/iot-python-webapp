@@ -33,7 +33,7 @@ resource "google_compute_instance" "iot-device-1" {
 }
 
 resource "google_compute_instance" "iot-device-2" {
-  name = var.device_name_2_zone
+  name = var.device_name_2
   machine_type = var.machine_type
   zone = var.device_name_2_zone
 
