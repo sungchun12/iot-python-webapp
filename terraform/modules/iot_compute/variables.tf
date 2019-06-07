@@ -45,6 +45,10 @@ variable "network_name" {
 
 variable "firewall_ssh_name" {
 }
+
+variable "firewall_ssh_description" {
+}
+
 variable "allow_protocol" {
 }
 
