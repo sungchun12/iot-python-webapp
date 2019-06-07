@@ -9,6 +9,7 @@ variable "zone" {
 
 variable "version_label" {
 }
+
 variable "device_name_1" {
 }
 
