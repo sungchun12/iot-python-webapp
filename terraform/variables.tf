@@ -172,3 +172,33 @@ variable "table_desc" {
   default     = "table that accumulates all raw iot streaming data"
   description = "Description of BigQuery table for raw data streams"
 }
+
+variable "bigtable_db_name" {
+  default     = "iot-stream-database"
+  description = "Name of BigTable instance for raw data streams"
+}
+
+variable "bigtable_db_instance_type" {
+  default     = "DEVELOPMENT"
+  description = "Type of instance"
+}
+
+variable "bigtable_db_cluster_name" {
+  default     = "iot-stream-database-cluster"
+  description = "Name of BigTable cluster for raw data streams"
+}
+
+variable "bigtable_db_storage_type" {
+  default     = "SSD"
+  description = "BigTable instance storage type"
+}
+
+variable "bigtable_table_name" {
+  default     = "iot-stream-table"
+  description = "BigTable instance storage type"
+}
+
+variable "bigtable_table_split_keys" {
+  default     = ["a", "b", "c"]
+  description = "define table partition keys"
+}
