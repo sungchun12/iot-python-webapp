@@ -1,6 +1,8 @@
 #! /bin/bash
 #define temporary environment path variables
-iot_directory="/home/sungwon_chung1/iot"
+#if you save files to root directory, it can not be easily found
+your_username="sungwon_chung1"
+iot_directory="/home/$your_username/iot"
 files_directory="/training-data-analyst/quests/iotlab/"
 demo_directory="$iot_directory$files_directory"
 

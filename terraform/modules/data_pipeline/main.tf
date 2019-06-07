@@ -1,5 +1,5 @@
 resource "google_cloudiot_registry" "iot-registry" {
-  name   = "iot-registry"
+  name   = var.iot_registry_name
   region = var.location
 
   event_notification_config = {
@@ -11,11 +11,11 @@ resource "google_cloudiot_registry" "iot-registry" {
   }
 
   http_config = {
-    http_enabled_state = "HTTP_DISABLED"
+    http_enabled_state = var.http_config_state
   }
 
   mqtt_config = {
-    mqtt_enabled_state = "MQTT_ENABLED"
+    mqtt_enabled_state = var.mqtt_config_state
   }
 
   # credentials {
@@ -27,64 +27,64 @@ resource "google_cloudiot_registry" "iot-registry" {
 }
 
 resource "google_pubsub_topic" "data-pipeline-topic" {
-  name    = "data-pipeline-topic"
+  name    = var.data_pipeline_topic_name
   project = var.project
 
   labels = {
-    version = "demo"
+    version = var.version_label
   }
 }
 
 resource "google_pubsub_topic" "iot-device-status" {
-  name    = "iot-device-status"
+  name    = var.device_status_topic_name
   project = var.project
 
   labels = {
-    version = "demo"
+    version = var.version_label
   }
 }
 
 resource "google_bigquery_dataset" "iot_dataset" {
-  dataset_id  = "iot_dataset"
-  description = "iot data warehouse"
+  dataset_id  = var.dataset_name
+  description = var.dataset_desc
   project     = var.project
   location    = "US"
 
   labels = {
-    version = "demo"
+    version = var.version_label
   }
 }
 
 resource "google_bigquery_table" "iot_raw_data" {
   dataset_id  = google_bigquery_dataset.iot_dataset.dataset_id
-  table_id    = "iot_raw_data"
-  description = "table that accumulates all raw iot streaming data"
+  table_id    = var.table_name
+  description = var.table_desc
 
   time_partitioning {
     type = "DAY"
   }
 
   labels = {
-    version = "demo"
+    version = var.version_label
   }
 }
 
 resource "google_bigtable_instance" "iot-stream-database" {
-  name          = "iot-stream-database"
-  instance_type = "DEVELOPMENT" #changed to PRODUCTION when ready
+  name          = var.bigtable_db_name
+  instance_type = var.bigtable_db_instance_type #change to PRODUCTION when ready
 
   cluster {
-    cluster_id = "iot-stream-database-cluster"
+    cluster_id = var.bigtable_db_cluster_name
     zone       = var.zone
 
     # num_nodes    = 0
-    storage_type = "SSD"
+    storage_type = var.bigtable_db_storage_type
   }
 }
 
 resource "google_bigtable_table" "iot-stream-table" {
-  name          = "iot-stream-table"
+  name          = var.bigtable_table_name
   instance_name = google_bigtable_instance.iot-stream-database.name
-  split_keys    = ["a", "b", "c"]
+  split_keys    = var.bigtable_table_split_keys
 }
 
