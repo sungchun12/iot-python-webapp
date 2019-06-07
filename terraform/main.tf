@@ -33,8 +33,24 @@ module "iot_compute" {
   source = "./modules/iot_compute"
 
   #pass the root module variables ot child module
-  project  = var.project
-  location = var.location
-  zone     = var.zone
+  project                  = var.project
+  location                 = var.location
+  zone                     = var.zone
+  version_label            = var.version_label
+  device_name_1            = var.device_name_1
+  device_name_1_zone       = var.device_name_1_zone
+  device_name_2            = var.device_name_2
+  device_name_2_zone       = var.device_name_2_zone
+  device_name_3            = var.device_name_3
+  device_name_3_zone       = var.device_name_3_zone
+  machine_type             = var.machine_type
+  os_image                 = var.os_image
+  service_account_email    = var.service_account_email
+  service_account_scopes   = var.service_account_scopes
+  network_name             = var.network_name
+  firewall_ssh_name        = var.firewall_ssh_name
+  firewall_ssh_description = var.firewall_ssh_description
+  allow_protocol           = var.allow_protocol
+  allow_ports              = var.allow_ports
 }
 
