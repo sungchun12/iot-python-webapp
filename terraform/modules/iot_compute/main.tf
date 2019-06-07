@@ -67,15 +67,15 @@ resource "google_compute_instance" "iot-device-2" {
 }
 
 resource "google_compute_instance" "iot-device-3" {
-  name         = "iot-device-3"
-  machine_type = "n1-standard-1"
-  zone         = "europe-west2-a"
+  name         = var.device_name_3
+  machine_type = var.machine_type
+  zone         = var.device_name_3_zone
 
-  tags = ["demo"]
+  tags = [var.version_label]
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = var.os_image
     }
   }
 
@@ -93,20 +93,20 @@ resource "google_compute_instance" "iot-device-3" {
   metadata_startup_script = <<SCRIPT
   ${file("${path.module}/startup_script.sh")}
   SCRIPT
-  
+
   service_account {
-    email = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    email = var.service_account_email
+    scopes = var.service_account_scopes
   }
 }
 
 resource "google_compute_network" "demo-network" {
-  name = "demo-network"
+  name = var.network_name
   auto_create_subnetworks = "true"
 }
 
 resource "google_compute_firewall" "ssh-access-firewall" {
-  name = "ssh-access-firewall"
+  name = var.firewall_ssh_name
   description = "allow ssh access to VM within the project"
   network = google_compute_network.demo-network.self_link
   direction = "INGRESS"
@@ -116,8 +116,8 @@ resource "google_compute_firewall" "ssh-access-firewall" {
   # tie the ssh access to a service account and ingress any IP range
 
   allow {
-    protocol = "tcp"
-    ports = ["22"]
+    protocol = var.allow_protocol
+    ports = var.allow_ports
   }
 }
 
