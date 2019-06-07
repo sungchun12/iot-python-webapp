@@ -127,3 +127,9 @@ variable "allow_ports" {
   description = "port to ssh into"
 }
 ##############################
+# data_pipeline variables
+variable "iot_registry_name" {
+  default     = "iot-registry"
+  description = "Name of IOT registry to manage devices"
+}
+
