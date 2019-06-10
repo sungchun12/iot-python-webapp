@@ -68,7 +68,7 @@ resource "google_bigquery_table" "iot_raw_data" {
     version = var.version_label
   }
 
-  schema = "${file("schema.json")}"
+  schema = "${file("${path.module}/schema.json")}"
 }
 
 resource "google_bigtable_instance" "iot-stream-database" {
@@ -93,7 +93,7 @@ resource "google_bigtable_table" "iot-stream-table" {
 resource "google_dataflow_job" "dataflow-raw-data-stream" {
   name              = "dataflow-test"
   template_gcs_path = "gs://dataflow-templates/latest/PubSub_to_BigQuery" # use the java template
-  temp_gcs_location = "gs://iot-dataflow-stage-sung"
+  temp_gcs_location = "gs://iot-dataflow-stage-sung/tmp/"
   zone              = var.zone
   on_delete         = "cancel" #finish ingesting remaining data
   parameters = {
