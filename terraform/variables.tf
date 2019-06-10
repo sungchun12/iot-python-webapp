@@ -58,7 +58,7 @@ variable "device_name_1" {
 }
 
 variable "device_name_1_zone" {
-  default     = "us-central1-a"
+  default     = "us-east1-c"
   description = "zone for IOT device"
 }
 
