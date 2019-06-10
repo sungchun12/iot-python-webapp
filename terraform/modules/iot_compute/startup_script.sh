@@ -1,4 +1,3 @@
-#! /bin/bash
 #define temporary environment path variables
 #if you save files to root directory, it can not be easily found
 your_username="sungwon_chung1"
