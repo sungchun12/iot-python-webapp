@@ -88,3 +88,14 @@ resource "google_bigtable_table" "iot-stream-table" {
   split_keys    = var.bigtable_table_split_keys
 }
 
+resource "google_dataflow_job" "dataflow-raw-data-stream" {
+  name              = "dataflow-test"
+  template_gcs_path = "gs://dataflow-templates/latest/PubSub_to_BigQuery" # use the java template
+  temp_gcs_location = "gs://iot-dataflow-stage-sung"
+  zone              = var.zone
+  on_delete         = "drain" #finish ingesting remaining data
+  parameters = {
+    inputTopic      = "projects/iconic-range-220603/topics/data-pipeline-topic" # google_pubsub_topic.data-pipeline-topic.id
+    outputTableSpec = "iconic-rage-220603:iot_dataset.iot_raw_data"
+  }
+}
