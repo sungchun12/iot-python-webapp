@@ -1,0 +1,20 @@
+[
+  {
+    "description": "raw data stream timestamp",
+    "mode": "REQUIRED",
+    "name": "timestamp",
+    "type": "TIMESTAMP"
+  },
+  {
+    "description": "device id",
+    "mode": "NULLABLE",
+    "name": "device",
+    "type": "STRING"
+  },
+  {
+    "description": "device temperature reading",
+    "mode": "NULLABLE",
+    "name": "temperature",
+    "type": "FLOAT"
+  }
+]
