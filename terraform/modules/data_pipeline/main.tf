@@ -95,7 +95,7 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
   template_gcs_path = "gs://dataflow-templates/latest/PubSub_to_BigQuery" # use the java template
   temp_gcs_location = "gs://iot-dataflow-stage-sung"
   zone              = var.zone
-  on_delete         = "drain" #finish ingesting remaining data
+  on_delete         = "cancel" #finish ingesting remaining data
   parameters = {
     inputTopic      = "projects/iconic-range-220603/topics/data-pipeline-topic" # google_pubsub_topic.data-pipeline-topic.id
     outputTableSpec = "iconic-rage-220603:iot_dataset.iot_raw_data"
