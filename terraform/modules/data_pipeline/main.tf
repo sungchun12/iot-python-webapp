@@ -67,6 +67,8 @@ resource "google_bigquery_table" "iot_raw_data" {
   labels = {
     version = var.version_label
   }
+
+  schema = "${file("schema.json")}"
 }
 
 resource "google_bigtable_instance" "iot-stream-database" {
