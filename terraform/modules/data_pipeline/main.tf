@@ -60,9 +60,9 @@ resource "google_bigquery_table" "iot_raw_data" {
   table_id    = var.table_name
   description = var.table_desc
 
-  time_partitioning {
-    type = "DAY"
-  }
+  # time_partitioning {
+  #   type = "DAY"
+  # }
 
   labels = {
     version = var.version_label
@@ -92,10 +92,10 @@ resource "google_bigtable_table" "iot-stream-table" {
 
 resource "google_dataflow_job" "dataflow-raw-data-stream" {
   name              = "dataflow-test"
-  template_gcs_path = "gs://dataflow-templates/latest/PubSub_to_BigQuery" # use the java template
-  temp_gcs_location = "gs://iot-dataflow-stage-sung/temp"
+  template_gcs_path = "gs://dataflow-templates/2019-05-15-00/PubSub_to_BigQuery" # use the java template
+  temp_gcs_location = "gs://iot-dataflow-stage-sung/tmp"
   zone              = var.zone
-  on_delete         = "cancel" #finish ingesting remaining data
+  on_delete         = "cancel"
   parameters = {
     inputTopic      = "projects/iconic-range-220603/topics/data-pipeline-topic" # google_pubsub_topic.data-pipeline-topic.id
     outputTableSpec = "iconic-rage-220603:iot_dataset.iot_raw_data"
