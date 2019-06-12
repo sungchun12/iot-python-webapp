@@ -90,14 +90,34 @@ resource "google_bigtable_table" "iot-stream-table" {
   split_keys    = var.bigtable_table_split_keys
 }
 
-resource "google_dataflow_job" "dataflow-raw-data-stream" {
-  name              = "dataflow-test"
-  template_gcs_path = "gs://dataflow-templates/2019-05-15-00/PubSub_to_BigQuery" # use the java template
-  temp_gcs_location = "gs://iot-dataflow-stage-sung/tmp"
-  zone              = var.zone
-  on_delete         = "cancel"
-  parameters = {
-    inputTopic      = "projects/iconic-range-220603/topics/data-pipeline-topic" # google_pubsub_topic.data-pipeline-topic.id
-    outputTableSpec = "iconic-rage-220603:iot_dataset.iot_raw_data"
+# resource "google_dataflow_job" "dataflow-raw-data-stream" {
+#   name              = "dataflow-test"
+#   template_gcs_path = "gs://dataflow-templates/2019-05-15-00/PubSub_to_BigQuery" # use the java template
+#   temp_gcs_location = "gs://iot-dataflow-stage-sung/tmp"
+#   zone              = var.zone
+#   on_delete         = "cancel"
+#   parameters = {
+#     inputTopic      = "projects/iconic-range-220603/topics/data-pipeline-topic" # google_pubsub_topic.data-pipeline-topic.id
+#     outputTableSpec = "iconic-rage-220603:iot_dataset.iot_raw_data"
+#   }
+# }
+
+resource "google_cloudfunctions_function" "function" {
+  name        = "function-test"
+  description = "My function"
+  runtime     = "nodejs10"
+
+  available_memory_mb   = 128
+  source_archive_bucket = "${google_storage_bucket.bucket.name}"
+  source_archive_object = "${google_storage_bucket_object.archive.name}"
+  trigger_http          = true
+  timeout               = 60
+  entry_point           = "helloGET"
+  labels = {
+    my-label = "my-label-value"
+  }
+
+  environment_variables = {
+    MY_ENV_VAR = "my-env-var-value"
   }
 }
