@@ -1,7 +1,7 @@
 [
   {
     "description": "raw data stream timestamp",
-    "mode": "REQUIRED",
+    "mode": "NULLABLE",
     "name": "timestamp",
     "type": "TIMESTAMP"
   },
