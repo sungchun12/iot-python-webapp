@@ -102,19 +102,17 @@ resource "google_bigtable_table" "iot-stream-table" {
 #   }
 # }
 
-resource "google_cloudfunctions_function" "function" {
-  name        = "function-test"
-  description = "My function"
-  runtime     = "nodejs10"
+resource "google_cloudfunctions_function" "iot-data-to-bigquery-function" {
+  name        = "iot-data-to-bigquery-function"
+  description = "Process iot data from pubsub to bigquery"
+  runtime     = "python37"
 
-  available_memory_mb   = 128
-  source_archive_bucket = "${google_storage_bucket.bucket.name}"
-  source_archive_object = "${google_storage_bucket_object.archive.name}"
-  trigger_http          = true
-  timeout               = 60
-  entry_point           = "helloGET"
+  available_memory_mb = 256
+  event_trigger       = "google.pubsub.topic.publish"
+  timeout             = 60
+  entry_point         = "handler"
   labels = {
-    my-label = "my-label-value"
+    my-label = "demo"
   }
 
   environment_variables = {
