@@ -4,6 +4,7 @@ resource "google_storage_bucket" "data-store" {
   location      = var.location
   project       = var.project
   storage_class = var.storage_class
+  force_destroy = true
 
   versioning {
     enabled = var.versioning_enabled
@@ -25,6 +26,7 @@ resource "google_storage_bucket" "dataflow-staging" {
   location      = var.location
   project       = var.project
   storage_class = var.storage_class
+  force_destroy = true
 
   versioning {
     enabled = var.versioning_enabled
