@@ -27,6 +27,7 @@ module "data_pipeline" {
   project                   = var.project
   location                  = var.location
   zone                      = var.zone
+  service_account_email     = var.service_account_email
   version_label             = var.version_label
   iot_registry_name         = var.iot_registry_name
   http_config_state         = var.http_config_state
