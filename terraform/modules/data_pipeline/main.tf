@@ -112,7 +112,7 @@ resource "google_cloudfunctions_function" "iot-data-to-bigquery-function" {
   timeout             = 60
   entry_point         = "handler"
   labels = {
-    my-label = "demo"
+    my-label = var.version_label
   }
 
   environment_variables = {
