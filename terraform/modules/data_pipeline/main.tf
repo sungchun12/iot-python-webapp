@@ -99,7 +99,7 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
   on_delete             = "cancel"
   parameters = {
     inputTopic      = "projects/iconic-range-220603/topics/data-pipeline-topic" # google_pubsub_topic.data-pipeline-topic.id
-    outputTableSpec = "iconic-rage-220603:iot_dataset.iot_raw_data"
+    outputTableSpec = "iconic-range-220603:iot_dataset.iot_raw_data"
   }
 }
 
