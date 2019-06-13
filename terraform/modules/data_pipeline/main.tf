@@ -103,20 +103,4 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
   }
 }
 
-# resource "google_cloudfunctions_function" "iot-data-to-bigquery-function" {
-#   name        = "iot-data-to-bigquery-function"
-#   description = "Process iot data from pubsub to bigquery"
-#   runtime     = "python37"
 
-#   available_memory_mb = 256
-#   event_trigger       = "google.pubsub.topic.publish"
-#   timeout             = 60
-#   entry_point         = "handler"
-#   labels = {
-#     my-label = var.version_label
-#   }
-
-#   environment_variables = {
-#     MY_ENV_VAR = "my-env-var-value"
-#   }
-# }
