@@ -102,7 +102,9 @@ resource "google_bigtable_instance" "iot-stream-database" {
 
 # https://codelabs.developers.google.com/codelabs/cpb104-bigtable-cbt/#5
 # https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/bigtable/hello/main.py
-# 
+# may need to use cloud function to send data from pubsub
+# into bigtable using the python api
+# but this will make the pipeline code feel fragmented
 resource "google_bigtable_table" "iot-stream-table" {
   name          = var.bigtable_table_name
   instance_name = google_bigtable_instance.iot-stream-database.name
