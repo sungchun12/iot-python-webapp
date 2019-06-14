@@ -28,10 +28,11 @@ module "data_pipeline" {
 module "iot_compute" {
   source = "./modules/iot_compute"
 
-  #pass the root module variables ot child module
-  project       = var.project
-  location      = var.location
-  zone          = var.zone
-  version_label = var.version_label
+  #pass the root module variables to child module
+  project               = var.project
+  location              = var.location
+  zone                  = var.zone
+  service_account_email = var.service_account_email
+  version_label         = var.version_label
 }
 
