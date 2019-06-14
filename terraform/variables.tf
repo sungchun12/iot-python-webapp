@@ -9,13 +9,13 @@ variable "project" {
 }
 
 variable "location" {
-  description = "location of various GCP services"
+  description = "default location of various GCP services"
   type        = string
   default     = "us-central1"
 }
 
 variable "zone" {
-  description = "a granular location typically for VMs"
+  description = "default granular location typically for VMs"
   type        = string
   default     = "us-central1-b"
 }
