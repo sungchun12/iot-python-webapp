@@ -7,6 +7,9 @@ variable "location" {
 variable "zone" {
 }
 
+variable "service_account_email" {
+}
+
 variable "version_label" {
 }
 
