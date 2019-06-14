@@ -1,6 +1,6 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # DEPLOY IOT REGISTRY ALONG WITH DATA INGESTION ALONG WITH NoSQL DB AND DATA WAREHOUSE
-# This module creates an iot registry, pubsub topics, dataflow job
+# This module creates an iot registry, pubsub topics, dataflow jobs
 # , bigtable instance and cluster, and bigquery dataset/table
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
