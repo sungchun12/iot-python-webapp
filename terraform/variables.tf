@@ -15,6 +15,11 @@ variable "zone" {
   description = "a granular location typically for VMs"
 }
 
+variable "service_account_email" {
+  default     = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
+  description = "Service account used for VMs"
+}
+
 variable "version_label" {
   default     = "demo"
   description = "helpful label to version GCP resources per deployment"
@@ -90,11 +95,6 @@ variable "machine_type" {
 variable "os_image" {
   default     = "debian-cloud/debian-9"
   description = "Typically a linux image, debian is lightweight"
-}
-
-variable "service_account_email" {
-  default     = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
-  description = "Service account used for VMs"
 }
 
 variable "service_account_scopes" {
