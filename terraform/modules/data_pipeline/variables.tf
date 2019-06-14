@@ -117,10 +117,16 @@ variable "bigtable_table_name" {
   default     = "iot-stream-table"
 }
 
+variable "bigtable_column_family" {
+  description = "BigTable column families"
+  type        = string
+  default     = "device-temperature"
+}
+
 variable "bigtable_table_split_keys" {
   description = "define table partition keys"
   type        = list
-  default     = ["a", "b", "c"]
+  default     = ["device", "timestamp"]
 }
 
 # -----------------------------------------------------------------------
