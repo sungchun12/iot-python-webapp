@@ -90,6 +90,7 @@ resource "google_bigtable_table" "iot-stream-table" {
   split_keys    = var.bigtable_table_split_keys
 }
 
+
 resource "google_dataflow_job" "dataflow-raw-data-stream" {
   name                  = "dataflow-test"
   service_account_email = var.service_account_email
@@ -102,5 +103,6 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
     outputTableSpec = "iconic-range-220603:iot_dataset.iot_raw_data"
   }
 }
+
 
 
