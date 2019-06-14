@@ -1,3 +1,12 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# DEPLOY IOT REGISTRY ALONG WITH DATA INGESTION ALONG WITH NoSQL DB AND DATA WAREHOUSE
+# This module creates an iot registry, pubsub topics, dataflow jobs
+# , bigtable instance and cluster, and bigquery dataset/table
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY IOT REGISTRY AND ALIGNED PUBSUB TOPICS
+# ---------------------------------------------------------------------------------------------------------------------
 resource "google_cloudiot_registry" "iot-registry" {
   name   = var.iot_registry_name
   region = var.location
@@ -44,6 +53,9 @@ resource "google_pubsub_topic" "iot-device-status" {
   }
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY BIGQUERY DATASET AND TABLE WITH DEFINED SCHEMA
+# ---------------------------------------------------------------------------------------------------------------------
 resource "google_bigquery_dataset" "iot_dataset" {
   dataset_id  = var.dataset_name
   description = var.dataset_desc
@@ -60,9 +72,10 @@ resource "google_bigquery_table" "iot_raw_data" {
   table_id    = var.table_name
   description = var.table_desc
 
-  # time_partitioning {
-  #   type = "DAY"
-  # }
+  time_partitioning {
+    field = var.partition_field_name
+    type  = "DAY"
+  }
 
   labels = {
     version = var.version_label
@@ -71,6 +84,9 @@ resource "google_bigquery_table" "iot_raw_data" {
   schema = "${file("${path.module}/schema.json")}"
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY BIGTABLE INSTANCE WITH EMPTY TABLE
+# ---------------------------------------------------------------------------------------------------------------------
 resource "google_bigtable_instance" "iot-stream-database" {
   name          = var.bigtable_db_name
   instance_type = var.bigtable_db_instance_type #change to PRODUCTION when ready
@@ -91,16 +107,20 @@ resource "google_bigtable_table" "iot-stream-table" {
 }
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY DATAFLOW JOB TO INGEST IOT DEVICE DATA INTO BIGQUERY
+# ---------------------------------------------------------------------------------------------------------------------
+
 resource "google_dataflow_job" "dataflow-raw-data-stream" {
-  name                  = "dataflow-test"
+  name                  = var.dataflow_raw_data_job_name
   service_account_email = var.service_account_email
-  template_gcs_path     = "gs://dataflow-templates/2019-05-15-00/PubSub_to_BigQuery" # use the java template
-  temp_gcs_location     = "gs://iot-dataflow-stage-sung/tmp"
+  template_gcs_path     = var.template_gcs_path_location
+  temp_gcs_location     = var.temp_staging_gcs_path
   zone                  = var.zone
-  on_delete             = "cancel"
+  on_delete             = var.on_delete_option
   parameters = {
-    inputTopic      = "projects/iconic-range-220603/topics/data-pipeline-topic" # google_pubsub_topic.data-pipeline-topic.id
-    outputTableSpec = "iconic-range-220603:iot_dataset.iot_raw_data"
+    inputTopic      = google_pubsub_topic.data-pipeline-topic.id
+    outputTableSpec = google_bigquery_table.iot_raw_data.id
   }
 }
 
