@@ -75,6 +75,12 @@ variable "table_desc" {
   default     = "table that accumulates all raw iot streaming data"
 }
 
+variable "partition_field_name" {
+  description = "Name of field to partition by day"
+  type        = string
+  default     = "timestamp"
+}
+
 variable "bigtable_db_name" {
   description = "Name of BigTable instance for raw data streams"
   type        = string
@@ -110,3 +116,28 @@ variable "bigtable_table_split_keys" {
   type        = list
   default     = ["a", "b", "c"]
 }
+
+variable "dataflow_raw_data_job_name" {
+  description = "Name of data flow job for raw data ingestion"
+  type        = string
+  default     = "dataflow-raw-data-stream"
+}
+
+variable "template_gcs_path_location" {
+  description = "Cloud storage bucket location for dataflow job"
+  type        = string
+  default     = "gs://dataflow-templates/2019-05-15-00/PubSub_to_BigQuery"
+}
+
+variable "temp_staging_gcs_path" {
+  description = "Cloud storage bucket location for staging temporary dataflow data"
+  type        = string
+  default     = "gs://iot-dataflow-stage-sung/tmp"
+}
+
+variable "on_delete_option" {
+  description = "Drain or cancel the dataflow job"
+  type        = string
+  default     = "cancel"
+}
+
