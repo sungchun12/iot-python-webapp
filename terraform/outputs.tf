@@ -35,6 +35,10 @@ output "data-pipeline-bigtable-table-metadata" {
   value = module.data_pipeline.data-pipeline-bigtable-table-metadata
 }
 
+output "dataflow-raw-data-stream-metadata" {
+  value = module.data_pipeline.dataflow-raw-data-stream-metadata
+}
+
 output "iot-device-1-metadata" {
   value = module.iot_compute.iot-device-1-metadata
 }

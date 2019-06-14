@@ -26,3 +26,6 @@ output "data-pipeline-bigtable-table-metadata" {
   value = google_bigtable_table.iot-stream-table.name
 }
 
+output "dataflow-raw-data-stream-metadata" {
+  value = google_dataflow_job.dataflow-raw-data-stream.name
+}
