@@ -1,28 +1,35 @@
-##############################
-#project-wide variables
+# ---------------------------------------------------------------------------------------------------------------------
+# REQUIRED PARAMETERS
+# These variables are expected to be passed in by the operator
+# ---------------------------------------------------------------------------------------------------------------------
 variable "project" {
-  default     = "iconic-range-220603"
   description = "name of your GCP project"
+  type        = string
+  default     = "iconic-range-220603"
 }
 
 variable "location" {
-  default     = "us-central1"
   description = "location of various GCP services"
+  type        = string
+  default     = "us-central1"
 }
 
 variable "zone" {
-  default     = "us-central1-b"
   description = "a granular location typically for VMs"
+  type        = string
+  default     = "us-central1-b"
 }
 
 variable "service_account_email" {
-  default     = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
   description = "Service account used for VMs"
+  type        = string
+  default     = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
 }
 
 variable "version_label" {
-  default     = "demo"
   description = "helpful label to version GCP resources per deployment"
+  type        = string
+  default     = "demo"
 }
 
 
