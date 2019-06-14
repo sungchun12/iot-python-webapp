@@ -72,9 +72,9 @@ resource "google_bigquery_table" "iot_raw_data" {
   table_id    = var.table_name
   description = var.table_desc
 
-  # time_partitioning {
-  #   type = "DAY"
-  # }
+  time_partitioning {
+    type = "DAY"
+  }
 
   labels = {
     version = var.version_label
