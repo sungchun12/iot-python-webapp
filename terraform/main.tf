@@ -1,3 +1,13 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# DEPLOY A SIMULATED IOT END TO END DATA PIPELINE
+# This module creates the storage buckets, iot vms/registries, data ingestors, data warehouse, and real-time dashboard
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# ---------------------------------------------------------------------------------------------------------------------
+# SETUP PROVIDER DEFAULTS
+# These variables are expected to be passed in by the operator
+# You are expected to provide your own service account JSON file in the root module directory
+# ---------------------------------------------------------------------------------------------------------------------
 provider "google" {
   credentials = "service_account.json"
   project     = var.project
@@ -5,6 +15,11 @@ provider "google" {
   zone        = var.zone
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# IMPORT MODULES
+# This root module imports and passes through project wide variables
+# Detailed variables contained within respective module directory
+# ---------------------------------------------------------------------------------------------------------------------
 module "storage" {
   source = "./modules/storage"
 
