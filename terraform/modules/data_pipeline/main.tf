@@ -1,3 +1,12 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# DEPLOY IOT REGISTRY ALONG WITH DATA INGESTION ALONG WITH NoSQL DB AND DATA WAREHOUSE
+# This module creates an iot registry, pubsub topics, dataflow job
+# , bigtable instance and cluster, and bigquery dataset/table
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY IOT REGISTRY AND ALIGNED PUBSUB TOPICS
+# ---------------------------------------------------------------------------------------------------------------------
 resource "google_cloudiot_registry" "iot-registry" {
   name   = var.iot_registry_name
   region = var.location
@@ -44,6 +53,9 @@ resource "google_pubsub_topic" "iot-device-status" {
   }
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY BIGQUERY DATASET AND TABLE WITH DEFINED SCHEMA
+# ---------------------------------------------------------------------------------------------------------------------
 resource "google_bigquery_dataset" "iot_dataset" {
   dataset_id  = var.dataset_name
   description = var.dataset_desc
@@ -71,6 +83,9 @@ resource "google_bigquery_table" "iot_raw_data" {
   schema = "${file("${path.module}/schema.json")}"
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY BIGTABLE INSTANCE WITH EMPTY TABLE
+# ---------------------------------------------------------------------------------------------------------------------
 resource "google_bigtable_instance" "iot-stream-database" {
   name          = var.bigtable_db_name
   instance_type = var.bigtable_db_instance_type #change to PRODUCTION when ready
@@ -90,6 +105,9 @@ resource "google_bigtable_table" "iot-stream-table" {
   split_keys    = var.bigtable_table_split_keys
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY DATAFLOW JOB TO INGEST IOT DEVICE DATA INTO BIGQUERY
+# ---------------------------------------------------------------------------------------------------------------------
 resource "google_dataflow_job" "dataflow-raw-data-stream" {
   name                  = "dataflow-test"
   service_account_email = var.service_account_email
