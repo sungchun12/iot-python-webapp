@@ -81,7 +81,7 @@ resource "google_bigquery_table" "iot_raw_data" {
     version = var.version_label
   }
 
-  schema = "${file("${path.module}/schema.json")}"
+  schema = "${file("${path.module}/schemas/bigquery_schema.json")}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -100,9 +100,11 @@ resource "google_bigtable_instance" "iot-stream-database" {
   }
 }
 
+# https://codelabs.developers.google.com/codelabs/cpb104-bigtable-cbt/#5
 resource "google_bigtable_table" "iot-stream-table" {
   name          = var.bigtable_table_name
   instance_name = google_bigtable_instance.iot-stream-database.name
+  # column_family =
   split_keys    = var.bigtable_table_split_keys
 }
 
