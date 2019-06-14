@@ -1,3 +1,7 @@
+# ---------------------------------------------------------------------------------------------------------------------
+# REQUIRED PARAMETERS
+# These variables are expected to be passed in by the operator
+# ---------------------------------------------------------------------------------------------------------------------
 variable "project" {
 }
 
@@ -7,32 +11,48 @@ variable "location" {
 variable "version_label" {
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# OPTIONAL MODULE PARAMETERS
+# These variables have defaults, but may be overridden by the operator.
+# ---------------------------------------------------------------------------------------------------------------------
 variable "raw_bucket_name" {
-  default     = "iot-raw-data-sung"
   description = "bucket name where all the raw streaming data is stored"
+  type        = string
+  default     = "iot-raw-data-sung"
+
 }
 
 variable "staging_bucket_name" {
-  default     = "iot-dataflow-stage-sung"
   description = "bucket name where dataflow stages data during transformations"
+  type        = string
+  default     = "iot-dataflow-stage-sung"
+
 }
 
 variable "storage_class" {
-  default     = "REGIONAL"
   description = "type of storage depending on frequency of data use"
+  type        = string
+  default     = "REGIONAL"
+
 }
 
 variable "versioning_enabled" {
-  default     = true
   description = "you typically want to enable bucket versioning"
+  type        = bool
+  default     = true
+
 }
 
 variable "main_page_suffix" {
-  default     = "index.html"
   description = "behaves as bucket's directory index"
+  type        = string
+  default     = "index.html"
+
 }
 
 variable "not_found_page" {
-  default     = "404.html"
   description = "custom object to return when a requested resource is not found"
+  type        = string
+  default     = "404.html"
+
 }
