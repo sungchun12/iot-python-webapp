@@ -24,12 +24,5 @@ variable "version_label" {
   default     = "demo"
   description = "helpful label to version GCP resources per deployment"
 }
-##############################
-# storage variables
 
-##############################
-# iot_compute variables
-
-##############################
-# data_pipeline variables
 
