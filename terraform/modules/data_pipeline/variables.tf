@@ -51,6 +51,9 @@ variable "device_status_topic_name" {
   default     = "iot-device-status"
 }
 
+# -----------------------------------------------------------------------
+# BigQuery Variables
+# -----------------------------------------------------------------------
 variable "dataset_name" {
   description = "Name of BigQuery dataset for data streams"
   type        = string
@@ -81,6 +84,9 @@ variable "partition_field_name" {
   default     = "timestamp"
 }
 
+# -----------------------------------------------------------------------
+# BigTable Variables
+# -----------------------------------------------------------------------
 variable "bigtable_db_name" {
   description = "Name of BigTable instance for raw data streams"
   type        = string
@@ -117,6 +123,9 @@ variable "bigtable_table_split_keys" {
   default     = ["a", "b", "c"]
 }
 
+# -----------------------------------------------------------------------
+# Dataflow Variables
+# -----------------------------------------------------------------------
 variable "dataflow_raw_data_job_name" {
   description = "Name of data flow job for raw data ingestion"
   type        = string
