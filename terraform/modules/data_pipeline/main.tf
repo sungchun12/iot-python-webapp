@@ -100,11 +100,6 @@ resource "google_bigtable_instance" "iot-stream-database" {
   }
 }
 
-# https://codelabs.developers.google.com/codelabs/cpb104-bigtable-cbt/#5
-# https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/bigtable/hello/main.py
-# may need to use cloud function to send data from pubsub
-# into bigtable using the python api
-# but this will make the pipeline code feel fragmented
 resource "google_bigtable_table" "iot-stream-table" {
   name          = var.bigtable_table_name
   instance_name = google_bigtable_instance.iot-stream-database.name
@@ -130,4 +125,42 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
   }
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY CLOUD FUNCTION TO INGEST IOT DEVICE DATA FROM PUBSUB AND WRITE TO BIGTABLE
+# ---------------------------------------------------------------------------------------------------------------------
 
+# https://codelabs.developers.google.com/codelabs/cpb104-bigtable-cbt/#5
+# https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/bigtable/hello/main.py
+# may need to use cloud function to send data from pubsub
+# into bigtable using the python api
+# but this will make the pipeline code feel fragmented
+resource "google_storage_bucket" "bucket" {
+  name = "test-bucket"
+}
+
+resource "google_storage_bucket_object" "archive" {
+  name   = "index.zip"
+  bucket = "${google_storage_bucket.bucket.name}"
+  source = "./path/to/zip/file/which/contains/code"
+}
+
+
+resource "google_cloudfunctions_function" "big-table-function" {
+  name        = "big-table-function"
+  description = "My function"
+  runtime     = "nodejs10"
+
+  available_memory_mb   = 256
+  source_archive_bucket = "${google_storage_bucket.bucket.name}"
+  source_archive_object = "${google_storage_bucket_object.archive.name}"
+  trigger_http          = true
+  timeout               = 60
+  entry_point           = "helloGET"
+  labels = {
+    my-label = "my-label-value"
+  }
+
+  environment_variables = {
+    MY_ENV_VAR = "my-env-var-value"
+  }
+}
