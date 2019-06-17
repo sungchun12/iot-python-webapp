@@ -139,7 +139,7 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
 resource "google_storage_bucket_object" "big-table-function-code" {
   name   = "big-table-function-code"
   bucket = var.source_code_bucket_name
-  source = "./path/to/zip/file/which/contains/code"
+  source = "./cloud_function_src"
 }
 
 # # pass data from module to module
