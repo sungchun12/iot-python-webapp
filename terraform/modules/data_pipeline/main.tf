@@ -134,33 +134,32 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
 # may need to use cloud function to send data from pubsub
 # into bigtable using the python api
 # but this will make the pipeline code feel fragmented
-resource "google_storage_bucket" "bucket" {
-  name = "test-bucket"
-}
 
-resource "google_storage_bucket_object" "archive" {
-  name   = "index.zip"
-  bucket = "${google_storage_bucket.bucket.name}"
+
+resource "google_storage_bucket_object" "big-table-function-code" {
+  name   = "big-table-function-code"
+  bucket = var.source_code_bucket_name
   source = "./path/to/zip/file/which/contains/code"
 }
 
+# # pass data from module to module
+# # https://github.com/hashicorp/terraform/issues/18114
+# resource "google_cloudfunctions_function" "big-table-function" {
+#   name        = "big-table-function"
+#   description = "Read data from a pubsub topic and write it to a bigtable instance"
+#   runtime     = "python37"
 
-resource "google_cloudfunctions_function" "big-table-function" {
-  name        = "big-table-function"
-  description = "My function"
-  runtime     = "nodejs10"
+#   available_memory_mb   = 256
+#   source_archive_bucket = "${google_storage_bucket.bucket.name}"
+#   source_archive_object = "${google_storage_bucket_object.archive.name}"
+#   trigger_http          = true
+#   timeout               = 60
+#   entry_point           = "handler"
+#   labels = {
+#     my-label = "my-label-value"
+#   }
 
-  available_memory_mb   = 256
-  source_archive_bucket = "${google_storage_bucket.bucket.name}"
-  source_archive_object = "${google_storage_bucket_object.archive.name}"
-  trigger_http          = true
-  timeout               = 60
-  entry_point           = "helloGET"
-  labels = {
-    my-label = "my-label-value"
-  }
-
-  environment_variables = {
-    MY_ENV_VAR = "my-env-var-value"
-  }
-}
+#   environment_variables = {
+#     MY_ENV_VAR = "my-env-var-value"
+#   }
+# }
