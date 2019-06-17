@@ -1,5 +1,5 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# DEPLOY RAW DATA AND STAGING BUCKETS
+# DEPLOY RAW DATA, STAGING, AND SOURCE CODE BUCKETS
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 resource "google_storage_bucket" "data-store" {
   name = var.raw_bucket_name
@@ -45,3 +45,24 @@ resource "google_storage_bucket" "dataflow-staging" {
   }
 }
 
+resource "google_storage_bucket" "source-code-bucket-sung" {
+  name = var.source_code_bucket_name
+
+  location      = var.location
+  project       = var.project
+  storage_class = var.storage_class
+  force_destroy = true
+
+  versioning {
+    enabled = var.versioning_enabled
+  }
+
+  website {
+    main_page_suffix = var.main_page_suffix
+    not_found_page   = var.not_found_page
+  }
+
+  labels = {
+    version = var.version_label
+  }
+}
