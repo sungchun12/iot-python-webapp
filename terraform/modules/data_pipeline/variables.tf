@@ -21,6 +21,10 @@ variable "version_label" {
 # OPTIONAL MODULE PARAMETERS
 # These variables have defaults, but may be overridden by the operator
 # ---------------------------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------
+# IoT Core and PubSub Variables
+# -----------------------------------------------------------------------
 variable "iot_registry_name" {
   description = "Name of IOT registry to manage devices"
   type        = string
