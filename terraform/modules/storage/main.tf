@@ -45,7 +45,7 @@ resource "google_storage_bucket" "dataflow-staging" {
   }
 }
 
-resource "google_storage_bucket" "source-code-bucket-sung" {
+resource "google_storage_bucket" "source-code-bucket" {
   name = var.source_code_bucket_name
 
   location      = var.location

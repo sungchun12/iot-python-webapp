@@ -38,6 +38,10 @@ module "data_pipeline" {
   zone                  = var.zone
   service_account_email = var.service_account_email
   version_label         = var.version_label
+
+  #pass the storage variables
+  source_code_bucket_name = "${module.storage.source-code-bucket-metadata}"
+
 }
 
 module "iot_compute" {

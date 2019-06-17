@@ -7,6 +7,10 @@ output "dataflow-staging-metadata" {
   value = module.storage.dataflow-staging-metadata
 }
 
+output "source-code-bucket-metadata" {
+  value = module.storage.source-code-bucket-metadata
+}
+
 output "iot-registry-metadata" {
   value = module.data_pipeline.iot-registry-metadata
 }

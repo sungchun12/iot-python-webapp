@@ -160,3 +160,8 @@ variable "on_delete_option" {
   default     = "cancel"
 }
 
+# -----------------------------------------------------------------------
+# Cloud Function Variables
+# -----------------------------------------------------------------------
+variable "source_code_bucket_name" {
+}
