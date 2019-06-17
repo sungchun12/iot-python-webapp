@@ -137,29 +137,36 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
 
 
 resource "google_storage_bucket_object" "big-table-function-code" {
-  name   = "big-table-function-code"
+  name   = "big-table-function-code.zip"
   bucket = var.source_code_bucket_name
   source = "./cloud_function_src"
 }
 
-# # pass data from module to module
-# # https://github.com/hashicorp/terraform/issues/18114
-# resource "google_cloudfunctions_function" "big-table-function" {
-#   name        = "big-table-function"
-#   description = "Read data from a pubsub topic and write it to a bigtable instance"
-#   runtime     = "python37"
+# pass data from module to module
+# https://github.com/hashicorp/terraform/issues/18114
+resource "google_cloudfunctions_function" "big-table-function" {
+  name                  = "big-table-function"
+  description           = "Read data from a pubsub topic and write it to a bigtable instance"
+  service_account_email = var.service_account_email
+  runtime               = "python37"
 
-#   available_memory_mb   = 256
-#   source_archive_bucket = "${google_storage_bucket.bucket.name}"
-#   source_archive_object = "${google_storage_bucket_object.archive.name}"
-#   trigger_http          = true
-#   timeout               = 60
-#   entry_point           = "handler"
-#   labels = {
-#     my-label = "my-label-value"
-#   }
+  available_memory_mb   = 256
+  source_archive_bucket = var.source_code_bucket_name
+  source_archive_object = google_storage_bucket_object.big-table-function-code.name
+  event_trigger {
+    event_type = "google.pubsub.topic.publish"
+    resource   = google_pubsub_topic.data-pipeline-topic.id
+    failure_policy {
+      retry = true
+    }
+  }
+  timeout     = 60
+  entry_point = "main"
+  labels = {
+    version = var.version_label
+  }
 
-#   environment_variables = {
-#     MY_ENV_VAR = "my-env-var-value"
-#   }
-# }
+  environment_variables = {
+    MY_ENV_VAR = "my-env-var-value"
+  }
+}
