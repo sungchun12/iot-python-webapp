@@ -135,38 +135,38 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
 # into bigtable using the python api
 # but this will make the pipeline code feel fragmented
 
-
 resource "google_storage_bucket_object" "big-table-function-code" {
-  name   = "big-table-function-code.zip"
+  name   = var.big_table_function_code_name
   bucket = var.source_code_bucket_name
-  source = "./cloud_function_src"
+  source = var.source_path
 }
 
 # pass data from module to module
 # https://github.com/hashicorp/terraform/issues/18114
 resource "google_cloudfunctions_function" "big-table-function" {
-  name                  = "big-table-function"
-  description           = "Read data from a pubsub topic and write it to a bigtable instance"
+  name                  = var.cbt_function_name
+  description           = var.cbt_function_desc
   service_account_email = var.service_account_email
-  runtime               = "python37"
+  runtime               = var.cbt_function_runtime
 
-  available_memory_mb   = 256
+  available_memory_mb   = var.cbt_available_memory_mb
   source_archive_bucket = var.source_code_bucket_name
   source_archive_object = google_storage_bucket_object.big-table-function-code.name
   event_trigger {
-    event_type = "google.pubsub.topic.publish"
+    event_type = var.cbt_function_event_type
     resource   = google_pubsub_topic.data-pipeline-topic.id
     failure_policy {
-      retry = true
+      retry = var.cbt_function_failure_policy
     }
   }
-  timeout     = 60
-  entry_point = "main"
+  timeout     = var.cbt_function_timeout
+  entry_point = var.cbt_function_entry_point
   labels = {
     version = var.version_label
   }
 
   environment_variables = {
-    MY_ENV_VAR = "my-env-var-value"
+    bigtable_instance_id = google_bigtable_instance.iot-stream-database.name
+    bigtable_table_id    = google_bigtable_table.iot-stream-table.name
   }
 }

@@ -163,5 +163,66 @@ variable "on_delete_option" {
 # -----------------------------------------------------------------------
 # Cloud Function Variables
 # -----------------------------------------------------------------------
+#passed from storage module to root module to data pipeline module
 variable "source_code_bucket_name" {
+}
+
+variable "big_table_function_code_name" {
+  description = "Create a zip file object within the source code bucket"
+  type        = string
+  default     = "big-table-function-code.zip"
+}
+
+variable "source_path" {
+  description = "Path to files with function scripts"
+  type        = string
+  default     = "./cloud_function_src"
+}
+
+variable "cbt_function_name" {
+  description = "Name of the cloud function"
+  type        = string
+  default     = "big-table-function"
+}
+
+variable "cbt_function_desc" {
+  description = "Describes what the cloud function does"
+  type        = string
+  default     = "Read data from a pubsub topic and write it to a bigtable instance"
+}
+
+variable "cbt_function_runtime" {
+  description = "Choose programming language runtime"
+  type        = string
+  default     = "python37"
+}
+
+variable "cbt_available_memory_mb" {
+  description = "Choose max available memory for function"
+  type        = number
+  default     = 256
+}
+
+variable "cbt_function_event_type" {
+  description = "Choose the function trigger type"
+  type        = string
+  default     = "google.pubsub.topic.publish"
+}
+
+variable "cbt_function_failure_policy" {
+  description = "Choose the function trigger type"
+  type        = bool
+  default     = true
+}
+
+variable "cbt_function_timeout" {
+  description = "How long should the function run before erroring out in seconds"
+  type        = number
+  default     = 60
+}
+
+variable "cbt_function_entry_point" {
+  description = "The main function within the code that makes it work"
+  type        = string
+  default     = "main"
 }
