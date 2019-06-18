@@ -43,6 +43,14 @@ output "dataflow-raw-data-stream-metadata" {
   value = module.data_pipeline.dataflow-raw-data-stream-metadata
 }
 
+output "cbt-function-object-metadata" {
+  value = module.data_pipeline.cbt-function-object-metadata
+}
+
+output "cbt-function-metadata" {
+  value = module.data_pipeline.cbt-function-metadata
+}
+
 output "iot-device-1-metadata" {
   value = module.iot_compute.iot-device-1-metadata
 }

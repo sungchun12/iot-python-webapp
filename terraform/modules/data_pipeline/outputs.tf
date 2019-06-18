@@ -29,3 +29,11 @@ output "data-pipeline-bigtable-table-metadata" {
 output "dataflow-raw-data-stream-metadata" {
   value = google_dataflow_job.dataflow-raw-data-stream.name
 }
+
+output "cbt-function-object-metadata" {
+  value = google_storage_bucket_object.big-table-function-code.name
+}
+
+output "cbt-function-metadata" {
+  value = google_storage_bucket_object.big-table-function.name
+}
