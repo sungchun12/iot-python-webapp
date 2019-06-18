@@ -7,6 +7,10 @@ output "dataflow-staging-metadata" {
   value = module.storage.dataflow-staging-metadata
 }
 
+output "source-code-bucket-metadata" {
+  value = module.storage.source-code-bucket-metadata
+}
+
 output "iot-registry-metadata" {
   value = module.data_pipeline.iot-registry-metadata
 }
@@ -33,6 +37,18 @@ output "data-pipeline-bigtable-metadata" {
 
 output "data-pipeline-bigtable-table-metadata" {
   value = module.data_pipeline.data-pipeline-bigtable-table-metadata
+}
+
+output "dataflow-raw-data-stream-metadata" {
+  value = module.data_pipeline.dataflow-raw-data-stream-metadata
+}
+
+output "cbt-function-object-metadata" {
+  value = module.data_pipeline.cbt-function-object-metadata
+}
+
+output "cbt-function-metadata" {
+  value = module.data_pipeline.cbt-function-metadata
 }
 
 output "iot-device-1-metadata" {

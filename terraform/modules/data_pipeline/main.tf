@@ -81,7 +81,7 @@ resource "google_bigquery_table" "iot_raw_data" {
     version = var.version_label
   }
 
-  schema = "${file("${path.module}/schema.json")}"
+  schema = "${file("${path.module}/schemas/bigquery_schema.json")}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -103,7 +103,10 @@ resource "google_bigtable_instance" "iot-stream-database" {
 resource "google_bigtable_table" "iot-stream-table" {
   name          = var.bigtable_table_name
   instance_name = google_bigtable_instance.iot-stream-database.name
-  split_keys    = var.bigtable_table_split_keys
+  column_family {
+    family = var.bigtable_column_family
+  }
+  split_keys = var.bigtable_table_split_keys
 }
 
 
@@ -124,5 +127,50 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
   }
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# DEPLOY CLOUD FUNCTION TO INGEST IOT DEVICE DATA FROM PUBSUB AND WRITE TO BIGTABLE
+# ---------------------------------------------------------------------------------------------------------------------
 
+# https://codelabs.developers.google.com/codelabs/cpb104-bigtable-cbt/#5
+# https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/bigtable/hello/main.py
+# may need to use cloud function to send data from pubsub
+# into bigtable using the python api
+# but this will make the pipeline code feel fragmented
+
+resource "google_storage_bucket_object" "big-table-function-code" {
+  name   = var.big_table_function_code_name
+  bucket = var.source_code_bucket_name
+  source = var.source_path
+}
+
+# pass data from module to module
+# https://github.com/hashicorp/terraform/issues/18114
+resource "google_cloudfunctions_function" "big-table-function" {
+  name                  = var.cbt_function_name
+  description           = var.cbt_function_desc
+  service_account_email = var.service_account_email
+  runtime               = var.cbt_function_runtime
+
+  available_memory_mb   = var.cbt_available_memory_mb
+  source_archive_bucket = var.source_code_bucket_name
+  source_archive_object = google_storage_bucket_object.big-table-function-code.name
+  event_trigger {
+    event_type = var.cbt_function_event_type
+    resource   = google_pubsub_topic.data-pipeline-topic.id
+    failure_policy {
+      retry = var.cbt_function_failure_policy
+    }
+  }
+  timeout     = var.cbt_function_timeout
+  entry_point = var.cbt_function_entry_point
+  labels = {
+    version = var.version_label
+  }
+
+
+  environment_variables = {
+    bigtable_instance_id = google_bigtable_instance.iot-stream-database.name
+    bigtable_table_id    = google_bigtable_table.iot-stream-table.name
+  }
+}
 

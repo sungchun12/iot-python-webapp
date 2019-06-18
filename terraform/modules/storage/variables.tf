@@ -29,6 +29,13 @@ variable "staging_bucket_name" {
 
 }
 
+variable "source_code_bucket_name" {
+  description = "bucket that stores general source code"
+  type        = string
+  default     = "source-code-bucket-sung"
+
+}
+
 variable "storage_class" {
   description = "type of storage depending on frequency of data use"
   type        = string

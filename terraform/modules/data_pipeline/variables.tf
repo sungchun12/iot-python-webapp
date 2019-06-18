@@ -21,6 +21,10 @@ variable "version_label" {
 # OPTIONAL MODULE PARAMETERS
 # These variables have defaults, but may be overridden by the operator
 # ---------------------------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------
+# IoT Core and PubSub Variables
+# -----------------------------------------------------------------------
 variable "iot_registry_name" {
   description = "Name of IOT registry to manage devices"
   type        = string
@@ -51,6 +55,9 @@ variable "device_status_topic_name" {
   default     = "iot-device-status"
 }
 
+# -----------------------------------------------------------------------
+# BigQuery Variables
+# -----------------------------------------------------------------------
 variable "dataset_name" {
   description = "Name of BigQuery dataset for data streams"
   type        = string
@@ -81,6 +88,9 @@ variable "partition_field_name" {
   default     = "timestamp"
 }
 
+# -----------------------------------------------------------------------
+# BigTable Variables
+# -----------------------------------------------------------------------
 variable "bigtable_db_name" {
   description = "Name of BigTable instance for raw data streams"
   type        = string
@@ -111,12 +121,21 @@ variable "bigtable_table_name" {
   default     = "iot-stream-table"
 }
 
+variable "bigtable_column_family" {
+  description = "BigTable column families"
+  type        = string
+  default     = "device-temperature"
+}
+
 variable "bigtable_table_split_keys" {
   description = "define table partition keys"
   type        = list
-  default     = ["a", "b", "c"]
+  default     = ["device", "timestamp"]
 }
 
+# -----------------------------------------------------------------------
+# Dataflow Variables
+# -----------------------------------------------------------------------
 variable "dataflow_raw_data_job_name" {
   description = "Name of data flow job for raw data ingestion"
   type        = string
@@ -141,3 +160,69 @@ variable "on_delete_option" {
   default     = "cancel"
 }
 
+# -----------------------------------------------------------------------
+# Cloud Function Variables
+# -----------------------------------------------------------------------
+#passed from storage module to root module to data pipeline module
+variable "source_code_bucket_name" {
+}
+
+variable "big_table_function_code_name" {
+  description = "Create a zip file object within the source code bucket"
+  type        = string
+  default     = "big-table-function-code.zip"
+}
+
+variable "source_path" {
+  description = "Path to files with function scripts"
+  type        = string
+  default     = "./cloud_function_src"
+}
+
+variable "cbt_function_name" {
+  description = "Name of the cloud function"
+  type        = string
+  default     = "big-table-function"
+}
+
+variable "cbt_function_desc" {
+  description = "Describes what the cloud function does"
+  type        = string
+  default     = "Read data from a pubsub topic and write it to a bigtable instance"
+}
+
+variable "cbt_function_runtime" {
+  description = "Choose programming language runtime"
+  type        = string
+  default     = "python37"
+}
+
+variable "cbt_available_memory_mb" {
+  description = "Choose max available memory for function"
+  type        = number
+  default     = 256
+}
+
+variable "cbt_function_event_type" {
+  description = "Choose the function trigger type"
+  type        = string
+  default     = "google.pubsub.topic.publish"
+}
+
+variable "cbt_function_failure_policy" {
+  description = "Choose the function trigger type"
+  type        = bool
+  default     = true
+}
+
+variable "cbt_function_timeout" {
+  description = "How long should the function run before erroring out in seconds"
+  type        = number
+  default     = 60
+}
+
+variable "cbt_function_entry_point" {
+  description = "The main function within the code that makes it work"
+  type        = string
+  default     = "main"
+}

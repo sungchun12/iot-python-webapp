@@ -26,3 +26,14 @@ output "data-pipeline-bigtable-table-metadata" {
   value = google_bigtable_table.iot-stream-table.name
 }
 
+output "dataflow-raw-data-stream-metadata" {
+  value = google_dataflow_job.dataflow-raw-data-stream.name
+}
+
+output "cbt-function-object-metadata" {
+  value = google_storage_bucket_object.big-table-function-code.name
+}
+
+output "cbt-function-metadata" {
+  value = google_cloudfunctions_function.big-table-function.name
+}
