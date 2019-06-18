@@ -35,5 +35,5 @@ output "cbt-function-object-metadata" {
 }
 
 output "cbt-function-metadata" {
-  value = google_storage_bucket_object.big-table-function.name
+  value = google_cloudfunctions_function.big-table-function.name
 }
