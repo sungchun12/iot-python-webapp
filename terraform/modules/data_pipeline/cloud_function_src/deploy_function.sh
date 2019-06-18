@@ -10,4 +10,4 @@ set GOOGLE_APPLICATION_CREDENTIALS=C:\Users\sungwon.chung\Desktop\repos\serverle
 
 python main.py ^
 iconic-range-220603 ^
-iot-stream-database 
+iot-stream-database
