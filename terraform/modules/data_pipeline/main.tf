@@ -109,9 +109,11 @@ resource "google_bigtable_table" "iot-stream-table" {
   split_keys = var.bigtable_table_split_keys
 }
 
+
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY DATAFLOW JOB TO INGEST IOT DEVICE DATA INTO BIGQUERY
 # ---------------------------------------------------------------------------------------------------------------------
+
 resource "google_dataflow_job" "dataflow-raw-data-stream" {
   name                  = var.dataflow_raw_data_job_name
   service_account_email = var.service_account_email
@@ -165,8 +167,10 @@ resource "google_cloudfunctions_function" "big-table-function" {
     version = var.version_label
   }
 
+
   environment_variables = {
     bigtable_instance_id = google_bigtable_instance.iot-stream-database.name
     bigtable_table_id    = google_bigtable_table.iot-stream-table.name
   }
 }
+

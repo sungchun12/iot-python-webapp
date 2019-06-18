@@ -63,3 +63,4 @@ variable "not_found_page" {
   default     = "404.html"
 
 }
+
