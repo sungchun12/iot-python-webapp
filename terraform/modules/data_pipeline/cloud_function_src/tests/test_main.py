@@ -3,8 +3,9 @@ import random
 
 from terraform.modules.data_pipeline.cloud_function_src.main import main
 
-PROJECT = os.environ["GCLOUD_PROJECT"]
-BIGTABLE_CLUSTER = os.environ["BIGTABLE_CLUSTER"]
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/sungwon.chung/Desktop/repos/serverless_dash_repo/serverless_dash/terraform/service_account.json"
+PROJECT = os.environ["GCLOUD_PROJECT"] = "iconic-range-220603"
+BIGTABLE_CLUSTER = os.environ["BIGTABLE_CLUSTER"] = 'iot-stream-database'
 TABLE_NAME_FORMAT = "hello-bigtable-system-tests-{}"
 TABLE_NAME_RANGE = 10000
 
