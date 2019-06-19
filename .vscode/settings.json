@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": "venv\\Scripts\\python.exe",
+  "python.pythonPath": "C:\\Users\\sungwon.chung\\AppData\\Local\\Continuum\\anaconda3\\python.exe",
   // "python.testing.pyTestArgs": ["terraform"],
   "python.testing.unittestEnabled": false,
   "python.testing.nosetestsEnabled": false,
