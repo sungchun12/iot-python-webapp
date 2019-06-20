@@ -79,30 +79,54 @@ else:
 #%%
 # [START bigtable_hw_write_rows]
 print("Writing some dummy device data to the table.")
-greetings = ["Hello World!", "Hello Cloud Bigtable!", "Hello Python!"]
+
+device_data_ex1 = {
+    "device": "temp-sensor-14152",
+    "timestamp": 1561047482,
+    "temperature": 25.871327565065535,
+}
 rows = []
-column = "greeting".encode()
-for i, value in enumerate(greetings):
-    # Note: This example uses sequential numeric IDs for simplicity,
-    # but this can result in poor performance in a production
-    # application.  Since rows are stored in sorted order by key,
-    # sequential keys can result in poor distribution of operations
-    # across nodes.
-    #
-    # For more information about how to design a Bigtable schema for
-    # the best performance, see the documentation:
-    #
-    #     https://cloud.google.com/bigtable/docs/schema-design
-    row_key = "greeting{}".format(i).encode()
-    row = table.row(row_key)
-    row.set_cell(column_family_id, column, value, timestamp=datetime.datetime.utcnow())
-    rows.append(row)
+column = "device-temp".encode()
+row_key = f"device#{device_data_ex1['device']}#{device_data_ex1['timestamp']}".encode()
+row = table.row(row_key)
+value = str(
+    device_data_ex1["temperature"]
+)  # convert to string as bigtable can't accept float types
+# https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
+row.set_cell(column_family_id, column, value, timestamp=datetime.datetime.utcnow())
+rows.append(row)
 table.mutate_rows(rows)
 # [END bigtable_hw_write_rows]
-#%%
 
-# define the row key
-row_key = f"device#{device_data_ex1['device']}#{device_data_ex1['timestamp']}".encode()
+#%%
+# [START bigtable_hw_create_filter]
+# Create a filter to only retrieve the most recent version of the cell
+# for each column accross entire row.
+row_filter = row_filters.CellsColumnLimitFilter(1)
+# [END bigtable_hw_create_filter]
+
+# [START bigtable_hw_get_with_filter]
+print("Getting a single greeting by row key.")
+key = "greeting0".encode()
+
+row = table.read_row(key, row_filter)
+cell = row.cells[column_family_id][column][0]
+print(cell.value.decode("utf-8"))
+# [END bigtable_hw_get_with_filter]
+
+# [START bigtable_hw_scan_with_filter]
+print("Scanning for all greetings:")
+partial_rows = table.read_rows(filter_=row_filter)
+
+for row in partial_rows:
+    cell = row.cells[column_family_id][column][0]
+    print(cell.value.decode("utf-8"))
+# [END bigtable_hw_scan_with_filter]
+
+# [START bigtable_hw_delete_table]
+print("Deleting the {} table.".format(table_id))
+table.delete()
+# [END bigtable_hw_delete_table]
 
 #%%
 
