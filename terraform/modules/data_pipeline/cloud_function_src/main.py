@@ -22,7 +22,7 @@ from google.cloud.bigtable import row_filters
 #%%
 # expected dictionary of values to pass through pub sub
 
-device_data_ex1 = {
+device_data_ex = {
     "device": "temp-sensor-14152",
     "timestamp": 1561047482,
     "temperature": 25.871327565065535,
@@ -40,9 +40,9 @@ device_data_ex3 = {
     "temperature": 25.754188518132445,
 }
 
-test_data = [device_data_ex1, device_data_ex2, device_data_ex3]
+test_data = [device_data_ex, device_data_ex2, device_data_ex3]
 print(test_data[0]["device"])
-print(device_data_ex1["timestamp"])
+print(device_data_ex["timestamp"])
 
 #%%
 # start the code
@@ -80,17 +80,17 @@ else:
 # [START bigtable_hw_write_rows]
 print("Writing some dummy device data to the table.")
 
-device_data_ex1 = {
+device_data_ex = {
     "device": "temp-sensor-14152",
     "timestamp": 1561047482,
     "temperature": 25.871327565065123,
 }
 rows = []
 column = "device-temp".encode()
-row_key = f"device#{device_data_ex1['device']}#{device_data_ex1['timestamp']}".encode()
+row_key = f"device#{device_data_ex['device']}#{device_data_ex['timestamp']}".encode()
 row = table.row(row_key)
 value = str(
-    device_data_ex1["temperature"]
+    device_data_ex["temperature"]
 )  # convert to string as bigtable can't accept float types
 # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
 row.set_cell(column_family_id, column, value, timestamp=datetime.datetime.utcnow())
@@ -127,14 +127,14 @@ for row in partial_rows:
 
 
 def main(project_id, instance_id, table_id):
-    # [START bigtable_hw_connect]
+    # [START bigtable_connect]
     # The client must be created with admin=True because it will create a
     # table.
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
-    # [END bigtable_hw_connect]
+    # [END bigtable_connect]
 
-    # [START bigtable_hw_create_table]
+    # [START bigtable_create_table]
     print("Creating the {} table.".format(table_id))
     table = instance.table(table_id)
 
@@ -142,48 +142,44 @@ def main(project_id, instance_id, table_id):
     # Create a column family with GC policy : most recent N versions
     # Define the GC policy to retain only the most recent 2 versions
     max_versions_rule = column_family.MaxVersionsGCRule(2)
-    column_family_id = "cf1"
+    column_family_id = "device-family"
     column_families = {column_family_id: max_versions_rule}
     if not table.exists():
         table.create(column_families=column_families)
     else:
         print("Table {} already exists.".format(table_id))
-    # [END bigtable_hw_create_table]
+    # [END bigtable_create_table]
 
-    # [START bigtable_hw_write_rows]
-    print("Writing some greetings to the table.")
-    greetings = ["Hello World!", "Hello Cloud Bigtable!", "Hello Python!"]
+    # [START bigtable_write_rows]
+    print("Writing some dummy device data to the table.")
+    device_data_ex = {
+        "device": "temp-sensor-14152",
+        "timestamp": 1561047482,
+        "temperature": 25.871327565065123,
+    }
     rows = []
-    column = "greeting".encode()
-    for i, value in enumerate(greetings):
-        # Note: This example uses sequential numeric IDs for simplicity,
-        # but this can result in poor performance in a production
-        # application.  Since rows are stored in sorted order by key,
-        # sequential keys can result in poor distribution of operations
-        # across nodes.
-        #
-        # For more information about how to design a Bigtable schema for
-        # the best performance, see the documentation:
-        #
-        #     https://cloud.google.com/bigtable/docs/schema-design
-        row_key = "greeting{}".format(i).encode()
-        row = table.row(row_key)
-        row.set_cell(
-            column_family_id, column, value, timestamp=datetime.datetime.utcnow()
-        )
-        rows.append(row)
+    column = "device-temp".encode()
+    row_key = (
+        f"device#{device_data_ex['device']}#{device_data_ex['timestamp']}".encode()
+    )
+    row = table.row(row_key)
+    # convert to string as bigtable can't accept float types
+    # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
+    value = str(device_data_ex["temperature"])
+    row.set_cell(column_family_id, column, value, timestamp=datetime.datetime.utcnow())
+    rows.append(row)
     table.mutate_rows(rows)
-    # [END bigtable_hw_write_rows]
+    # [END bigtable_write_rows]
 
-    # [START bigtable_hw_create_filter]
+    # [START bigtable_create_filter]
     # Create a filter to only retrieve the most recent version of the cell
     # for each column accross entire row.
     row_filter = row_filters.CellsColumnLimitFilter(1)
     # [END bigtable_hw_create_filter]
 
     # [START bigtable_hw_get_with_filter]
-    print("Getting a single greeting by row key.")
-    key = "greeting0".encode()
+    print("Getting a single row of device data by row key.")
+    key = row_key
 
     row = table.read_row(key, row_filter)
     cell = row.cells[column_family_id][column][0]
@@ -191,18 +187,18 @@ def main(project_id, instance_id, table_id):
     # [END bigtable_hw_get_with_filter]
 
     # [START bigtable_hw_scan_with_filter]
-    print("Scanning for all greetings:")
+    print("Scanning for all device data:")
     partial_rows = table.read_rows(filter_=row_filter)
 
     for row in partial_rows:
         cell = row.cells[column_family_id][column][0]
         print(cell.value.decode("utf-8"))
-    # [END bigtable_hw_scan_with_filter]
+    # [END bigtable_scan_with_filter]
 
-    # [START bigtable_hw_delete_table]
+    # [START bigtable_delete_table]
     print("Deleting the {} table.".format(table_id))
     table.delete()
-    # [END bigtable_hw_delete_table]
+    # [END bigtable_delete_table]
 
 
 if __name__ == "__main__":
