@@ -9,7 +9,6 @@ Prerequisites:
 """
 
 import argparse
-import json
 
 # [START bigtable_hw_imports]
 import datetime
