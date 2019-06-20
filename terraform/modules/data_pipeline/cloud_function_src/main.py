@@ -9,6 +9,7 @@ Prerequisites:
 """
 
 import argparse
+import json
 
 # [START bigtable_hw_imports]
 import datetime
@@ -18,6 +19,32 @@ from google.cloud.bigtable import column_family
 from google.cloud.bigtable import row_filters
 
 # [END bigtable_hw_imports]
+
+
+# expected dictionary of values to pass through pub sub
+#%%
+device_data_ex1 = {
+    "device": "temp-sensor-14152",
+    "timestamp": 1561047482,
+    "temperature": 25.871327565065535,
+}
+
+device_data_ex2 = {
+    "device": "temp-sensor-14152",
+    "timestamp": 1561047476,
+    "temperature": 25.901292631539086,
+}
+
+device_data_ex3 = {
+    "device": "temp-sensor-14152",
+    "timestamp": 1561047496,
+    "temperature": 25.754188518132445,
+}
+
+test_data = [device_data_ex1, device_data_ex2, device_data_ex3]
+print(test_data[0]['device'])
+print(device_data_ex1['timestamp'])
+#%%
 
 
 def main(project_id, instance_id, table_id):
