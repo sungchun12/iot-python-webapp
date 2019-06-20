@@ -19,10 +19,8 @@ def test_main(capsys):
 
     out, _ = capsys.readouterr()
     assert "Creating the {} table.".format(table_name) in out
-    assert "Writing some greetings to the table." in out
-    assert "Getting a single greeting by row key." in out
-    assert "Hello World!" in out
-    assert "Scanning for all greetings" in out
-    assert "Hello Cloud Bigtable!" in out
-    assert "Deleting the {} table.".format(table_name) in out
-
+    assert "Writing a row of device data to the table." in out
+    assert "Getting a single row of device data by row key." in out
+    assert "25.875" in out
+    assert "Scanning for all device data:" in out
+    assert "25.87" in out
