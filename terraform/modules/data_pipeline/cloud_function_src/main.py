@@ -89,11 +89,6 @@ def main(project_id, instance_id, table_id):
         print(cell.value.decode("utf-8"))
     # [END bigtable_scan_with_filter]
 
-    # [START bigtable_delete_table]
-    print("Deleting the {} table.".format(table_id))
-    table.delete()
-    # [END bigtable_delete_table]
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
