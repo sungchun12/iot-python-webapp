@@ -7,17 +7,18 @@ Prerequisites:
 - Set your Google Application Default Credentials.
   https://developers.google.com/identity/protocols/application-default-credentials
 """
-#%%
+
 import argparse
 
-# [START bigtable_hw_imports]
+# [START bigtable_imports]
 import datetime
 
 from google.cloud import bigtable
 from google.cloud.bigtable import column_family
 from google.cloud.bigtable import row_filters
 
-# [END bigtable_hw_imports]
+# [END bigtable_imports]
+
 
 def main(project_id, instance_id, table_id):
     # [START bigtable_connect]
@@ -68,18 +69,18 @@ def main(project_id, instance_id, table_id):
     # Create a filter to only retrieve the most recent version of the cell
     # for each column accross entire row.
     row_filter = row_filters.CellsColumnLimitFilter(1)
-    # [END bigtable_hw_create_filter]
+    # [END bigtable_create_filter]
 
-    # [START bigtable_hw_get_with_filter]
+    # [START bigtable_get_with_filter]
     print("Getting a single row of device data by row key.")
     key = row_key
 
     row = table.read_row(key, row_filter)
     cell = row.cells[column_family_id][column][0]
     print(cell.value.decode("utf-8"))
-    # [END bigtable_hw_get_with_filter]
+    # [END bigtable_get_with_filter]
 
-    # [START bigtable_hw_scan_with_filter]
+    # [START bigtable_scan_with_filter]
     print("Scanning for all device data:")
     partial_rows = table.read_rows(filter_=row_filter)
 
