@@ -24,8 +24,10 @@ def main(project_id, instance_id, table_id):
     # [START bigtable_connect]
     # The client must be created with admin=True because it will create a
     # table.
+
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
+
     # [END bigtable_connect]
 
     # [START bigtable_create_table]
@@ -45,11 +47,11 @@ def main(project_id, instance_id, table_id):
     # [END bigtable_create_table]
 
     # [START bigtable_write_rows]
-    print("Writing some dummy device data to the table.")
+    print("Writing a row of device data to the table.")
     device_data_ex = {
         "device": "temp-sensor-14152",
-        "timestamp": 1561047482,
-        "temperature": 25.871327565065123,
+        "timestamp": 1561047487,
+        "temperature": 25.875,
     }
     rows = []
     column = "device-temp".encode()
@@ -68,7 +70,7 @@ def main(project_id, instance_id, table_id):
     # [START bigtable_create_filter]
     # Create a filter to only retrieve the most recent version of the cell
     # for each column accross entire row.
-    row_filter = row_filters.CellsColumnLimitFilter(1)
+    row_filter = row_filters.CellsColumnLimitFilter(2)
     # [END bigtable_create_filter]
 
     # [START bigtable_get_with_filter]
@@ -99,7 +101,7 @@ if __name__ == "__main__":
         "instance_id", help="ID of the Cloud Bigtable instance to connect to."
     )
     parser.add_argument(
-        "--table", help="Table to create and destroy.", default="Hello-Bigtable"
+        "--table", help="Table to create and destroy.", default="raw-device-data"
     )
 
     args = parser.parse_args()
