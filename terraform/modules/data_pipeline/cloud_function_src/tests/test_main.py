@@ -5,7 +5,7 @@ from terraform.modules.data_pipeline.cloud_function_src.main import main
 
 os.environ[
     "GOOGLE_APPLICATION_CREDENTIALS"
-] = "C:/Users/sungwon.chung/Desktop/repos/serverless_dash_repo/serverless_dash/terraform/service_account.json"
+] = "/Users/sungwon.chung/Documents/repos/serverless-dash-webapp/terraform/service_account.json"
 PROJECT = os.environ["GCLOUD_PROJECT"] = "iconic-range-220603"
 BIGTABLE_CLUSTER = os.environ["BIGTABLE_CLUSTER"] = "iot-stream-database"
 TABLE_NAME_FORMAT = "hello-bigtable-system-tests-{}"
