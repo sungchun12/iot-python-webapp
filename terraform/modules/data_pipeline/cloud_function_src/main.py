@@ -19,15 +19,15 @@ from google.cloud.bigtable import row_filters
 
 # [END bigtable_imports]
 
-def handler(event, context):
-    """Entry point function that orchestrates the data pipeline from start to finish.
-    Triggered from a message on a Cloud Pub/Sub topic.
-    Args:
-        event (dict): Event payload.
-        context (google.cloud.functions.Context): Metadata for the event.
-    """
-        pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
-        print(pubsub_message)  # can be used to configure dynamic pipeline
+# def handler(event, context):
+#     """Entry point function that orchestrates the data pipeline from start to finish.
+#     Triggered from a message on a Cloud Pub/Sub topic.
+#     Args:
+#         event (dict): Event payload.
+#         context (google.cloud.functions.Context): Metadata for the event.
+#     """
+#         pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
+#         print(pubsub_message)  # can be used to configure dynamic pipeline
 
 def main(project_id, instance_id, table_id):
     # [START bigtable_connect]
