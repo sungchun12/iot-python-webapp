@@ -11,3 +11,5 @@ How to deploy app once terraform is launched
 End to end testing
 
 Inspiration: https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana
+
+test comments
