@@ -29,6 +29,7 @@ from google.cloud.bigtable import row_filters
 #         pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
 #         print(pubsub_message)  # can be used to configure dynamic pipeline
 
+
 def main(project_id, instance_id, table_id):
     # [START bigtable_connect]
     # The client must be created with admin=True because it will create a
