@@ -8,7 +8,7 @@
 # These variables are expected to be passed in by the operator
 # You are expected to provide your own service account JSON file in the root module directory
 # ---------------------------------------------------------------------------------------------------------------------
-provider "google" {
+provider "google-beta" {
   credentials = "service_account.json"
   project     = var.project
   region      = var.location
@@ -55,3 +55,13 @@ module "iot_compute" {
   version_label         = var.version_label
 }
 
+# module "app_hosting" {
+#   source = "./modules/app_hosting"
+
+#   #pass the root module variables to child module
+#   project               = var.project
+#   location              = var.location
+#   zone                  = var.zone
+#   service_account_email = var.service_account_email
+#   version_label         = var.version_label
+# }
