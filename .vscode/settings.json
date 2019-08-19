@@ -1,11 +1,11 @@
 {
   "python.pythonPath": "/anaconda3/bin/python",
-  // "python.testing.pyTestArgs": ["terraform"],
+  // "python.testing.pytestArgs": ["terraform"],
   "python.testing.unittestEnabled": false,
   "python.testing.nosetestsEnabled": false,
   "files.eol": "\n",
-  "python.testing.pyTestEnabled": true,
-  "python.testing.pyTestArgs": [
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
     "./terraform/modules/data_pipeline/cloud_function_src"
   ]
 }
