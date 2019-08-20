@@ -1,0 +1,5 @@
+google-cloud-bigtable
+google-cloud-core
+pytest==4.02
+pytest-cov==2.6.0
+pytest-remotedata==0.3.1
