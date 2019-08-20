@@ -7,9 +7,17 @@
 # SETUP PROVIDER DEFAULTS
 # These variables are expected to be passed in by the operator
 # You are expected to provide your own service account JSON file in the root module directory
+# Note: The "google-beta" provider needs to be setup in ADDITION to the "google" provider
 # ---------------------------------------------------------------------------------------------------------------------
+provider "google" {
+  credentials = "${file("service_account.json")}"
+  project     = var.project
+  region      = var.location
+  zone        = var.zone
+}
+
 provider "google-beta" {
-  credentials = "service_account.json"
+  credentials = "${file("service_account.json")}"
   project     = var.project
   region      = var.location
   zone        = var.zone
@@ -55,13 +63,13 @@ module "iot_compute" {
   version_label         = var.version_label
 }
 
-# module "app_hosting" {
-#   source = "./modules/app_hosting"
+module "app_hosting" {
+  source = "./modules/app_hosting"
 
-#   #pass the root module variables to child module
-#   project               = var.project
-#   location              = var.location
-#   zone                  = var.zone
-#   service_account_email = var.service_account_email
-#   version_label         = var.version_label
-# }
+  #pass the root module variables to child module
+  project               = var.project
+  location              = var.location
+  zone                  = var.zone
+  service_account_email = var.service_account_email
+  version_label         = var.version_label
+}

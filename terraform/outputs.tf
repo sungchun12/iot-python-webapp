@@ -1,4 +1,7 @@
 # access store module output values
+output "cloud-run-metadata" {
+  value = module.app_hosting.cloud-run-metadata
+}
 output "data-store-metadata" {
   value = module.storage.data-store-metadata
 }

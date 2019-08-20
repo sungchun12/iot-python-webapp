@@ -9,17 +9,21 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "google_cloud_run_service" "default" {
-  name     = "tftest-cloudrun"
-  location = var.location
   provider = "google-beta"
+  name     = var.cloud_run_name
+  location = var.location
 
   metadata {
     namespace = var.project
+    labels = {
+      version = var.version_label
+
+    }
   }
 
   spec {
     containers {
-      image = "gcr.io/cloudrun/hello"
+      image = var.container_image
     }
   }
 }
