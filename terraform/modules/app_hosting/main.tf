@@ -8,7 +8,7 @@
 # CREATE THE CLOUD RUN SERVICE
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
   provider = "google-beta"
   name     = var.cloud_run_name
   location = var.location
@@ -32,7 +32,7 @@ resource "google_cloud_run_service" "default" {
 # Due to Terraform and API limitations this is best accessed through a local variable
 locals {
   cloud_run_status = {
-    for cond in google_cloud_run_service.default.status[0].conditions :
+    for cond in google_cloud_run_service.tf-dash-cloud-run-demo.status[0].conditions:
     cond.type => cond.status
   }
 }
