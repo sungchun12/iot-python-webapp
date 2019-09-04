@@ -31,9 +31,11 @@ def handler(event, context):
     """
     pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
     print(pubsub_message)  # can be used to configure dynamic pipeline
+    input_bigtable_records = bigtable_input_generator()
+    input_bigtable_records.generate_records()
 
 
-class bigtable_input(object):
+class bigtable_input_generator(object):
     def __init__(self):
         self.project_id = os.environ["GCLOUD_PROJECT"]
         self.instance_id = os.environ["BIGTABLE_CLUSTER"]
@@ -41,6 +43,11 @@ class bigtable_input(object):
         self.row_filter = row_filters.CellsColumnLimitFilter(os.environ["ROW_FILTER"])
         self.client = bigtable.Client(project=self.project_id, admin=True)
         self.instance = self.client.instance(self.instance_id)
+
+    def generate_records(self):
+        table, column_family_id = self.create_table()
+        row_key = self.write_rows(table, column_family_id)
+        self.get_with_filter(table, row_key, column_family_id)
 
     def create_table(self):
         print("Creating the {} table.".format(self.table_id))
