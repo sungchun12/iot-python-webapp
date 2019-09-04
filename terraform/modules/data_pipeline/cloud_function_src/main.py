@@ -12,14 +12,11 @@ import argparse
 import base64
 import os
 import datetime
-
-# [START bigtable_imports]
+from ast import literal_eval
 
 from google.cloud import bigtable
 from google.cloud.bigtable import column_family
 from google.cloud.bigtable import row_filters
-
-# [END bigtable_imports]
 
 
 def handler(event, context):
@@ -29,25 +26,29 @@ def handler(event, context):
         event (dict): Event payload.
         context (google.cloud.functions.Context): Metadata for the event.
     """
-    pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
-    print(pubsub_message)  # can be used to configure dynamic pipeline
-    input_bigtable_records = bigtable_input_generator()
+    device_data = base64.b64decode(event["data"]).decode("utf-8")
+    print(device_data)
+    input_bigtable_records = bigtable_input_generator(device_data)
     input_bigtable_records.generate_records()
 
 
-class bigtable_input_generator(object):
-    def __init__(self):
-        self.project_id = os.environ["GCLOUD_PROJECT"]
+class bigtable_input_generator:
+    def __init__(self, device_data):
+        self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
         self.instance_id = os.environ["BIGTABLE_CLUSTER"]
         self.table_id = os.environ["TABLE_NAME"]
-        self.row_filter = row_filters.CellsColumnLimitFilter(os.environ["ROW_FILTER"])
+        self.row_filter = row_filters.CellsColumnLimitFilter(
+            (int(os.environ["ROW_FILTER"]))
+        )
         self.client = bigtable.Client(project=self.project_id, admin=True)
         self.instance = self.client.instance(self.instance_id)
+        self.device_data = literal_eval(device_data[1:-1])
 
     def generate_records(self):
+        """Main interface to input records into bigtable"""
         table, column_family_id = self.create_table()
-        row_key = self.write_rows(table, column_family_id)
-        self.get_with_filter(table, row_key, column_family_id)
+        row_key, column = self.write_rows(table, column_family_id)
+        self.get_with_filter(table, row_key, column_family_id, column)
 
     def create_table(self):
         print("Creating the {} table.".format(self.table_id))
@@ -55,8 +56,7 @@ class bigtable_input_generator(object):
 
         print("Creating column family cf1 with Max Version GC rule...")
         # Create a column family with GC policy : most recent N versions
-        # Define the GC policy to retain only the most recent 2 versions
-        max_versions_rule = column_family.MaxVersionsGCRule(2)
+        max_versions_rule = column_family.MaxVersionsGCRule(self.row_filter)
         column_family_id = "device-family"
         column_families = {column_family_id: max_versions_rule}
         if not table.exists():
@@ -67,28 +67,23 @@ class bigtable_input_generator(object):
 
     def write_rows(self, table, column_family_id):
         print("Writing a row of device data to the table.")
-        device_data_ex = {
-            "device": "temp-sensor-14152",
-            "timestamp": 1561047487,
-            "temperature": 25.875,
-        }
         rows = []
         column = "device-temp".encode()
-        row_key = "device#{0}#{1}".format(
-            device_data_ex["device"], device_data_ex["timestamp"]
+        row_key = "device#{}#{}".format(
+            self.device_data["device"], self.device_data["timestamp"]
         ).encode()
         row = table.row(row_key)
         # convert to string as bigtable can't accept float types
         # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
-        value = str(device_data_ex["temperature"])
+        value = str(self.device_data["temperature"])
         row.set_cell(
             column_family_id, column, value, timestamp=datetime.datetime.utcnow()
         )
         rows.append(row)
         table.mutate_rows(rows)
-        return row_key
+        return row_key, column
 
-    def get_with_filter(self, table, row_key, column_family_id):
+    def get_with_filter(self, table, row_key, column_family_id, column):
         print("Getting a single row of device data by row key.")
         key = row_key
 
