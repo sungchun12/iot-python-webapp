@@ -1,11 +1,13 @@
 import os
 import random
 
-from terraform.modules.data_pipeline.cloud_function_src.main import main
+# from terraform.modules.data_pipeline.cloud_function_src.main import handler
+
+from main import handler
 
 os.environ[
     "GOOGLE_APPLICATION_CREDENTIALS"
-] = "/Users/sungwon.chung/Documents/repos/serverless-dash-webapp/terraform/service_account.json"
+] = "/Users/sungwon.chung/Desktop/repos/serverless-dash-webapp/terraform/service_account.json"
 PROJECT = os.environ["GCLOUD_PROJECT"] = "iconic-range-220603"
 BIGTABLE_CLUSTER = os.environ["BIGTABLE_CLUSTER"] = "iot-stream-database"
 TABLE_NAME_FORMAT = "hello-bigtable-system-tests-{}"
@@ -15,7 +17,7 @@ TABLE_NAME_RANGE = 10000
 def test_main(capsys):
     table_name = TABLE_NAME_FORMAT.format(random.randrange(TABLE_NAME_RANGE))
 
-    main(PROJECT, BIGTABLE_CLUSTER, table_name)
+    bigtable_input(PROJECT, BIGTABLE_CLUSTER, table_name)
 
     out, _ = capsys.readouterr()
     assert "Creating the {} table.".format(table_name) in out
