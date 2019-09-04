@@ -65,9 +65,9 @@ def main(project_id, instance_id, table_id):
     }
     rows = []
     column = "device-temp".encode()
-    row_key = (
-        f"device#{device_data_ex['device']}#{device_data_ex['timestamp']}".encode()
-    )
+    row_key = "device#{0}#{1}".format(
+        device_data_ex["device"], device_data_ex["timestamp"]
+    ).encode()
     row = table.row(row_key)
     # convert to string as bigtable can't accept float types
     # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
