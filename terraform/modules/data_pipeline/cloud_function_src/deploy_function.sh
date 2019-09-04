@@ -1,7 +1,8 @@
 gcloud functions deploy cbt_function \
+--set-env-vars GCLOUD_PROJECT_NAME=iconic-range-220603,BIGTABLE_CLUSTER=iot-stream-database,TABLE_NAME=iot-data-stream,ROW_FILTER=2 \
 --entry-point handler \
 --runtime python37 \
---trigger-topic demo_topic
+--trigger-topic data-pipeline-topic
 
 
 export GOOGLE_APPLICATION_CREDENTIALS="/Users/sungwon.chung/Desktop/repos/serverless-dash-webapp/terraform/service_account.json"

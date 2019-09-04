@@ -34,21 +34,34 @@ def handler(event, context):
 
 class bigtable_input_generator:
     def __init__(self, device_data):
+        # pass through environment vars
         self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
         self.instance_id = os.environ["BIGTABLE_CLUSTER"]
         self.table_id = os.environ["TABLE_NAME"]
+
+        # setup table config
+        self.client = bigtable.Client(project=self.project_id, admin=True)
+        self.instance = self.client.instance(self.instance_id)
+        self.column = "device-temp".encode()
+        self.column_family_id = "device-family"
+        self.table = self.instance.table(self.table_id)
         self.row_filter = row_filters.CellsColumnLimitFilter(
             (int(os.environ["ROW_FILTER"]))
         )
-        self.client = bigtable.Client(project=self.project_id, admin=True)
-        self.instance = self.client.instance(self.instance_id)
-        self.device_data = literal_eval(device_data[1:-1])
+
+        # setup row value config
+        self.device_data = literal_eval(device_data[1:-1])  # remove extra single quotes
+        self.row_key = "device#{}#{}".format(
+            self.device_data["device"], self.device_data["timestamp"]
+        ).encode()
+        self.value = str(self.device_data["temperature"])
+
 
     def generate_records(self):
         """Main interface to input records into bigtable"""
-        table, column_family_id = self.create_table()
-        row_key, column = self.write_rows(table, column_family_id)
-        self.get_with_filter(table, row_key, column_family_id, column)
+        self.create_table()
+        self.write_rows()
+        self.get_with_filter()
 
     def create_table(self):
         print("Creating the {} table.".format(self.table_id))
@@ -63,30 +76,26 @@ class bigtable_input_generator:
             table.create(column_families=column_families)
         else:
             print("Table {} already exists.".format(self.table_id))
-        return table, column_family_id
 
-    def write_rows(self, table, column_family_id):
+    def write_rows(self):
         print("Writing a row of device data to the table.")
         rows = []
-        column = "device-temp".encode()
-        row_key = "device#{}#{}".format(
-            self.device_data["device"], self.device_data["timestamp"]
-        ).encode()
-        row = table.row(row_key)
+        row = self.table.row(self.row_key)
         # convert to string as bigtable can't accept float types
         # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
-        value = str(self.device_data["temperature"])
         row.set_cell(
-            column_family_id, column, value, timestamp=datetime.datetime.utcnow()
+            self.column_family_id,
+            self.column,
+            self.value,
+            timestamp=datetime.datetime.utcnow(),
         )
         rows.append(row)
-        table.mutate_rows(rows)
-        return row_key, column
+        self.table.mutate_rows(rows)
 
-    def get_with_filter(self, table, row_key, column_family_id, column):
+    def get_with_filter(self):
         print("Getting a single row of device data by row key.")
-        key = row_key
+        key = self.row_key
 
-        row = table.read_row(key, self.row_filter)
-        cell = row.cells[column_family_id][column][0]
+        row = self.table.read_row(key, self.row_filter)
+        cell = row.cells[self.column_family_id][self.column][0]
         print(cell.value.decode("utf-8"))
