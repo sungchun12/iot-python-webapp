@@ -166,7 +166,9 @@ resource "google_cloudfunctions_function" "big-table-function" {
   }
 
   environment_variables = {
-    bigtable_instance_id = google_bigtable_instance.iot-stream-database.name
-    bigtable_table_id    = google_bigtable_table.iot-stream-table.name
+    GCLOUD_PROJECT_NAME = var.project
+    BIGTABLE_CLUSTER    = google_bigtable_instance.iot-stream-database.name
+    TABLE_NAME          = google_bigtable_table.iot-stream-table.name
+    ROW_FILTER          = var.row_filter
   }
 }

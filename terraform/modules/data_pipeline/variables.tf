@@ -226,3 +226,9 @@ variable "cbt_function_entry_point" {
   type        = string
   default     = "main"
 }
+
+variable "row_filter" {
+  description = "The number of results to retain when querying BigTable"
+  type        = number
+  default     = 2
+}
