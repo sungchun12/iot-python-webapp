@@ -170,13 +170,13 @@ variable "source_code_bucket_name" {
 variable "big_table_function_code_name" {
   description = "Create a zip file object within the source code bucket"
   type        = string
-  default     = "big-table-function-code.zip"
+  default     = "cbt-function.zip"
 }
 
 variable "source_path" {
   description = "Path to files with function scripts"
   type        = string
-  default     = "./cloud_function_src"
+  default     = "./modules/data_pipeline/cloud_function_src/cbt_function.zip"
 }
 
 variable "cbt_function_name" {
@@ -188,7 +188,7 @@ variable "cbt_function_name" {
 variable "cbt_function_desc" {
   description = "Describes what the cloud function does"
   type        = string
-  default     = "Read data from a pubsub topic and write it to a bigtable instance"
+  default     = "Read device data from a pubsub topic and write it to a bigtable instance"
 }
 
 variable "cbt_function_runtime" {
@@ -224,5 +224,11 @@ variable "cbt_function_timeout" {
 variable "cbt_function_entry_point" {
   description = "The main function within the code that makes it work"
   type        = string
-  default     = "main"
+  default     = "handler"
+}
+
+variable "row_filter" {
+  description = "The number of results to retain when querying BigTable"
+  type        = number
+  default     = 2
 }

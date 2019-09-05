@@ -1,118 +1,96 @@
 #!/usr/bin/env python
 
 """Demonstrates how to connect to Cloud Bigtable and run some basic operations.
-Prerequisites:
-- Create a Cloud Bigtable cluster.
-  https://cloud.google.com/bigtable/docs/creating-cluster
-- Set your Google Application Default Credentials.
-  https://developers.google.com/identity/protocols/application-default-credentials
+-Ingests IOT telemetry data and launches within Terraform deployment
 """
 
 import argparse
-
-# [START bigtable_imports]
+import base64
+import os
 import datetime
+from ast import literal_eval
 
 from google.cloud import bigtable
 from google.cloud.bigtable import column_family
 from google.cloud.bigtable import row_filters
 
-# [END bigtable_imports]
 
-# def handler(event, context):
-#     """Entry point function that orchestrates the data pipeline from start to finish.
-#     Triggered from a message on a Cloud Pub/Sub topic.
-#     Args:
-#         event (dict): Event payload.
-#         context (google.cloud.functions.Context): Metadata for the event.
-#     """
-#         pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
-#         print(pubsub_message)  # can be used to configure dynamic pipeline
+def handler(event, context):
+    """Entry point function that orchestrates the data movement.
+    Triggered from a message on a Cloud Pub/Sub topic.
+    Args:
+        event (dict): Event payload.
+        context (google.cloud.functions.Context): Metadata for the event.
+    """
+    device_data = base64.b64decode(event["data"]).decode("utf-8")
+    print(device_data)
+    input_bigtable_records = bigtable_input_generator(device_data)
+    input_bigtable_records.generate_records()
 
 
-def main(project_id, instance_id, table_id):
-    # [START bigtable_connect]
-    # The client must be created with admin=True because it will create a
-    # table.
+class bigtable_input_generator:
+    def __init__(self, device_data):
+        # pass through environment vars
+        self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
+        self.instance_id = os.environ["BIGTABLE_CLUSTER"]
+        self.table_id = os.environ["TABLE_NAME"]
+        self.row_filter_count = int(os.environ["ROW_FILTER"])
 
-    client = bigtable.Client(project=project_id, admin=True)
-    instance = client.instance(instance_id)
+        # setup table config
+        self.client = bigtable.Client(project=self.project_id, admin=True)
+        self.instance = self.client.instance(self.instance_id)
+        self.column = "device-temp".encode()
+        self.column_family_id = "device-family"
+        self.row_filter = row_filters.CellsColumnLimitFilter((self.row_filter_count))
 
-    # [END bigtable_connect]
+        # setup row value config
+        self.device_data = literal_eval(device_data)
+        self.row_key = "device#{}#{}".format(
+            self.device_data["device"], self.device_data["timestamp"]
+        ).encode()
+        # convert to string as bigtable can't accept float types
+        # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
+        self.value = str(self.device_data["temperature"])
 
-    # [START bigtable_create_table]
-    print("Creating the {} table.".format(table_id))
-    table = instance.table(table_id)
+    def generate_records(self):
+        """Main interface to write records into bigtable"""
+        table = self.create_table()
+        self.write_rows(table)
+        self.get_with_filter(table)
 
-    print("Creating column family cf1 with Max Version GC rule...")
-    # Create a column family with GC policy : most recent N versions
-    # Define the GC policy to retain only the most recent 2 versions
-    max_versions_rule = column_family.MaxVersionsGCRule(2)
-    column_family_id = "device-family"
-    column_families = {column_family_id: max_versions_rule}
-    if not table.exists():
-        table.create(column_families=column_families)
-    else:
-        print("Table {} already exists.".format(table_id))
-    # [END bigtable_create_table]
+    def create_table(self):
+        print("Creating the {} table.".format(self.table_id))
+        table = self.instance.table(self.table_id)
+        print(
+            "Creating column family cf1 with Max Version GC rule: most recent {} versions".format(
+                self.row_filter_count
+            )
+        )
+        max_versions_rule = column_family.MaxVersionsGCRule(self.row_filter_count)
+        column_families = {self.column_family_id: max_versions_rule}
+        if not table.exists():
+            table.create(column_families=column_families)
+        else:
+            print("Table {} already exists.".format(self.table_id))
+        return table
 
-    # [START bigtable_write_rows]
-    print("Writing a row of device data to the table.")
-    device_data_ex = {
-        "device": "temp-sensor-14152",
-        "timestamp": 1561047487,
-        "temperature": 25.875,
-    }
-    rows = []
-    column = "device-temp".encode()
-    row_key = (
-        f"device#{device_data_ex['device']}#{device_data_ex['timestamp']}".encode()
-    )
-    row = table.row(row_key)
-    # convert to string as bigtable can't accept float types
-    # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
-    value = str(device_data_ex["temperature"])
-    row.set_cell(column_family_id, column, value, timestamp=datetime.datetime.utcnow())
-    rows.append(row)
-    table.mutate_rows(rows)
-    # [END bigtable_write_rows]
+    def write_rows(self, table):
+        print("Writing a row of device data to the table.")
+        rows = []
+        row = table.row(self.row_key)
+        row.set_cell(
+            self.column_family_id,
+            self.column,
+            self.value,
+            timestamp=datetime.datetime.utcnow(),
+        )
+        rows.append(row)
+        table.mutate_rows(rows)
 
-    # [START bigtable_create_filter]
-    # Create a filter to only retrieve the most recent version of the cell
-    # for each column accross entire row.
-    row_filter = row_filters.CellsColumnLimitFilter(2)
-    # [END bigtable_create_filter]
+    def get_with_filter(self, table):
+        print("Getting a single row of device data by row key.")
+        key = self.row_key
 
-    # [START bigtable_get_with_filter]
-    print("Getting a single row of device data by row key.")
-    key = row_key
-
-    row = table.read_row(key, row_filter)
-    cell = row.cells[column_family_id][column][0]
-    print(cell.value.decode("utf-8"))
-    # [END bigtable_get_with_filter]
-
-    # [START bigtable_scan_with_filter]
-    print("Scanning for all device data:")
-    partial_rows = table.read_rows(filter_=row_filter)
-
-    for row in partial_rows:
-        cell = row.cells[column_family_id][column][0]
+        row = table.read_row(key, self.row_filter)
+        cell = row.cells[self.column_family_id][self.column][0]
         print(cell.value.decode("utf-8"))
-    # [END bigtable_scan_with_filter]
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
-    parser.add_argument("project_id", help="Your Cloud Platform project ID.")
-    parser.add_argument(
-        "instance_id", help="ID of the Cloud Bigtable instance to connect to."
-    )
-    parser.add_argument(
-        "--table", help="Table to create and destroy.", default="raw-device-data"
-    )
-
-    args = parser.parse_args()
-    main(args.project_id, args.instance_id, args.table)
