@@ -48,9 +48,7 @@ class bigtable_input_generator:
         self.row_filter = row_filters.CellsColumnLimitFilter((self.row_filter_count))
 
         # setup row value config
-        self.device_data = literal_eval(
-            device_data[1:-1]
-        )  # TODO: may not need this as the single quotes only come from the print statement remove extra single quotes
+        self.device_data = literal_eval(device_data)
         self.row_key = "device#{}#{}".format(
             self.device_data["device"], self.device_data["timestamp"]
         ).encode()
