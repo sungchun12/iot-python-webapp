@@ -38,6 +38,7 @@ class bigtable_input_generator:
         self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
         self.instance_id = os.environ["BIGTABLE_CLUSTER"]
         self.table_id = os.environ["TABLE_NAME"]
+        self.row_filter_count = int(os.environ["ROW_FILTER"])
 
         # setup table config
         self.client = bigtable.Client(project=self.project_id, admin=True)
@@ -45,12 +46,12 @@ class bigtable_input_generator:
         self.column = "device-temp".encode()
         self.column_family_id = "device-family"
         self.table = self.instance.table(self.table_id)
-        self.row_filter = row_filters.CellsColumnLimitFilter(
-            (int(os.environ["ROW_FILTER"]))
-        )
+        self.row_filter = row_filters.CellsColumnLimitFilter((self.row_filter_count))
 
         # setup row value config
-        self.device_data = literal_eval(device_data[1:-1])  # remove extra single quotes
+        self.device_data = literal_eval(
+            device_data[1:-1]
+        )  # TODO: may not need this as the single quotes only come from the print statement remove extra single quotes
         self.row_key = "device#{}#{}".format(
             self.device_data["device"], self.device_data["timestamp"]
         ).encode()
@@ -64,14 +65,16 @@ class bigtable_input_generator:
 
     def create_table(self):
         print("Creating the {} table.".format(self.table_id))
-        table = self.instance.table(self.table_id)
-
-        print("Creating column family cf1 with Max Version GC rule: most recent {} versions").format(self.row_filter)
-        max_versions_rule = column_family.MaxVersionsGCRule(self.row_filter)
-        column_family_id = "device-family"
-        column_families = {column_family_id: max_versions_rule}
-        if not table.exists():
-            table.create(column_families=column_families)
+    
+        print(
+            "Creating column family cf1 with Max Version GC rule: most recent {} versions".format(
+                self.row_filter_count
+            )
+        )
+        max_versions_rule = column_family.MaxVersionsGCRule(self.row_filter_count)
+        column_families = {self.column_family_id: max_versions_rule}
+        if not self.table.exists():
+            self.table.create(column_families=column_families)
         else:
             print("Table {} already exists.".format(self.table_id))
 
