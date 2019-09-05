@@ -45,7 +45,6 @@ class bigtable_input_generator:
         self.instance = self.client.instance(self.instance_id)
         self.column = "device-temp".encode()
         self.column_family_id = "device-family"
-        self.table = self.instance.table(self.table_id)
         self.row_filter = row_filters.CellsColumnLimitFilter((self.row_filter_count))
 
         # setup row value config
@@ -59,13 +58,13 @@ class bigtable_input_generator:
 
     def generate_records(self):
         """Main interface to input records into bigtable"""
-        self.create_table()
-        self.write_rows()
-        self.get_with_filter()
+        table = self.create_table()
+        self.write_rows(table)
+        self.get_with_filter(table)
 
     def create_table(self):
         print("Creating the {} table.".format(self.table_id))
-    
+        table = self.instance.table(self.table_id)
         print(
             "Creating column family cf1 with Max Version GC rule: most recent {} versions".format(
                 self.row_filter_count
@@ -73,15 +72,16 @@ class bigtable_input_generator:
         )
         max_versions_rule = column_family.MaxVersionsGCRule(self.row_filter_count)
         column_families = {self.column_family_id: max_versions_rule}
-        if not self.table.exists():
-            self.table.create(column_families=column_families)
+        if not table.exists():
+            table.create(column_families=column_families)
         else:
             print("Table {} already exists.".format(self.table_id))
+        return table
 
-    def write_rows(self):
+    def write_rows(self, table):
         print("Writing a row of device data to the table.")
         rows = []
-        row = self.table.row(self.row_key)
+        row = table.row(self.row_key)
         # convert to string as bigtable can't accept float types
         # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
         row.set_cell(
@@ -91,12 +91,12 @@ class bigtable_input_generator:
             timestamp=datetime.datetime.utcnow(),
         )
         rows.append(row)
-        self.table.mutate_rows(rows)
+        table.mutate_rows(rows)
 
-    def get_with_filter(self):
+    def get_with_filter(self, table):
         print("Getting a single row of device data by row key.")
         key = self.row_key
 
-        row = self.table.read_row(key, self.row_filter)
+        row = table.read_row(key, self.row_filter)
         cell = row.cells[self.column_family_id][self.column][0]
         print(cell.value.decode("utf-8"))
