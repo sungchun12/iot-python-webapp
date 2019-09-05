@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 
 """Demonstrates how to connect to Cloud Bigtable and run some basic operations.
-Prerequisites:
-- Create a Cloud Bigtable cluster.
-  https://cloud.google.com/bigtable/docs/creating-cluster
-- Set your Google Application Default Credentials.
-  https://developers.google.com/identity/protocols/application-default-credentials
+-Ingests IOT telemetry data and launches within Terraform deployment
 """
 
 import argparse
@@ -20,7 +16,7 @@ from google.cloud.bigtable import row_filters
 
 
 def handler(event, context):
-    """Entry point function that orchestrates the data pipeline from start to finish.
+    """Entry point function that orchestrates the data movement.
     Triggered from a message on a Cloud Pub/Sub topic.
     Args:
         event (dict): Event payload.
@@ -52,10 +48,12 @@ class bigtable_input_generator:
         self.row_key = "device#{}#{}".format(
             self.device_data["device"], self.device_data["timestamp"]
         ).encode()
+        # convert to string as bigtable can't accept float types
+        # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
         self.value = str(self.device_data["temperature"])
 
     def generate_records(self):
-        """Main interface to input records into bigtable"""
+        """Main interface to write records into bigtable"""
         table = self.create_table()
         self.write_rows(table)
         self.get_with_filter(table)
@@ -80,8 +78,6 @@ class bigtable_input_generator:
         print("Writing a row of device data to the table.")
         rows = []
         row = table.row(self.row_key)
-        # convert to string as bigtable can't accept float types
-        # https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Destinations/Bigtable.html
         row.set_cell(
             self.column_family_id,
             self.column,
