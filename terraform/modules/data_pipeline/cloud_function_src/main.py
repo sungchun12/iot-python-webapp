@@ -56,7 +56,6 @@ class bigtable_input_generator:
         ).encode()
         self.value = str(self.device_data["temperature"])
 
-
     def generate_records(self):
         """Main interface to input records into bigtable"""
         self.create_table()
@@ -67,8 +66,7 @@ class bigtable_input_generator:
         print("Creating the {} table.".format(self.table_id))
         table = self.instance.table(self.table_id)
 
-        print("Creating column family cf1 with Max Version GC rule...")
-        # Create a column family with GC policy : most recent N versions
+        print("Creating column family cf1 with Max Version GC rule: most recent {} versions").format(self.row_filter)
         max_versions_rule = column_family.MaxVersionsGCRule(self.row_filter)
         column_family_id = "device-family"
         column_families = {column_family_id: max_versions_rule}
