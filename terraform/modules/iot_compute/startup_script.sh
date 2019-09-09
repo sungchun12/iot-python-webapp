@@ -18,7 +18,7 @@ sudo pip install pyjwt paho-mqtt cryptography
 sudo mkdir $iot_directory
 
 #add data to analyze
-cd $iot_directory; git clone https://github.com/GoogleCloudPlatform/training-data-analyst.git
+cd $iot_directory; git clone https://github.com/sungchun12/training-data-analyst.git
 
 #create RSA cryptographic keypair
 cd $demo_directory
