@@ -124,13 +124,7 @@ variable "bigtable_table_name" {
 variable "bigtable_column_family" {
   description = "BigTable column families"
   type        = string
-  default     = "device-temperature"
-}
-
-variable "bigtable_table_split_keys" {
-  description = "define table partition keys"
-  type        = list
-  default     = ["device", "timestamp"]
+  default     = "device-family"
 }
 
 # -----------------------------------------------------------------------
