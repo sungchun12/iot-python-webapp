@@ -106,7 +106,6 @@ resource "google_bigtable_table" "iot-stream-table" {
   column_family {
     family = var.bigtable_column_family
   }
-  split_keys = var.bigtable_table_split_keys
 }
 
 
