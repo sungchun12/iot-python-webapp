@@ -210,7 +210,7 @@ variable "cbt_function_failure_policy" {
 }
 
 variable "cbt_function_timeout" {
-  description = "How long should the function run before erroring out in seconds"
+  description = "How long the function should run before erroring out in seconds"
   type        = number
   default     = 60
 }
