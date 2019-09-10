@@ -14,6 +14,8 @@ from google.cloud import bigtable
 from google.cloud.bigtable import column_family
 from google.cloud.bigtable import row_filters
 
+# example data dictionary: {'device': 'temp-sensor-18963', 'timestamp': 1568066927, 'temperature': 28.095405908242377}
+
 
 def handler(event, context):
     """Entry point function that orchestrates the data movement.
@@ -85,12 +87,12 @@ class bigtable_input_generator:
             timestamp=datetime.datetime.utcnow(),
         )
         rows.append(row)
-        table.mutate_rows(rows)
+        table_updated = table.mutate_rows(rows)
+        print(table_updated)
 
     def get_with_filter(self, table):
         print("Getting a single row of device data by row key.")
         key = self.row_key
-
         row = table.read_row(key, self.row_filter)
         cell = row.cells[self.column_family_id][self.column][0]
         print(cell.value.decode("utf-8"))
