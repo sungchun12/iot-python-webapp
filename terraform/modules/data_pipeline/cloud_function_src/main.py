@@ -60,6 +60,7 @@ class bigtable_input_generator:
         self.write_rows(table)
         self.get_with_filter(table)
 
+    # TODO: have this overwrite table from terraform if it does not match with cloud function config?
     def create_table(self):
         print("Creating the {} table.".format(self.table_id))
         table = self.instance.table(self.table_id)
