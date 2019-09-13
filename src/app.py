@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
-
+import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -13,9 +13,9 @@ from pyorbital.orbital import Orbital
 from google.cloud import bigtable
 
 # import class from cloud function src
-from terraform.modules.data_pipeline.cloud_function_src.main import (
-    bigtable_input_generator,
-)
+# from terraform.modules.data_pipeline.cloud_function_src.main import (
+#     bigtable_input_generator,
+# )
 
 # TODO: call on environment vars from the cloud function and pass through bigtable_input_generator
 # TODO: call on core iot to list latest 3 registered devices
