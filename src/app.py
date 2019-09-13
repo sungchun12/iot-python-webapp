@@ -80,7 +80,7 @@ def update_graph_live(n):
 
     # Create the graph with subplots
     # TODO read through the make_subplots method and see if I can overlap plots easily
-    fig = plotly.tools.make_subplots(rows=2, cols=1, vertical_spacing=0.2)
+    fig = plotly.subplots.make_subplots(rows=2, cols=1, vertical_spacing=0.2)
     fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
     fig["layout"]["legend"] = {"x": 0, "y": 1, "xanchor": "left"}
 
