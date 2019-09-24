@@ -3,3 +3,10 @@ dash-daq==0.1.0
 pandas==0.24.2
 numpy==1.16.5 
 pyorbital==1.5.0
+google-cloud-bigtable==1.0.0
+google-cloud-core==1.0.3
+google-api-core==1.14.2   
+google-api-python-client==1.7.11   
+google-auth==1.6.3    
+google-auth-httplib2==0.0.3    
+google-auth-oauthlib==0.4.0 
