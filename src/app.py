@@ -7,10 +7,14 @@ import dash_html_components as html
 import plotly
 from dash.dependencies import Input, Output
 
+
 # pip install pyorbital
 from pyorbital.orbital import Orbital
 
 from google.cloud import bigtable
+from google.oauth2 import service_account
+from googleapiclient import discovery
+from googleapiclient.errors import HttpError
 
 # import class from cloud function src
 # from terraform.modules.data_pipeline.cloud_function_src.main import (
@@ -19,6 +23,69 @@ from google.cloud import bigtable
 
 # TODO: call on environment vars from the cloud function and pass through bigtable_input_generator
 # TODO: call on core iot to list latest 3 registered devices
+class environment_metadata:
+    def __init__(self):
+        self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
+        self.instance_id = os.environ["BIGTABLE_CLUSTER"]
+        self.table_id = os.environ["TABLE_NAME"]
+        # TODO update these clients
+        self.bigtable_client = bigtable.Client(project=self.project_id, admin=True)
+        # self.iot_client = bigtable.Client(project=self.project_id, admin=True)
+        # self.cloud_func_client = bigtable.Client(project=self.project_id, admin=True)
+        self.service_account_json = "./terraform/service_account.json"
+
+    def get_metadata(self):
+        """Stores all gcp metadata needed to update live dashboard
+        """
+        iot_metadata = get_iot_metadata()
+        cloud_func_metadata = get_cloud_func_metadata()
+        return iot_metadata, cloud_func_metadata
+
+    def get_client(self):
+        """Returns an authorized API client by discovering the IoT API and creating
+        a service object using the service account credentials JSON."""
+        api_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+        api_version = "v1"
+        discovery_api = "https://cloudiot.googleapis.com/$discovery/rest"
+        service_name = "cloudiotcore"
+
+        credentials = service_account.Credentials.from_service_account_file(
+            self.service_account_json
+        )
+        scoped_credentials = credentials.with_scopes(api_scopes)
+
+        discovery_url = "{}?version={}".format(discovery_api, api_version)
+
+        return discovery.build(
+            service_name,
+            api_version,
+            discoveryServiceUrl=discovery_url,
+            credentials=scoped_credentials,
+        )
+
+    def get_iot_metadata(self):
+        print("Listing devices")
+        registry_path = "projects/{}/locations/{}/registries/{}".format(
+            self.project_id, self.cloud_region, self.registry_id
+        )
+        # self.iot_client = get_client(service_account_json)
+        devices = (
+            self.iot_client.projects()
+            .locations()
+            .registries()
+            .devices()
+            .list(parent=registry_path)
+            .execute()
+            .get("devices", [])
+        )
+        for device in devices:
+            print("Device: {} : {}".format(device.get("numId"), device.get("id")))
+        devices = [device for device in devices]
+        return devices
+
+    def get_cloud_func_metadata(self):
+        pass
+
 
 satellite = Orbital("TERRA")
 
