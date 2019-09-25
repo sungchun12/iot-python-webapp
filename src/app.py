@@ -33,6 +33,7 @@ class environment_metadata:
         self.instance_id = os.environ["BIGTABLE_CLUSTER"]
         self.table_id = os.environ["TABLE_NAME"]
         self.cloud_region = os.environ["CLOUD_REGION"]
+        self.iot_registry = os.environ["IOT_REGISTRY"]
         # TODO update these clients
         self.bigtable_client = bigtable.Client(project=self.project_id, admin=True)
         # self.iot_client = bigtable.Client(project=self.project_id, admin=True)
@@ -40,7 +41,6 @@ class environment_metadata:
         self.service_account_json = os.path.abspath(
             "../terraform/service_account.json"
         )  # TODO relative path may change
-        # self.iot_client = iot_manager.get_client(self.service_account_json)
 
     def get_metadata(self):
         """Stores all gcp metadata needed to update live dashboard
@@ -48,13 +48,19 @@ class environment_metadata:
         registries_list = iot_manager.list_registries(
             self.service_account_json, self.project_id, self.cloud_region
         )
-        registry_id = registries_list[0]
+        # ex: 'iot-registry'
+        registry_id = [
+            registry.get("name")
+            for registry in registries_list
+            if registry.get("id") == self.iot_registry
+        ][0]
+
+        # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'}, {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'}, {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
         devices_list = iot_manager.list_devices(
             self.service_account_json, self.project_id, self.cloud_region, registry_id
         )
-        in_scope_devices = devices_list[3:]
         cloud_func_metadata = self.get_cloud_func_metadata()
-        return iot_metadata, cloud_func_metadata
+        return devices_list, cloud_func_metadata
 
     def get_cloud_func_metadata(self):
         pass
