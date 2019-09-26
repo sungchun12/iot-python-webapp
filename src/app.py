@@ -46,7 +46,7 @@ class environment_metadata:
             "../terraform/service_account.json"
         )  # TODO relative path may change
 
-    def get_metadata(self):
+    def get_iot_metadata(self):
         """Stores all gcp metadata needed to update live dashboard
         """
         registries_list = iot_manager.list_registries(
@@ -63,11 +63,7 @@ class environment_metadata:
         devices_list = iot_manager.list_devices(
             self.service_account_json, self.project_id, self.cloud_region, registry_id
         )
-        cloud_func_metadata = self.get_cloud_func_metadata()
-        return devices_list, cloud_func_metadata
-
-    def get_cloud_func_metadata(self):
-        pass
+        return devices_list
 
 
 satellite = Orbital("TERRA")
