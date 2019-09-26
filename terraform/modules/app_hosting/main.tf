@@ -30,23 +30,23 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
       }
       env {
         name  = "BIGTABLE_CLUSTER"
-        value = var.project
+        value = var.bigtable_db_name
       }
       env {
         name  = "TABLE_NAME"
-        value = var.project
+        value = var.bigtable_table_name
       }
       env {
         name  = "CLOUD_REGION"
-        value = var.project
+        value = var.location
       }
       env {
         name  = "IOT_REGISTRY"
-        value = var.project
+        value = var.iot_registry_name
       }
       env {
         name  = "ROW_FILTER"
-        value = var.project
+        value = var.row_filter
       }
     }
   }
