@@ -27,9 +27,22 @@ variable "cloud_run_name" {
   default     = "tf-dash-cloud-run-demo"
 }
 
-
 variable "container_image" {
   description = "Docker container registry URL"
   type        = string
   default     = "gcr.io/iconic-range-220603/dash-cloudrun-demo"
+}
+
+# variables below are passed through the root module from other modules to maintain consistent deployment configs
+
+variable "iot_registry_name" {
+}
+
+variable "bigtable_db_name" {
+}
+
+variable "bigtable_table_name" {
+}
+
+variable "row_filter" {
 }

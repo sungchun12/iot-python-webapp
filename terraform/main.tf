@@ -72,4 +72,12 @@ module "app_hosting" {
   zone                  = var.zone
   service_account_email = var.service_account_email
   version_label         = var.version_label
+
+  #pass the iot module variables
+  iot_registry_name = "${module.data_pipeline.iot-registry-metadata}"
+
+  #pass the bigtable module variables
+  bigtable_db_name    = "${module.data_pipeline.data-pipeline-bigtable-metadata}"
+  bigtable_table_name = "${module.data_pipeline.data-pipeline-bigtable-table-metadata}"
+  row_filter          = "${module.data_pipeline.data-pipeline-bigtable-rowfilter-metadata}"
 }
