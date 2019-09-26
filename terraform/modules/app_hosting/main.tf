@@ -24,6 +24,30 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
   spec {
     containers {
       image = var.container_image
+      env {
+        name  = "GCLOUD_PROJECT_NAME"
+        value = var.project
+      }
+      env {
+        name  = "BIGTABLE_CLUSTER"
+        value = var.project
+      }
+      env {
+        name  = "TABLE_NAME"
+        value = var.project
+      }
+      env {
+        name  = "CLOUD_REGION"
+        value = var.project
+      }
+      env {
+        name  = "IOT_REGISTRY"
+        value = var.project
+      }
+      env {
+        name  = "ROW_FILTER"
+        value = var.project
+      }
     }
   }
 }
@@ -32,7 +56,7 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
 # Due to Terraform and API limitations this is best accessed through a local variable
 locals {
   cloud_run_status = {
-    for cond in google_cloud_run_service.tf-dash-cloud-run-demo.status[0].conditions:
+    for cond in google_cloud_run_service.tf-dash-cloud-run-demo.status[0].conditions :
     cond.type => cond.status
   }
 }
