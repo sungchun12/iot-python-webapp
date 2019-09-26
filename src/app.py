@@ -14,6 +14,8 @@ from dash.dependencies import Input, Output
 from pyorbital.orbital import Orbital
 
 from google.cloud import bigtable
+from google.cloud.bigtable import column_family
+from google.cloud.bigtable import row_filters
 
 # import iot sample utilties
 import iot_manager
@@ -29,11 +31,13 @@ import iot_manager
 
 class environment_metadata:
     def __init__(self):
+        #TODO: may have environment variables created in terraform and have it originate from cloud function terraform environment variables
         self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
         self.instance_id = os.environ["BIGTABLE_CLUSTER"]
         self.table_id = os.environ["TABLE_NAME"]
         self.cloud_region = os.environ["CLOUD_REGION"]
         self.iot_registry = os.environ["IOT_REGISTRY"]
+        self.row_filter_count = int(os.environ["ROW_FILTER"])
         # TODO update these clients
         self.bigtable_client = bigtable.Client(project=self.project_id, admin=True)
         # self.iot_client = bigtable.Client(project=self.project_id, admin=True)
