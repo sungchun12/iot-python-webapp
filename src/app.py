@@ -25,10 +25,6 @@ import iot_manager
 #     bigtable_input_generator,
 # )
 
-# TODO: call on environment vars from the cloud function and pass through bigtable_input_generator
-# TODO: call on core iot to list latest 3 registered devices
-
-
 class environment_metadata:
     def __init__(self):
         #TODO: may have environment variables created in terraform and have it originate from cloud function terraform environment variables
