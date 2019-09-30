@@ -28,6 +28,7 @@ steps:
 
     # gcloud command to deploy newly built image to cloud run
     # must set cloudbuild service account with Cloud Run Admin role
+    # TODO: this will change to deploying terraform scripts
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
@@ -41,5 +42,21 @@ steps:
         "us-central1",
         "--allow-unauthenticated",
       ]
+    # TODO: add in step like the below if terraform for cloud run service isn't udpated in time
+  # - name: "gcr.io/cloud-builders/gcloud"
+  #   args:
+  #     [
+  #       "beta",
+  #       "run",
+  #       "services",
+  #       "add-iam-policy-binding",
+  #       "tf-dash-cloud-run-demo",
+  #       "--member",
+  #       "allUsers",
+  #       "--region",
+  #       "us-central1",
+  #       "--role",
+  #       "roles/run.invoker",
+  #     ]
 
 images: ["gcr.io/$PROJECT_ID/dash-cloudrun-demo"] # save image to google container registry
