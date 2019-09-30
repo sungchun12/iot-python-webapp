@@ -4,6 +4,9 @@
 import datetime
 import os
 import dash
+
+# import sys
+
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly
@@ -21,6 +24,7 @@ from google.cloud.bigtable import row_filters
 import iot_manager
 
 # import class from cloud function src
+# sys.path.append("../")
 # from terraform.modules.data_pipeline.cloud_function_src.main import (
 #     bigtable_input_generator,
 # )
