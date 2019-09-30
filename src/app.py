@@ -25,19 +25,17 @@ import iot_manager
 #     bigtable_input_generator,
 # )
 
+
 class environment_metadata:
     def __init__(self):
-        #TODO: may have environment variables created in terraform and have it originate from cloud function terraform environment variables
+        # TODO: may have environment variables created in terraform and have it originate from cloud function terraform environment variables
         self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
         self.instance_id = os.environ["BIGTABLE_CLUSTER"]
         self.table_id = os.environ["TABLE_NAME"]
         self.cloud_region = os.environ["CLOUD_REGION"]
         self.iot_registry = os.environ["IOT_REGISTRY"]
         self.row_filter_count = int(os.environ["ROW_FILTER"])
-        # TODO update these clients
         self.bigtable_client = bigtable.Client(project=self.project_id, admin=True)
-        # self.iot_client = bigtable.Client(project=self.project_id, admin=True)
-        # self.cloud_func_client = bigtable.Client(project=self.project_id, admin=True)
         self.service_account_json = os.path.abspath(
             "../terraform/service_account.json"
         )  # TODO relative path may change
