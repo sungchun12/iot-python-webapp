@@ -71,7 +71,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div(
     html.Div(
         [
-            html.H4("TERRA Satellite Live Feed"),
+            html.H4("IOT Live Dashboard"),
             html.Div(id="live-update-text"),
             dcc.Graph(id="live-update-graph"),
             dcc.Interval(
