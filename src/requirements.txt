@@ -1,6 +1,6 @@
 dash==0.42.0
 dash-daq==0.1.0
-pandas==0.24.2
+pandas==0.25.1
 numpy==1.16.5 
 pyorbital==1.5.0
 google-cloud-bigtable==1.0.0
