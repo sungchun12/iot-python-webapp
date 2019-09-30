@@ -48,7 +48,7 @@ class environment_metadata:
         )
         # ex: 'iot-registry'
         registry_id = [
-            registry.get("name")
+            registry.get("id")
             for registry in registries_list
             if registry.get("id") == self.iot_registry
         ][0]
