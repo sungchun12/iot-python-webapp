@@ -18,7 +18,6 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
     namespace = var.project
     labels = {
       version = var.version_label
-
     }
   }
 
