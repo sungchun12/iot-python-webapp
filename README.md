@@ -12,4 +12,4 @@ End to end testing
 
 Inspiration: https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana
 
-test comments
+Pick and choose directory structure based on inspiration
