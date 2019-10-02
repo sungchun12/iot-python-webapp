@@ -88,7 +88,7 @@ class iot_pipeline_data:
             temp = cell.value.decode("utf-8")
             device_row_dict[row_key] = temp
 
-        # ex: {'device#temp-sensor-1482#':18.326504844389035}
+        # ex: {'device#temp-sensor-1482#':{'temp': 18.326504844389035, 'temp_timestamp': 1570054224}}
         return device_row_dict
 
 
