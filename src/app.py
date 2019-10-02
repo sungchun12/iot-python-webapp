@@ -30,7 +30,7 @@ import iot_manager
 # )
 
 
-class environment_metadata:
+class iot_pipeline_data:
     def __init__(self):
         # TODO: may have environment variables created in terraform and have it originate from cloud function terraform environment variables
         self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
