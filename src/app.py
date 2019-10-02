@@ -113,7 +113,7 @@ def update_graph_live(n):
 
     # TODO: Need to parse row_key by "#"
     # TODO: need to parallelize graph updates given the 3 different devices
-    # Collect some data
+    # Collect some data in a batch process at first
     for i in range(180):
         time = datetime.datetime.now() - datetime.timedelta(seconds=i * 20)
         lon, lat, alt = satellite.get_lonlatalt(time)
