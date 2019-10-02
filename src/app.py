@@ -39,7 +39,14 @@ class iot_pipeline_data:
         self.cloud_region = os.environ["CLOUD_REGION"]
         self.iot_registry = os.environ["IOT_REGISTRY"]
         self.row_filter_count = int(os.environ["ROW_FILTER"])
+
+        self.row_filter = row_filters.CellsColumnLimitFilter((self.row_filter_count))
         self.bigtable_client = bigtable.Client(project=self.project_id, admin=True)
+        self.column = "device-temp".encode()
+        self.column_family_id = "device-family"
+
+        self.instance = self.client.instance(self.instance_id)
+        self.table = self.instance.table(self.table_id)
         self.service_account_json = os.path.abspath(
             "../terraform/service_account.json"
         )  # TODO relative path may change
@@ -62,6 +69,27 @@ class iot_pipeline_data:
             self.service_account_json, self.project_id, self.cloud_region, registry_id
         )
         return devices_list
+
+    def create_iot_rowkeys(self, devices_list):
+        """Create list of iot row keys from all iot devices listed
+        """
+        device_ids = [i.get("id") for i in devices_list]
+        row_keys_list = ["device#{}#".format(device) for device in device_ids]
+        return row_keys_list
+
+    def get_iot_device_rows(self, row_keys_list):
+        """Create dictionary of iot devices with respective
+        temperature and timestamp data
+        """
+        device_row_dict = {}
+        for row_key in row_keys_list:
+            row = self.table.read_row(row_key.encode(), self.row_filter)
+            cell = row.cells[self.column_family_id][self.column][0]
+            temp = cell.value.decode("utf-8")
+            device_row_dict[row_key] = temp
+
+        # ex: {'device#temp-sensor-1482#':18.326504844389035}
+        return device_row_dict
 
 
 satellite = Orbital("TERRA")
