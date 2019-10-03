@@ -91,6 +91,16 @@ class iot_pipeline_data:
         # ex: {'device#temp-sensor-1482#':{'temp': 18.326504844389035, 'temp_timestamp': 1570054224}}
         return device_row_dict
 
+    @staticmethod
+    def timestamp_converter(self, timestamp):
+        """Convert timestamp into more useful format"""
+        # if you encounter a "year is out of range" error the timestamp
+        # may be in milliseconds, try `ts /= 1000` in that case
+        timestamp_converted = datetime.datetime.utcfromtimestamp(timestamp).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        return timestamp_converted
+
 
 satellite = Orbital("TERRA")
 
