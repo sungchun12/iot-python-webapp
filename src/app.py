@@ -92,15 +92,23 @@ class iot_pipeline_data:
         device_row_dict = {}
         for row_key in row_keys_list:
             row = self.table.read_row(row_key.encode(), self.row_filter)
+            # grab the most recent cell
             cell = row.cells[self.column_family_id][self.column][0]
             temp = cell.value.decode("utf-8")
-            device_row_dict[row_key] = temp
+            # extract the temperature timestamp
+            temp_timestamp = int(row.row_key.decode("utf-8").split("#")[2])
+            device_row_dict[row_key] = {}
+            device_row_dict[row_key]["temp"] = temp
+            device_row_dict[row_key]["temp_timestamp"] = self.timestamp_converter(
+                temp_timestamp
+            )
 
-        # ex: {'device#temp-sensor-1482#':{'temp': 18.326504844389035, 'temp_timestamp': 1570054224}}
+        # ex: {'device#temp-sensor-1482#':{'temp': 18.326504844389035, 'temp_timestamp': '2019-10-02 22:10:24'},
+        # 'device#temp-sensor-1435#':{'temp': 18.326504844389035, 'temp_timestamp': '2019-10-02 22:10:24'}}
         return device_row_dict
 
     @staticmethod
-    def timestamp_converter(self, timestamp):
+    def timestamp_converter(timestamp):
         """Convert timestamp into more useful format"""
         # if you encounter a "year is out of range" error the timestamp
         # may be in milliseconds, try `ts /= 1000` in that case
