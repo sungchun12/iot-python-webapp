@@ -51,7 +51,15 @@ class iot_pipeline_data:
             "../terraform/service_account.json"
         )  # TODO relative path may change
 
-    def get_iot_metadata(self):
+    def get_iot_device_data(self):
+        """Main interface to retrieve IOT device data in one payload
+        """
+        devices_list = self.get_device_names()
+        row_keys_list = self.create_device_rowkeys(devices_list)
+        device_row_dict = self.create_device_rows(row_keys_list)
+        return device_row_dict
+
+    def get_device_names(self):
         """Stores all gcp metadata needed to update live dashboard
         """
         registries_list = iot_manager.list_registries(
