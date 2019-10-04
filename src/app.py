@@ -78,15 +78,15 @@ class iot_pipeline_data:
         )
         return devices_list
 
-    def create_iot_rowkeys(self, devices_list):
+    def create_device_rowkeys(self, devices_list):
         """Create list of iot row keys from all iot devices listed
         """
         device_ids = [i.get("id") for i in devices_list]
         row_keys_list = ["device#{}#".format(device) for device in device_ids]
         return row_keys_list
 
-    def get_iot_device_rows(self, row_keys_list):
-        """Create dictionary of iot devices with respective
+    def create_device_rows(self, row_keys_list):
+        """Create nested dictionary of iot devices with respective
         temperature and timestamp data
         """
         device_row_dict = {}
