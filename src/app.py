@@ -24,11 +24,6 @@ from google.cloud.bigtable import row_filters
 # import iot sample utilties
 import iot_manager
 
-# import class from cloud function src
-# sys.path.append("../")
-# from terraform.modules.data_pipeline.cloud_function_src.main import (
-#     bigtable_input_generator,
-# )
 
 
 class iot_pipeline_data:
