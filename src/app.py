@@ -94,7 +94,7 @@ class iot_pipeline_data:
             device_row_dict = {}
             row_key = row.row_key.decode("utf-8")
             cell = row.cells[self.column_family_id][self.column][0]
-            temp = cell.value.decode("utf-8")
+            temp = float(cell.value.decode("utf-8"))
             # extract the temperature from the reverse timestamp
             temp_timestamp = self.timestamp_converter(
                 sys.maxsize - int(row_key.split("#")[2])
