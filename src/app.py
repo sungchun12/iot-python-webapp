@@ -85,8 +85,8 @@ class iot_pipeline_data:
         """Create list of nested dictionary of iot devices with respective
         temperature and timestamp data
         """
-        row_key_filter = row_key.encode()
-        row_data = self.table.read_rows(start_key=row_key_filter, limit=5)
+        row_key_filter = row_key_prefix.encode()
+        row_data = self.table.read_rows(start_key=row_key_filter, limit=n_rows)
         read_rows = [row for row in row_data]
         device_row_list = []
         for row in read_rows:
