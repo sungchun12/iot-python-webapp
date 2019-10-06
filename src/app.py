@@ -46,7 +46,7 @@ class iot_pipeline_data:
         self.column = "device-temp".encode()
         self.column_family_id = "device-family"
 
-        self.instance = self.client.instance(self.instance_id)
+        self.instance = self.bigtable_client.instance(self.instance_id)
         self.table = self.instance.table(self.table_id)
         self.service_account_json = os.path.abspath(
             "../terraform/service_account.json"
