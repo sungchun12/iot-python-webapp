@@ -25,7 +25,6 @@ from google.cloud.bigtable import row_filters
 import iot_manager
 
 
-
 class iot_pipeline_data:
     def __init__(self):
         # TODO: may have environment variables created in terraform and have it originate from cloud function terraform environment variables
@@ -125,20 +124,6 @@ test_class = iot_pipeline_data()
 devices_list = test_class.get_device_names()
 row_keys_list = test_class.create_device_rowkeys(devices_list)
 
-all_device_row_list = []
-import time
-
-start = time.time()
-for row_key in row_keys_list:
-    device_row_list = test_class.create_device_rows(row_key)
-    all_device_row_list.append(device_row_list)
-end = time.time()
-print(all_device_row_list)
-print(row_keys_list)
-print(len(all_device_row_list))
-print(end - start)
-x
-
 satellite = Orbital("TERRA")
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
@@ -150,7 +135,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div(
     html.Div(
         [
-            html.H4("IOT Live Dashboard"),
+            html.H4("IoT Temperature Device Live Dashboard"),
             html.Div(id="live-update-text"),
             dcc.Graph(id="live-update-graph"),
             dcc.Interval(
@@ -162,19 +147,27 @@ app.layout = html.Div(
     )
 )
 
+# TODO: create new  x-axis: Date/time, y-axis: temperature
+
 
 @app.callback(
     Output("live-update-text", "children"), [Input("interval-component", "n_intervals")]
 )
-
-# TODO: create new  x-axis: Date/time, y-axis: temperature
 def update_metrics(n):
     lon, lat, alt = satellite.get_lonlatalt(datetime.datetime.now())
     style = {"padding": "5px", "fontSize": "16px"}
+    all_device_row_list = []
+    for row_key_prefix in row_keys_list:
+        device_row_list = test_class.create_device_rows(row_key_prefix, n_rows=1)
+        all_device_row_list.append(device_row_list)
+    single_device_data = all_device_row_list[-1][0]
+    row_key = list(single_device_data.keys())[0]
+    device_temp = single_device_data[row_key]["temp"]
     return [
         html.Span("Longitude: {0:.2f}".format(lon), style=style),
         html.Span("Latitude: {0:.2f}".format(lat), style=style),
         html.Span("Altitude: {0:0.2f}".format(alt), style=style),
+        html.Span("Device Temp: {0:0.2f}".format(device_temp), style=style),
     ]
 
 
