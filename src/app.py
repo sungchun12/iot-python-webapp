@@ -57,8 +57,8 @@ class iot_pipeline_data:
         """
         devices_list = self.get_device_names()
         row_keys_list = self.create_device_rowkeys(devices_list)
-        device_row_dict = self.create_device_rows(row_keys_list)
-        return device_row_dict
+        device_row_list = self.create_device_rows(row_keys_list)
+        return device_row_list
 
     def get_device_names(self):
         """Stores all gcp metadata needed to update live dashboard
@@ -86,27 +86,34 @@ class iot_pipeline_data:
         row_keys_list = ["device#{}#".format(device) for device in device_ids]
         return row_keys_list
 
-    def create_device_rows(self, row_keys_list):
-        """Create nested dictionary of iot devices with respective
+    def create_device_rows(self, row_key):
+        """Create list of nested dictionary of iot devices with respective
         temperature and timestamp data
         """
-        device_row_dict = {}
-        for row_key in row_keys_list:
-            row = self.table.read_row(row_key.encode(), self.row_filter)
+        row_key_filter = row_key.encode()
+        row_data = self.table.read_rows(start_key=row_key_filter, limit=5)
+        read_rows = [row for row in row_data]
+        device_row_list = []
+        for row in read_rows:
             # grab the most recent cell
+            device_row_dict = {}
+            row_key = row.row_key.decode("utf-8")
             cell = row.cells[self.column_family_id][self.column][0]
             temp = cell.value.decode("utf-8")
-            # extract the temperature timestamp
-            temp_timestamp = int(row.row_key.decode("utf-8").split("#")[2])
+            # extract the temperature from the reverse timestamp
+            temp_timestamp = self.timestamp_converter(
+                sys.maxsize - int(row_key.split("#")[2])
+            )
             device_row_dict[row_key] = {}
             device_row_dict[row_key]["temp"] = temp
-            device_row_dict[row_key]["temp_timestamp"] = self.timestamp_converter(
-                temp_timestamp
-            )
-
-        # ex: {'device#temp-sensor-1482#':{'temp': 18.326504844389035, 'temp_timestamp': '2019-10-02 22:10:24'},
-        # 'device#temp-sensor-1435#':{'temp': 18.326504844389035, 'temp_timestamp': '2019-10-02 22:10:24'}}
-        return device_row_dict
+            device_row_dict[row_key]["temp_timestamp"] = temp_timestamp
+            device_row_list.append(device_row_dict.copy())
+        # ex: [{'device#temp-sensor-17399#9223372035284444464': {'temp': '23.60884369687173', 'temp_timestamp': '2019-10-06 03:09:03'}},
+        # {'device#temp-sensor-17399#9223372035284444465': {'temp': '23.61801573226279', 'temp_timestamp': '2019-10-06 03:09:02'}},
+        # {'device#temp-sensor-17399#9223372035284444466': {'temp': '23.62735480809774', 'temp_timestamp': '2019-10-06 03:09:01'}},
+        # {'device#temp-sensor-17399#9223372035284444467': {'temp': '23.633592416604664', 'temp_timestamp': '2019-10-06 03:09:00'}},
+        # {'device#temp-sensor-17399#9223372035284444468': {'temp': '23.637569649711086', 'temp_timestamp': '2019-10-06 03:08:59'}}]
+        return device_row_list
 
     @staticmethod
     def timestamp_converter(timestamp):
@@ -118,6 +125,24 @@ class iot_pipeline_data:
         )
         return timestamp_converted
 
+
+test_class = iot_pipeline_data()
+devices_list = test_class.get_device_names()
+row_keys_list = test_class.create_device_rowkeys(devices_list)
+
+all_device_row_list = []
+import time
+
+start = time.time()
+for row_key in row_keys_list:
+    device_row_list = test_class.create_device_rows(row_key)
+    all_device_row_list.append(device_row_list)
+end = time.time()
+print(all_device_row_list)
+print(row_keys_list)
+print(len(all_device_row_list))
+print(end - start)
+x
 
 satellite = Orbital("TERRA")
 
@@ -169,6 +194,7 @@ def update_graph_live(n):
     # TODO: Need to parse row_key by "#"
     # TODO: need to parallelize graph updates given the 3 different devices
     # Collect some data in a batch process at first
+    # may have to hit a range of values or append to the read_rows list
     for i in range(180):
         time = datetime.datetime.now() - datetime.timedelta(seconds=i * 20)
         lon, lat, alt = satellite.get_lonlatalt(time)
