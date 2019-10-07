@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
-
+#%%
 import sys
 import datetime
 import os
 import dash
 
-# import sys
-
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly
 from dash.dependencies import Input, Output
-
 
 # pip install pyorbital
 from pyorbital.orbital import Orbital
@@ -46,13 +43,13 @@ class iot_pipeline_data:
             "../terraform/service_account.json"
         )  # TODO relative path may change
 
-    def get_iot_device_data(self):
+    def get_iot_devices_data(self, n_rows):
         """Main interface to retrieve IOT device data in one payload
         """
         devices_list = self.get_device_names()
         row_keys_list = self.create_device_rowkeys(devices_list)
-        device_row_list = self.create_device_rows(row_keys_list)
-        return device_row_list
+        all_device_row_list = self.create_all_device_rows(row_keys_list, n_rows)
+        return all_device_row_list
 
     def get_device_names(self):
         """Stores all gcp metadata needed to update live dashboard
@@ -81,7 +78,7 @@ class iot_pipeline_data:
         return row_keys_list
 
     def create_device_rows(self, row_key_prefix, n_rows):
-        """Create list of nested dictionary of iot devices with respective
+        """Create list of nested dictionaries of single iot device with respective
         temperature and timestamp data
         """
         row_key_filter = row_key_prefix.encode()
@@ -109,6 +106,16 @@ class iot_pipeline_data:
         # {'device#temp-sensor-17399#9223372035284444468': {'temp': '23.637569649711086', 'temp_timestamp': '2019-10-06 03:08:59'}}]
         return device_row_list
 
+    def create_all_device_rows(self, row_keys_list, n_rows):
+        """Creates a full list of all devices data
+        """
+        all_device_row_list = []
+        for row_key_prefix in row_keys_list:
+            device_row_list = self.create_device_rows(row_key_prefix, n_rows)
+            all_device_row_list.append(device_row_list)
+
+        return all_device_row_list
+
     @staticmethod
     def timestamp_converter(timestamp):
         """Convert timestamp into more useful format"""
@@ -123,6 +130,7 @@ class iot_pipeline_data:
 test_class = iot_pipeline_data()
 devices_list = test_class.get_device_names()
 row_keys_list = test_class.create_device_rowkeys(devices_list)
+
 
 satellite = Orbital("TERRA")
 
@@ -154,20 +162,24 @@ app.layout = html.Div(
     Output("live-update-text", "children"), [Input("interval-component", "n_intervals")]
 )
 def update_metrics(n):
-    lon, lat, alt = satellite.get_lonlatalt(datetime.datetime.now())
     style = {"padding": "5px", "fontSize": "16px"}
-    all_device_row_list = []
-    for row_key_prefix in row_keys_list:
-        device_row_list = test_class.create_device_rows(row_key_prefix, n_rows=1)
-        all_device_row_list.append(device_row_list)
-    single_device_data = all_device_row_list[-1][0]
-    row_key = list(single_device_data.keys())[0]
-    device_temp = single_device_data[row_key]["temp"]
+    all_device_row_list = test_class.create_all_device_rows(row_keys_list, 1)
+    # TODO: create another method that automates the below
+    # Return the key
+    # returns the temp and the row_key device(split) row_key.split("#")[1]
+    device_data_1 = all_device_row_list[0][0]
+    row_key = list(device_data_1.keys())[0]
+    device_temp_1 = device_data_1[row_key]["temp"]
+    device_data_2 = all_device_row_list[1][0]
+    row_key = list(device_data_2.keys())[0]
+    device_temp_2 = device_data_2[row_key]["temp"]
+    device_data_3 = all_device_row_list[2][0]
+    row_key = list(device_data_3.keys())[0]
+    device_temp_3 = device_data_3[row_key]["temp"]
     return [
-        html.Span("Longitude: {0:.2f}".format(lon), style=style),
-        html.Span("Latitude: {0:.2f}".format(lat), style=style),
-        html.Span("Altitude: {0:0.2f}".format(alt), style=style),
-        html.Span("Device Temp: {0:0.2f}".format(device_temp), style=style),
+        html.Span("device_temp_1_temp: {0:.2f}".format(device_temp_1), style=style),
+        html.Span("device_temp_2_temp: {0:0.2f}".format(device_temp_2), style=style),
+        html.Span("device_temp_3_temp: {0:0.2f}".format(device_temp_3), style=style),
     ]
 
 
