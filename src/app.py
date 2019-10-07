@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
-#%%
+
 import sys
 import datetime
 import os
@@ -117,6 +117,16 @@ class iot_pipeline_data:
         return all_device_row_list
 
     @staticmethod
+    def get_device_name_temp(all_device_row_list, device_index):
+        """Returns name and temperature objects for single iot device
+        """
+        device_data = all_device_row_list[device_index][0]
+        row_key = list(device_data.keys())[0]
+        device_temp = device_data[row_key]["temp"]
+        sensor_name = row_key.split("#")[1]
+        return sensor_name, device_temp
+
+    @staticmethod
     def timestamp_converter(timestamp):
         """Convert timestamp into more useful format"""
         # if you encounter a "year is out of range" error the timestamp
@@ -127,10 +137,16 @@ class iot_pipeline_data:
         return timestamp_converted
 
 
-test_class = iot_pipeline_data()
-devices_list = test_class.get_device_names()
-row_keys_list = test_class.create_device_rowkeys(devices_list)
-
+cbt_data_generator = iot_pipeline_data()
+devices_list = cbt_data_generator.get_device_names()
+row_keys_list = cbt_data_generator.create_device_rowkeys(devices_list)
+all_device_row_list = cbt_data_generator.create_all_device_rows(row_keys_list, 1)
+sensor_name_1, device_temp_1 = cbt_data_generator.get_device_name_temp(
+    all_device_row_list, 0
+)
+print(sensor_name_1)
+print(device_temp_1)
+print(all_device_row_list)
 
 satellite = Orbital("TERRA")
 
@@ -163,23 +179,22 @@ app.layout = html.Div(
 )
 def update_metrics(n):
     style = {"padding": "5px", "fontSize": "16px"}
-    all_device_row_list = test_class.create_all_device_rows(row_keys_list, 1)
-    # TODO: create another method that automates the below
-    # Return the key
-    # returns the temp and the row_key device(split) row_key.split("#")[1]
-    device_data_1 = all_device_row_list[0][0]
-    row_key = list(device_data_1.keys())[0]
-    device_temp_1 = device_data_1[row_key]["temp"]
-    device_data_2 = all_device_row_list[1][0]
-    row_key = list(device_data_2.keys())[0]
-    device_temp_2 = device_data_2[row_key]["temp"]
-    device_data_3 = all_device_row_list[2][0]
-    row_key = list(device_data_3.keys())[0]
-    device_temp_3 = device_data_3[row_key]["temp"]
+    all_device_row_list = cbt_data_generator.create_all_device_rows(
+        row_keys_list, n_rows=1
+    )
+    sensor_name_1, device_temp_1 = cbt_data_generator.get_device_name_temp(
+        all_device_row_list, 0
+    )
+    sensor_name_2, device_temp_2 = cbt_data_generator.get_device_name_temp(
+        all_device_row_list, 1
+    )
+    sensor_name_3, device_temp_3 = cbt_data_generator.get_device_name_temp(
+        all_device_row_list, 2
+    )
     return [
-        html.Span("device_temp_1_temp: {0:.2f}".format(device_temp_1), style=style),
-        html.Span("device_temp_2_temp: {0:0.2f}".format(device_temp_2), style=style),
-        html.Span("device_temp_3_temp: {0:0.2f}".format(device_temp_3), style=style),
+        html.Span("{0}: {1:.2f}".format(sensor_name_1, device_temp_1), style=style),
+        html.Span("{0}: {1:0.2f}".format(sensor_name_2, device_temp_2), style=style),
+        html.Span("{0}: {1:0.2f}".format(sensor_name_3, device_temp_3), style=style),
     ]
 
 
