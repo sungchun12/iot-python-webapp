@@ -152,6 +152,10 @@ print(sensor_name_1)
 print(device_temp_1)
 print(all_device_row_list)
 
+device_1 = {"device_name": [], "temp": [], "temp_timestamp": []}
+device_2 = {"device_name": [], "temp": [], "temp_timestamp": []}
+device_3 = {"device_name": [], "temp": [], "temp_timestamp": []}
+
 satellite = Orbital("TERRA")
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
