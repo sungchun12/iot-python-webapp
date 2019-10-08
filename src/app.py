@@ -144,13 +144,13 @@ class iot_pipeline_data(object):
 cbt_data_generator = iot_pipeline_data()
 devices_list = cbt_data_generator.get_device_names()
 row_keys_list = cbt_data_generator.create_device_rowkeys(devices_list)
-all_device_row_list = cbt_data_generator.create_all_device_rows(row_keys_list, 1)
-sensor_name_1, device_temp_1 = cbt_data_generator.get_device_name_temp(
-    all_device_row_list, 0
-)
-print(sensor_name_1)
-print(device_temp_1)
-print(all_device_row_list)
+# all_device_row_list = cbt_data_generator.create_all_device_rows(row_keys_list, 1)
+# sensor_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_device_name_temp(
+#     all_device_row_list, 0
+# )
+# print(sensor_name_1)
+# print(device_temp_1)
+# print(all_device_row_list)
 
 device_1 = {"device_name": [], "temp": [], "temp_timestamp": []}
 device_2 = {"device_name": [], "temp": [], "temp_timestamp": []}
@@ -190,13 +190,13 @@ def update_metrics(n):
     all_device_row_list = cbt_data_generator.create_all_device_rows(
         row_keys_list, n_rows=1
     )
-    sensor_name_1, device_temp_1 = cbt_data_generator.get_device_name_temp(
+    sensor_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_device_name_temp(
         all_device_row_list, 0
     )
-    sensor_name_2, device_temp_2 = cbt_data_generator.get_device_name_temp(
+    sensor_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_device_name_temp(
         all_device_row_list, 1
     )
-    sensor_name_3, device_temp_3 = cbt_data_generator.get_device_name_temp(
+    sensor_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_device_name_temp(
         all_device_row_list, 2
     )
     return [
@@ -211,33 +211,43 @@ def update_metrics(n):
     Output("live-update-graph", "figure"), [Input("interval-component", "n_intervals")]
 )
 def update_graph_live(n):
-    satellite = Orbital("TERRA")
-    data = {"time": [], "Latitude": [], "Longitude": [], "Altitude": []}
+    all_device_row_list = cbt_data_generator.create_all_device_rows(
+        row_keys_list, n_rows=1
+    )
+    device_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_device_name_temp(
+        all_device_row_list, 0
+    )
+    device_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_device_name_temp(
+        all_device_row_list, 1
+    )
+    device_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_device_name_temp(
+        all_device_row_list, 2
+    )
 
-    # TODO: Need to parse row_key by "#"
-    # TODO: need to parallelize graph updates given the 3 different devices
-    # Collect some data in a batch process at first
-    # may have to hit a range of values or append to the read_rows list
-    for i in range(180):
-        time = datetime.datetime.now() - datetime.timedelta(seconds=i * 20)
-        lon, lat, alt = satellite.get_lonlatalt(time)
-        data["Longitude"].append(lon)
-        data["Latitude"].append(lat)
-        data["Altitude"].append(alt)
-        data["time"].append(time)
+    device_1["device_name"] = device_name_1
+    device_1["temp"].append(float(device_temp_1))
+    device_1["temp_timestamp"].append(temp_timestamp_1)
+
+    device_2["device_name"] = device_name_2
+    device_2["temp"].append(float(device_temp_2))
+    device_2["temp_timestamp"].append(temp_timestamp_2)
+
+    device_3["device_name"] = device_name_3
+    device_3["temp"].append(float(device_temp_3))
+    device_3["temp_timestamp"].append(temp_timestamp_3)
 
     # Create the graph with subplots
     # TODO read through the make_subplots method and see if I can overlap plots easily
-    fig = plotly.subplots.make_subplots(rows=2, cols=1, vertical_spacing=0.2)
+    fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.2)
     fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
     fig["layout"]["legend"] = {"x": 0, "y": 1, "xanchor": "left"}
 
     # TODO: Create 3 stacks of the subplots or overlap everything?
     fig.append_trace(
         {
-            "x": data["time"],
-            "y": data["Altitude"],
-            "name": "Altitude",
+            "x": device_1["temp_timestamp"],
+            "y": device_1["temp"],
+            "name": device_1["device_name"],
             "mode": "lines+markers",
             "type": "scatter",
         },
@@ -246,17 +256,26 @@ def update_graph_live(n):
     )
     fig.append_trace(
         {
-            "x": data["Longitude"],
-            "y": data["Latitude"],
-            "text": data["time"],
-            "name": "Longitude vs Latitude",
+            "x": device_2["temp_timestamp"],
+            "y": device_2["temp"],
+            "name": device_2["device_name"],
             "mode": "lines+markers",
             "type": "scatter",
         },
         2,
         1,
     )
-
+    fig.append_trace(
+        {
+            "x": device_3["temp_timestamp"],
+            "y": device_3["temp"],
+            "name": device_3["device_name"],
+            "mode": "lines+markers",
+            "type": "scatter",
+        },
+        3,
+        1,
+    )
     return fig
 
 
