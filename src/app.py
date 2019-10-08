@@ -128,7 +128,7 @@ class iot_pipeline_data(object):
         device_temp = device_data[row_key]["temp"]
         temp_timestamp = device_data[row_key]["temp_timestamp"]
         sensor_name = row_key.split("#")[1]
-        return sensor_name, device_temp
+        return sensor_name, device_temp, temp_timestamp
 
     @staticmethod
     def timestamp_converter(timestamp):
