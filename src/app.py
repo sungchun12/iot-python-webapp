@@ -169,7 +169,7 @@ app.layout = html.Div(
         [
             html.H4("IoT Temperature Device Live Dashboard"),
             html.Div(id="live-update-text"),
-            dcc.Graph(id="live-update-graph"),
+            dcc.Graph(id="live-update-graph", animate=True),
             dcc.Interval(
                 id="interval-component",
                 interval=1 * 1000,  # in milliseconds
