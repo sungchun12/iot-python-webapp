@@ -126,6 +126,7 @@ class iot_pipeline_data(object):
         device_data = all_device_row_list[device_index][0]
         row_key = list(device_data.keys())[0]
         device_temp = device_data[row_key]["temp"]
+        temp_timestamp = device_data[row_key]["temp_timestamp"]
         sensor_name = row_key.split("#")[1]
         return sensor_name, device_temp
 
