@@ -22,7 +22,7 @@ from google.cloud.bigtable import row_filters
 import iot_manager
 
 
-class iot_pipeline_data:
+class iot_pipeline_data(object):
     def __init__(self):
         # TODO: may have environment variables created in terraform and have it originate from cloud function terraform environment variables
         self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
@@ -81,6 +81,8 @@ class iot_pipeline_data:
         """Create list of nested dictionaries of single iot device with respective
         temperature and timestamp data
         """
+        # TODO: try and except block for list index out of range error
+        # https://stackoverflow.com/questions/11902458/i-want-to-exception-handle-list-index-out-of-range
         row_key_filter = row_key_prefix.encode()
         row_data = self.table.read_rows(start_key=row_key_filter, limit=n_rows)
         read_rows = [row for row in row_data]
@@ -114,6 +116,7 @@ class iot_pipeline_data:
             device_row_list = self.create_device_rows(row_key_prefix, n_rows)
             all_device_row_list.append(device_row_list)
 
+        # ex: [[{'device#temp-sensor-14608#9223372035284285863': {'temp': 26.095061796938726, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-9944#9223372035284285864': {'temp': 27.361626128931505, 'temp_timestamp': '2019-10-07 23:12:23'}}], [{'device#temp-sensor-9944#9223372035284285864': {'temp': 27.361626128931505, 'temp_timestamp': '2019-10-07 23:12:23'}}]]
         return all_device_row_list
 
     @staticmethod
