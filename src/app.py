@@ -231,7 +231,6 @@ def update_graph_live(n):
     fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
     fig["layout"]["legend"] = {"x": 0, "y": 1, "xanchor": "left"}
 
-    # TODO: Create 3 stacks of the subplots or overlap everything?
     fig.append_trace(
         {
             "x": device_1["temp_timestamp"],
