@@ -168,7 +168,7 @@ app.layout = html.Div(
         [
             html.H4("IoT Temperature Device Live Dashboard"),
             html.Div(id="live-update-text"),
-            dcc.Graph(id="live-update-graph", animate=True),
+            dcc.Graph(id="live-update-graph", animate=False),
             dcc.Interval(
                 id="interval-component",
                 interval=1 * 1000,  # in milliseconds
@@ -271,6 +271,52 @@ def update_graph_live(n):
         3,
         1,
     )
+    # Update xaxis properties
+    # fig.update_xaxes(
+    #     title_text="xaxis 1 title",
+    #     range=[
+    #         min(list(device_1["temp_timestamp"])),
+    #         max(list(device_1["temp_timestamp"])),
+    #     ],
+    #     row=1,
+    #     col=1,
+    # )
+    # fig.update_xaxes(
+    #     title_text="xaxis 2 title",
+    #     range=[
+    #         min(list(device_2["temp_timestamp"])),
+    #         max(list(device_2["temp_timestamp"])),
+    #     ],
+    #     row=2,
+    #     col=1,
+    # )
+    # fig.update_xaxes(
+    #     title_text="xaxis 3 title", 
+    #     autorange=True,
+    #     row=3,
+    #     col=1,
+    # )
+
+    # # Update yaxis properties
+    # fig.update_yaxes(
+    #     title_text="yaxis 1 title",
+    #     range=[min(list(device_1["temp"])) - 10, max(list(device_1["temp"])) + 20],
+    #     row=1,
+    #     col=1,
+    # )
+    # fig.update_yaxes(
+    #     title_text="yaxis 2 title",
+    #     range=[min(list(device_2["temp"])), max(list(device_2["temp"]))],
+    #     row=2,
+    #     col=1,
+    # )
+    # fig.update_yaxes(
+    #     title_text="yaxis 3 title",
+    #     autorange=True,
+    #     row=3,
+    #     col=1,
+    # )
+
     return fig
 
 
