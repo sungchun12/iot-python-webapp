@@ -177,19 +177,19 @@ def update_metrics(n):
     all_device_row_list = cbt_data_generator.create_all_device_rows(
         row_keys_list, n_rows=1
     )
-    sensor_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_name_temp_time(
+    device_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 0
     )
-    sensor_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_name_temp_time(
+    device_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 1
     )
-    sensor_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_name_temp_time(
+    device_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 2
     )
     return [
-        html.Span("{0}: {1:.2f}".format(sensor_name_1, device_temp_1), style=style),
-        html.Span("{0}: {1:0.2f}".format(sensor_name_2, device_temp_2), style=style),
-        html.Span("{0}: {1:0.2f}".format(sensor_name_3, device_temp_3), style=style),
+        html.Span("{0}: {1:.2f}".format(device_name_1, device_temp_1), style=style),
+        html.Span("{0}: {1:0.2f}".format(device_name_2, device_temp_2), style=style),
+        html.Span("{0}: {1:0.2f}".format(device_name_3, device_temp_3), style=style),
     ]
 
 
