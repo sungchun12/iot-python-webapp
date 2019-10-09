@@ -137,7 +137,7 @@ class iot_pipeline_data(object):
             "%Y-%m-%d %H:%M:%S"
         )
         return timestamp_converted
-    
+
     @staticmethod
     def set_graph_data_limit(n_items):
         """Setup graph data dictionary limits. Can be adjusted for different data max limits."""
@@ -155,9 +155,9 @@ devices_list = cbt_data_generator.get_device_names()
 row_keys_list = cbt_data_generator.create_device_rowkeys(devices_list)
 
 # setup empty dictionary lists
-device_1 = cbt_data_generator.set_graph_data_limit(n_items = 20)
-device_2 = cbt_data_generator.set_graph_data_limit(n_items = 20)
-device_3 = cbt_data_generator.set_graph_data_limit(n_items = 20)
+device_1 = cbt_data_generator.set_graph_data_limit(n_items=20)
+device_2 = cbt_data_generator.set_graph_data_limit(n_items=20)
+device_3 = cbt_data_generator.set_graph_data_limit(n_items=20)
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
