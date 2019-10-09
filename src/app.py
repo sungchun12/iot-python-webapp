@@ -4,15 +4,12 @@
 import sys
 import datetime
 import os
-import dash
 
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly
 from dash.dependencies import Input, Output
-
-# pip install pyorbital
-from pyorbital.orbital import Orbital
 
 from google.cloud import bigtable
 from google.cloud.bigtable import column_family
