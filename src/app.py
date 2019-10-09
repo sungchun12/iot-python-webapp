@@ -120,7 +120,7 @@ class iot_pipeline_data(object):
         return all_device_row_list
 
     @staticmethod
-    def get_device_name_temp(all_device_row_list, device_index):
+    def get_name_temp_time(all_device_row_list, device_index):
         """Returns name and temperature objects for single iot device
         """
         device_data = all_device_row_list[device_index][0]
@@ -180,13 +180,13 @@ def update_metrics(n):
     all_device_row_list = cbt_data_generator.create_all_device_rows(
         row_keys_list, n_rows=1
     )
-    sensor_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_device_name_temp(
+    sensor_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 0
     )
-    sensor_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_device_name_temp(
+    sensor_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 1
     )
-    sensor_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_device_name_temp(
+    sensor_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 2
     )
     return [
@@ -204,13 +204,13 @@ def update_graph_live(n):
     all_device_row_list = cbt_data_generator.create_all_device_rows(
         row_keys_list, n_rows=1
     )
-    device_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_device_name_temp(
+    device_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 0
     )
-    device_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_device_name_temp(
+    device_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 1
     )
-    device_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_device_name_temp(
+    device_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_name_temp_time(
         all_device_row_list, 2
     )
 
