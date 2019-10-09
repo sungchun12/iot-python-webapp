@@ -141,29 +141,21 @@ class iot_pipeline_data(object):
         return timestamp_converted
 
 
+# initialize class and create row keys list once
 cbt_data_generator = iot_pipeline_data()
 devices_list = cbt_data_generator.get_device_names()
 row_keys_list = cbt_data_generator.create_device_rowkeys(devices_list)
-# all_device_row_list = cbt_data_generator.create_all_device_rows(row_keys_list, 1)
-# sensor_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_device_name_temp(
-#     all_device_row_list, 0
-# )
-# print(sensor_name_1)
-# print(device_temp_1)
-# print(all_device_row_list)
 
+# setup empty dictionary lists
+# TODO: setup max item count
 device_1 = {"device_name": [], "temp": [], "temp_timestamp": []}
 device_2 = {"device_name": [], "temp": [], "temp_timestamp": []}
 device_3 = {"device_name": [], "temp": [], "temp_timestamp": []}
-
-satellite = Orbital("TERRA")
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-# TODO: update layout
-# TODO:update intervals to 500 milliseconds? Look at the average execution time of function
 app.layout = html.Div(
     html.Div(
         [
@@ -178,8 +170,6 @@ app.layout = html.Div(
         ]
     )
 )
-
-# TODO: create new  x-axis: Date/time, y-axis: temperature
 
 
 @app.callback(
@@ -237,7 +227,6 @@ def update_graph_live(n):
     device_3["temp_timestamp"].append(temp_timestamp_3)
 
     # Create the graph with subplots
-    # TODO read through the make_subplots method and see if I can overlap plots easily
     fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.2)
     fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
     fig["layout"]["legend"] = {"x": 0, "y": 1, "xanchor": "left"}
