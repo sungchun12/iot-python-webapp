@@ -4,6 +4,7 @@
 import sys
 import datetime
 import os
+from collections import deque
 
 import dash
 import dash_core_components as dcc
@@ -136,6 +137,16 @@ class iot_pipeline_data(object):
             "%Y-%m-%d %H:%M:%S"
         )
         return timestamp_converted
+    
+    @staticmethod
+    def set_graph_data_limit(n_items):
+        """Setup graph data dictionary limits. Can be adjusted for different data max limits."""
+        device_data_dict = {"device_name": [], "temp": [], "temp_timestamp": []}
+        device_data_dict["device_name"] = deque(maxlen=1)
+        device_data_dict["temp"] = deque(maxlen=n_items)
+        device_data_dict["temp_timestamp"] = deque(maxlen=n_items)
+
+        return device_data_dict
 
 
 # initialize class and create row keys list once
@@ -144,10 +155,9 @@ devices_list = cbt_data_generator.get_device_names()
 row_keys_list = cbt_data_generator.create_device_rowkeys(devices_list)
 
 # setup empty dictionary lists
-# TODO: setup max item count
-device_1 = {"device_name": [], "temp": [], "temp_timestamp": []}
-device_2 = {"device_name": [], "temp": [], "temp_timestamp": []}
-device_3 = {"device_name": [], "temp": [], "temp_timestamp": []}
+device_1 = cbt_data_generator.set_graph_data_limit(n_items = 20)
+device_2 = cbt_data_generator.set_graph_data_limit(n_items = 20)
+device_3 = cbt_data_generator.set_graph_data_limit(n_items = 20)
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
@@ -230,8 +240,8 @@ def update_graph_live(n):
 
     fig.append_trace(
         {
-            "x": device_1["temp_timestamp"],
-            "y": device_1["temp"],
+            "x": list(device_1["temp_timestamp"]),
+            "y": list(device_1["temp"]),
             "name": device_1["device_name"],
             "mode": "lines+markers",
             "type": "scatter",
@@ -241,8 +251,8 @@ def update_graph_live(n):
     )
     fig.append_trace(
         {
-            "x": device_2["temp_timestamp"],
-            "y": device_2["temp"],
+            "x": list(device_2["temp_timestamp"]),
+            "y": list(device_2["temp"]),
             "name": device_2["device_name"],
             "mode": "lines+markers",
             "type": "scatter",
@@ -252,8 +262,8 @@ def update_graph_live(n):
     )
     fig.append_trace(
         {
-            "x": device_3["temp_timestamp"],
-            "y": device_3["temp"],
+            "x": list(device_3["temp_timestamp"]),
+            "y": list(device_3["temp"]),
             "name": device_3["device_name"],
             "mode": "lines+markers",
             "type": "scatter",
