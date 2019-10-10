@@ -52,21 +52,30 @@ class iot_pipeline_data(object):
     def get_device_names(self):
         """Stores all gcp metadata needed to update live dashboard
         """
-        registries_list = iot_manager.list_registries(
-            self.service_account_json, self.project_id, self.cloud_region
-        )
-        # ex: 'iot-registry'
-        registry_id = [
-            registry.get("id")
-            for registry in registries_list
-            if registry.get("id") == self.iot_registry
-        ][0]
+        try:
+            registries_list = iot_manager.list_registries(
+                self.service_account_json, self.project_id, self.cloud_region
+            )
+            # ex: 'iot-registry'
+            registry_id = [
+                registry.get("id")
+                for registry in registries_list
+                if registry.get("id") == self.iot_registry
+            ][0]
 
-        # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'}, {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'}, {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
-        devices_list = iot_manager.list_devices(
-            self.service_account_json, self.project_id, self.cloud_region, registry_id
-        )
-        return devices_list
+            # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'}, {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'}, {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
+            devices_list = iot_manager.list_devices(
+                self.service_account_json,
+                self.project_id,
+                self.cloud_region,
+                registry_id,
+            )
+            return devices_list
+        except IndexError:
+            print(
+                "Refresh browser until live data starts flowing through! Exiting application now."
+            )
+            sys.exit()
 
     def create_device_rowkeys(self, devices_list):
         """Create list of iot row keys from all iot devices listed
@@ -170,7 +179,7 @@ app.layout = html.Div(
             html.Div(id="live-update-text"),
             dcc.Graph(
                 id="live-update-graph",
-                animate=True,
+                animate=False,
                 style={
                     "width": "49%",
                     "display": "inline-block",
@@ -243,11 +252,11 @@ def update_graph_live(n):
     device_3["temp_timestamp"].append(temp_timestamp_3)
 
     # Create the graph with subplots
-    fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.2)
+    fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.1)
     fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
     fig["layout"]["legend"] = {
         "x": 0.5,
-        "y": 1.2,
+        "y": 1.1,
         "xanchor": "center",
         "yanchor": "top",
         "orientation": "h",
