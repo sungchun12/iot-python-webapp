@@ -39,7 +39,7 @@ class iot_pipeline_data(object):
         self.table = self.instance.table(self.table_id)
         self.service_account_json = os.path.abspath(
             "../terraform/service_account.json"
-        )  # TODO relative path may change
+        )  # TODO relative path may change OR this may be a command line arugment with cloud build
 
     def get_iot_devices_data(self, n_rows):
         """Main interface to retrieve IOT device data in one payload
