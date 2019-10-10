@@ -22,13 +22,91 @@ steps:
         ".",
       ]
 
-    # push docker image with git commit to container registry
+  # push docker image with git commit to container registry
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
 
-    # gcloud command to deploy newly built image to cloud run
-    # must set cloudbuild service account with Cloud Run Admin role
-    # TODO: this will change to deploying terraform scripts
+  ###############################################
+  # deploy terraform infrastructure
+  - id: "branch name"
+    name: "alpine"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        echo "***********************"
+        echo "$BRANCH_NAME"
+        echo "***********************"
+  - id: "tf init"
+    name: "hashicorp/terraform:0.11.14"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        if [ -d "environments/$BRANCH_NAME/" ]; then
+          cd environments/$BRANCH_NAME
+          terraform init
+        else
+          for dir in environments/*/
+          do 
+            cd ${dir}   
+            env=${dir%*/}
+            env=${env#*/}
+            echo ""
+            echo "*************** TERRAFORM INIT ******************"
+            echo "******* At environment: ${env} ********"
+            echo "*************************************************"
+            terraform init || exit 1
+            cd ../../
+          done
+        fi 
+
+  # [START tf-plan]
+  - id: "tf plan"
+    name: "hashicorp/terraform:0.11.14"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        if [ -d "environments/$BRANCH_NAME/" ]; then
+          cd environments/$BRANCH_NAME
+          terraform plan
+        else
+          for dir in environments/*/
+          do 
+            cd ${dir}   
+            env=${dir%*/}
+            env=${env#*/}  
+            echo ""
+            echo "*************** TERRAFOM PLAN ******************"
+            echo "******* At environment: ${env} ********"
+            echo "*************************************************"
+            terraform plan || exit 1
+            cd ../../
+          done
+        fi
+  # [END tf-plan]
+
+  # [START tf-apply]
+  - id: "tf apply"
+    name: "hashicorp/terraform:0.11.14"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        if [ -d "environments/$BRANCH_NAME/" ]; then
+          cd environments/$BRANCH_NAME      
+          terraform apply -auto-approve
+        else
+          echo "***************************** SKIPPING APPLYING *******************************"
+          echo "Branch '$BRANCH_NAME' does not represent an official environment."
+          echo "*******************************************************************************"
+        fi
+  # [END tf-apply]
+
+  # gcloud command to deploy newly built image to cloud run
+  # must set cloudbuild service account with Cloud Run Admin role
+  # TODO: this will change to deploying terraform scripts
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
