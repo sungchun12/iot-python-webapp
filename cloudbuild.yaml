@@ -1,6 +1,7 @@
 steps:
   # pull image from container registry to build from cache, bypasses error if first time building image
-  - name: "gcr.io/cloud-builders/docker"
+  - id: "pull docker image"
+    name: "gcr.io/cloud-builders/docker"
     entrypoint: "bash"
     args:
       - "-c"
@@ -9,7 +10,8 @@ steps:
 
   # build docker image in target project with git commit tag and latest
   # cache the previous build as a starting point for subsequent builds
-  - name: "gcr.io/cloud-builders/docker"
+  - id: "build docker image from cache"
+    name: "gcr.io/cloud-builders/docker"
     args:
       [
         "build",
@@ -23,7 +25,8 @@ steps:
       ]
 
   # push docker image with git commit to container registry
-  - name: "gcr.io/cloud-builders/docker"
+  - id: "push docker image"
+    name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
 
   ###############################################
@@ -37,8 +40,9 @@ steps:
         echo "***********************"
         echo "$BRANCH_NAME"
         echo "***********************"
+
   - id: "tf init"
-    name: "hashicorp/terraform:0.11.14"
+    name: "hashicorp/terraform:0.12.9"
     entrypoint: "sh"
     args:
       - "-c"
@@ -63,7 +67,7 @@ steps:
 
   # [START tf-plan]
   - id: "tf plan"
-    name: "hashicorp/terraform:0.11.14"
+    name: "hashicorp/terraform:0.12.9"
     entrypoint: "sh"
     args:
       - "-c"
@@ -89,7 +93,7 @@ steps:
 
   # [START tf-apply]
   - id: "tf apply"
-    name: "hashicorp/terraform:0.11.14"
+    name: "hashicorp/terraform:0.12.9"
     entrypoint: "sh"
     args:
       - "-c"
@@ -106,7 +110,8 @@ steps:
 
   # must set cloudbuild service account with Cloud Run Admin role
   # TODO: add in step like the below if terraform for cloud run service isn't udpated in time
-  - name: "gcr.io/cloud-builders/gcloud"
+  - id: "allow cloud run unauthenticated"
+    name: "gcr.io/cloud-builders/gcloud"
     args:
       [
         "beta",
