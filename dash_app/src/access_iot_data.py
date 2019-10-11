@@ -16,24 +16,22 @@ import iot_manager
 
 class iot_pipeline_data(object):
     def __init__(self):
-        # TODO: may have environment variables created in terraform and have it originate from cloud function terraform environment variables
+        # pass in environment variables
         self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
         self.instance_id = os.environ["BIGTABLE_CLUSTER"]
         self.table_id = os.environ["TABLE_NAME"]
         self.cloud_region = os.environ["CLOUD_REGION"]
         self.iot_registry = os.environ["IOT_REGISTRY"]
         self.row_filter_count = int(os.environ["ROW_FILTER"])
+        self.service_account_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
+        # setup bigtable variables
         self.row_filter = row_filters.CellsColumnLimitFilter((self.row_filter_count))
         self.bigtable_client = bigtable.Client(project=self.project_id, admin=True)
         self.column = "device-temp".encode()
         self.column_family_id = "device-family"
-
         self.instance = self.bigtable_client.instance(self.instance_id)
         self.table = self.instance.table(self.table_id)
-        self.service_account_json = os.environ[
-            "GOOGLE_APPLICATION_CREDENTIALS"
-        ]  # TODO relative path may change OR this may be a command line arugment with cloud build
 
     def get_iot_devices_data(self, n_rows):
         """Main interface to retrieve IOT device data in one payload
