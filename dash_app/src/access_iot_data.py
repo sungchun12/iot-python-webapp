@@ -65,7 +65,7 @@ class iot_pipeline_data(object):
             return devices_list
         except IndexError:
             print(
-                "Refresh browser until live data starts flowing through! Exiting application now."
+                "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
             )
             sys.exit()
 
@@ -122,12 +122,18 @@ class iot_pipeline_data(object):
     def get_name_temp_time(all_device_row_list, device_index):
         """Returns name and temperature objects for single iot device
         """
-        device_data = all_device_row_list[device_index][0]
-        row_key = list(device_data.keys())[0]
-        device_temp = device_data[row_key]["temp"]
-        temp_timestamp = device_data[row_key]["temp_timestamp"]
-        sensor_name = row_key.split("#")[1]
-        return sensor_name, device_temp, temp_timestamp
+        try:
+            device_data = all_device_row_list[device_index][0]
+            row_key = list(device_data.keys())[0]
+            device_temp = device_data[row_key]["temp"]
+            temp_timestamp = device_data[row_key]["temp_timestamp"]
+            sensor_name = row_key.split("#")[1]
+            return sensor_name, device_temp, temp_timestamp
+        except IndexError:
+            print(
+                "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
+            )
+            sys.exit()
 
     @staticmethod
     def timestamp_converter(timestamp):
