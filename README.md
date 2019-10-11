@@ -11,7 +11,7 @@ Live, real-time dashboard in a cloud run web app end to end.
 ![Example Dashboard](https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/iot-dashboard-example.gif)
 
 <p align="center">
-  <img width="460" height="300" src="http://www.fillmurray.com/460/300">
+  <img width="460" height="300" src="https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/iot-dashboard-example.gif">
 </p>
 
 Main Docker Dev Components:
