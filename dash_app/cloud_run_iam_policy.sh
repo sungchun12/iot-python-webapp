@@ -12,4 +12,4 @@ export TABLE_NAME="iot-stream-table"
 export CLOUD_REGION="us-central1"
 export IOT_REGISTRY="iot-registry"
 export ROW_FILTER=2
-export GOOGLE_APPLICATION_CREDENTIALS="/Users/sungwon.chung/Desktop/repos/serverless-dash-webapp/terraform/service_account.json"
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/sungwon.chung/Desktop/repos/serverless-dash-webapp/tf_modules/service_account.json"
