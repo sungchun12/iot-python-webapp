@@ -13,3 +13,5 @@ End to end testing
 Inspiration: https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana
 
 Pick and choose directory structure based on inspiration
+
+![](https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/live-dashboard-example.gif)
