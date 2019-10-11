@@ -12,7 +12,6 @@ from dash.dependencies import Input, Output
 # import created class to access bigtable iot data
 import access_iot_data
 
-
 # initialize class and create row keys list once
 cbt_data_generator = access_iot_data.iot_pipeline_data()
 devices_list = cbt_data_generator.get_device_names()
