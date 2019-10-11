@@ -8,10 +8,8 @@ Use this repo template to isolate development workloads, and share it with your 
 
 Live, real-time dashboard in a cloud run web app end to end.
 
-![Example Dashboard](https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/iot-dashboard-example.gif)
-
 <p align="center">
-  <img width="460" height="300" src="https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/iot-dashboard-example.gif">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/iot-dashboard-example.gif">
 </p>
 
 Main Docker Dev Components:
