@@ -33,6 +33,9 @@ class iot_pipeline_data(object):
         self.instance = self.bigtable_client.instance(self.instance_id)
         self.table = self.instance.table(self.table_id)
 
+        # error handling messages
+        self.index_error_message = "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
+
     def get_iot_devices_data(self, n_rows):
         """Main interface to retrieve IOT device data in one payload
         """
@@ -64,9 +67,7 @@ class iot_pipeline_data(object):
             )
             return devices_list
         except IndexError:
-            print(
-                "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
-            )
+            print(self.index_error_message)
             sys.exit()
 
     def create_device_rowkeys(self, devices_list):
@@ -118,8 +119,7 @@ class iot_pipeline_data(object):
         # ex: [[{'device#temp-sensor-14608#9223372035284285863': {'temp': 26.095061796938726, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-9944#9223372035284285864': {'temp': 27.361626128931505, 'temp_timestamp': '2019-10-07 23:12:23'}}], [{'device#temp-sensor-9944#9223372035284285864': {'temp': 27.361626128931505, 'temp_timestamp': '2019-10-07 23:12:23'}}]]
         return all_device_row_list
 
-    @staticmethod
-    def get_name_temp_time(all_device_row_list, device_index):
+    def get_name_temp_time(self, all_device_row_list, device_index):
         """Returns name and temperature objects for single iot device
         """
         try:
@@ -130,9 +130,7 @@ class iot_pipeline_data(object):
             sensor_name = row_key.split("#")[1]
             return sensor_name, device_temp, temp_timestamp
         except IndexError:
-            print(
-                "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
-            )
+            print(self.index_error_message)
             sys.exit()
 
     @staticmethod
