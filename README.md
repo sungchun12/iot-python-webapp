@@ -14,4 +14,4 @@ Inspiration: https://github.com/GoogleCloudPlatform/professional-services/tree/m
 
 Pick and choose directory structure based on inspiration
 
-![](https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/live-dashboard-example.gif)
+![Example Dashboard](https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/iot-dashboard-example.gif)
