@@ -6,7 +6,7 @@ ENV APP_HOME /app
 WORKDIR $APP_HOME
 
 #copy current directory to target container directory
-COPY ./src .
+COPY ./dash_app/src .
 
 #install packages/dependencies
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
