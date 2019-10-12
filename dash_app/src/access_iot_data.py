@@ -16,25 +16,33 @@ import iot_manager
 
 class iot_pipeline_data(object):
     def __init__(self):
-        # pass in environment variables
-        self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
-        self.instance_id = os.environ["BIGTABLE_CLUSTER"]
-        self.table_id = os.environ["TABLE_NAME"]
-        self.cloud_region = os.environ["CLOUD_REGION"]
-        self.iot_registry = os.environ["IOT_REGISTRY"]
-        self.row_filter_count = int(os.environ["ROW_FILTER"])
-        self.service_account_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+        try:
+            # pass in environment variables
+            self.project_id = os.environ["GCLOUD_PROJECT_NAME"]
+            self.instance_id = os.environ["BIGTABLE_CLUSTER"]
+            self.table_id = os.environ["TABLE_NAME"]
+            self.cloud_region = os.environ["CLOUD_REGION"]
+            self.iot_registry = os.environ["IOT_REGISTRY"]
+            self.row_filter_count = int(os.environ["ROW_FILTER"])
+            self.service_account_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
-        # setup bigtable variables
-        self.row_filter = row_filters.CellsColumnLimitFilter((self.row_filter_count))
-        self.bigtable_client = bigtable.Client(project=self.project_id, admin=True)
-        self.column = "device-temp".encode()
-        self.column_family_id = "device-family"
-        self.instance = self.bigtable_client.instance(self.instance_id)
-        self.table = self.instance.table(self.table_id)
+            # setup bigtable variables
+            self.row_filter = row_filters.CellsColumnLimitFilter(
+                (self.row_filter_count)
+            )
+            self.bigtable_client = bigtable.Client(project=self.project_id, admin=True)
+            self.column = "device-temp".encode()
+            self.column_family_id = "device-family"
+            self.instance = self.bigtable_client.instance(self.instance_id)
+            self.table = self.instance.table(self.table_id)
 
-        # error handling messages
-        self.index_error_message = "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
+            # error handling messages
+            self.index_error_message = "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
+        except KeyError as e:
+            print(
+                f"Make sure this variable is defined in the application env vars: {str(e)}"
+            )
+            sys.exit()
 
     def get_iot_devices_data(self, n_rows):
         """Main interface to retrieve IOT device data in one payload
