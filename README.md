@@ -8,8 +8,6 @@ Use this repo template to isolate development workloads, and share it with your 
 
 Live, real-time dashboard in a cloud run web app end to end.
 
-test
-
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/iot-dashboard-example.gif">
 </p>
