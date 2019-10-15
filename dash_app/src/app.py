@@ -107,6 +107,31 @@ def update_metrics(n):
     Output("live-update-graph", "figure"), [Input("interval-component", "n_intervals")]
 )
 def update_graph_live(n):
+    # Create the graph with subplots
+    fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.1)
+    fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
+    fig["layout"]["legend"] = {
+        "x": 0.5,
+        "y": 1.1,
+        "xanchor": "center",
+        "yanchor": "top",
+        "orientation": "h",
+    }
+    fig.update_layout(
+        autosize=True,
+        width=700,
+        height=600,
+        plot_bgcolor=colors["background"],
+        paper_bgcolor=colors["background"],
+        font={"color": colors["graph-text"]},
+    )
+
+    # Update xaxis properties
+    fig.update_xaxes(title_text="Timestamp", row=3, col=1)
+
+    # Update yaxis properties
+    fig.update_yaxes(title_text="Temperature", row=2, col=1)
+
     # setup data
     all_device_row_list = cbt_data_generator.create_all_device_rows(
         row_keys_list, n_rows=1
@@ -132,31 +157,6 @@ def update_graph_live(n):
     device_3["device_name"] = device_name_3
     device_3["temp"].append(float(device_temp_3))
     device_3["temp_timestamp"].append(temp_timestamp_3)
-
-    # Create the graph with subplots
-    fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.1)
-    fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
-    fig["layout"]["legend"] = {
-        "x": 0.5,
-        "y": 1.1,
-        "xanchor": "center",
-        "yanchor": "top",
-        "orientation": "h",
-    }
-    fig.update_layout(
-        autosize=True,
-        width=700,
-        height=600,
-        plot_bgcolor=colors["background"],
-        paper_bgcolor=colors["background"],
-        font={"color": colors["graph-text"]},
-    )
-
-    # Update xaxis properties
-    fig.update_xaxes(title_text="Timestamp", row=3, col=1)
-
-    # Update yaxis properties
-    fig.update_yaxes(title_text="Temperature", row=2, col=1)
 
     # append data to each device subplot
     fig.append_trace(
