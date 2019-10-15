@@ -107,6 +107,7 @@ def update_metrics(n):
     Output("live-update-graph", "figure"), [Input("interval-component", "n_intervals")]
 )
 def update_graph_live(n):
+    # setup data
     all_device_row_list = cbt_data_generator.create_all_device_rows(
         row_keys_list, n_rows=1
     )
@@ -157,6 +158,7 @@ def update_graph_live(n):
     # Update yaxis properties
     fig.update_yaxes(title_text="Temperature", row=2, col=1)
 
+    # append data to each device subplot
     fig.append_trace(
         {
             "x": list(device_1["temp_timestamp"]),
