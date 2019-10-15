@@ -4,10 +4,11 @@
 import os
 
 import dash
+import dash_daq as daq
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 
 # import created class to access bigtable iot data
 import access_iot_data
@@ -26,29 +27,55 @@ external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+colors = {
+    "background": "#303030",
+    "text": "#FFFFFF",
+    "graph-text": "#FFFFFF",
+    "toggle-switch-text": "#07e9fe",
+}
+
 app.layout = html.Div(
-    html.Div(
-        [
-            html.H4("IoT Temperature Device Live Dashboard"),
-            html.Div(id="live-update-text"),
-            dcc.Graph(
-                id="live-update-graph",
-                animate=False,
-                style={
-                    "width": "49%",
-                    "display": "inline-block",
-                    "vertical-align": "middle",
-                },
-            ),
-            dcc.Interval(
-                id="interval-component",
-                interval=1 * 1000,  # in milliseconds
-                n_intervals=0,
-            ),
-        ],
-        style={"textAlign": "center"},
-    )
+    [
+        html.H4("IoT Temperature Device Live Dashboard"),
+        html.Div(id="live-update-text"),
+        daq.ToggleSwitch(
+            id="live-toggle-switch",
+            value=True,
+            label="Live Data Switch",
+            labelPosition="bottom",
+            color=colors["toggle-switch-text"],
+        ),
+        html.Div(id="toggle-switch-output"),
+        dcc.Graph(
+            id="live-update-graph",
+            animate=False,
+            style={
+                "width": "49%",
+                "display": "inline-block",
+                "vertical-align": "middle",
+            },
+        ),
+        dcc.Interval(
+            id="interval-component", interval=1 * 1000, n_intervals=0  # in milliseconds
+        ),
+    ],
+    style={
+        "textAlign": "center",
+        "background-color": colors["background"],
+        "color": colors["text"],
+    },
 )
+
+# Callbacks for stopping interval update
+# @app.callback(
+#     Output("interval-component", "disabled"),
+#     [Input("live-toggle-switch", "value")],
+# )
+# def stop_live_updates(value):
+#     if value == False:
+#         return "Live data stopped"
+#     else:
+#         return "Live data streaming"
 
 
 @app.callback(
@@ -115,7 +142,14 @@ def update_graph_live(n):
         "yanchor": "top",
         "orientation": "h",
     }
-    fig.update_layout(autosize=True, width=700, height=600)
+    fig.update_layout(
+        autosize=True,
+        width=700,
+        height=600,
+        plot_bgcolor=colors["background"],
+        paper_bgcolor=colors["background"],
+        font={"color": colors["graph-text"]},
+    )
 
     # Update xaxis properties
     fig.update_xaxes(title_text="Timestamp", row=3, col=1)
