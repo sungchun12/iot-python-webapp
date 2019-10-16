@@ -2,6 +2,12 @@
 # REQUIRED PARAMETERS
 # These variables are expected to be passed in by the operator
 # ---------------------------------------------------------------------------------------------------------------------
+variable "credentials" {
+  description = "path to service account json file"
+  type        = string
+  default     = "../service_account.json"
+}
+
 variable "project" {
   description = "name of your GCP project"
   type        = string

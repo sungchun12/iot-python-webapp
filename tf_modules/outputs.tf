@@ -74,3 +74,10 @@ output "ssh-access-firewall-metadata" {
   value = module.iot_compute.ssh-access-firewall-metadata
 }
 
+output "kms-keyring-metadata" {
+  value = module.secrets_manager.kms-keyring-metadata
+}
+
+output "kms-crypto-key-metadata" {
+  value = module.secrets_manager.kms-crypto-key-metadata
+}

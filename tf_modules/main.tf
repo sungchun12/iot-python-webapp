@@ -10,14 +10,14 @@
 # Note: The "google-beta" provider needs to be setup in ADDITION to the "google" provider
 # ---------------------------------------------------------------------------------------------------------------------
 provider "google" {
-  credentials = "${file("../service_account.json")}"
+  credentials = var.credentials
   project     = var.project
   region      = var.location
   zone        = var.zone
 }
 
 provider "google-beta" {
-  credentials = "${file("../service_account.json")}"
+  credentials = var.credentials
   project     = var.project
   region      = var.location
   zone        = var.zone
@@ -61,6 +61,16 @@ module "iot_compute" {
   zone                  = var.zone
   service_account_email = var.service_account_email
   version_label         = var.version_label
+}
+
+module "secrets_manager" {
+  source = "./modules/secrets_manager"
+
+  #pass the root module variables to child module
+  credentials   = var.credentials
+  project       = var.project
+  location      = var.location
+  version_label = var.version_label
 }
 
 module "app_hosting" {
