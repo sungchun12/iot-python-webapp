@@ -11,7 +11,7 @@ resource "google_cloudiot_registry" "iot-registry" {
   name   = var.iot_registry_name
   region = var.location
 
-  event_notification_config = {
+  event_notification_configs {
     pubsub_topic_name = google_pubsub_topic.data-pipeline-topic.id
   }
 
