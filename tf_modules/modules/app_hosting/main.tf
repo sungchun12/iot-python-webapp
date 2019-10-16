@@ -48,6 +48,10 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
         name  = "ROW_FILTER"
         value = var.row_filter
       }
+      env {
+        name  = "GOOGLE_APPLICATION_CREDENTIALS"
+        value = var.google_application_credentials_ciphertext
+      }
     }
   }
 }

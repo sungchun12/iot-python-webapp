@@ -34,6 +34,8 @@ variable "container_image" {
 }
 
 # variables below are passed through the root module from other modules to maintain consistent deployment configs
+variable "google_application_credentials_ciphertext" {
+}
 
 variable "iot_registry_name" {
 }

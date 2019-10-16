@@ -12,7 +12,7 @@ resource "google_kms_crypto_key" "iot-python-webapp-key" {
   key_ring = google_kms_key_ring.cloud-run-keyring.self_link
 }
 
-data "google_kms_secret_ciphertext" "ciphertext" {
+data "google_kms_secret_ciphertext" "application-credentials" {
   crypto_key = google_kms_crypto_key.iot-python-webapp-key.self_link
   plaintext  = var.credentials
 }

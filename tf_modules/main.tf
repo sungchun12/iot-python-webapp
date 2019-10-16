@@ -83,6 +83,9 @@ module "app_hosting" {
   service_account_email = var.service_account_email
   version_label         = var.version_label
 
+  #pass the secrets manager variables
+  google_application_credentials_ciphertext = "${module.secrets_manager.application-credentials-ciphertext}"
+
   #pass the iot module variables
   iot_registry_name = "${module.data_pipeline.iot-registry-metadata}"
 
