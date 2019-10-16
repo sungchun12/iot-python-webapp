@@ -10,14 +10,14 @@
 # Note: The "google-beta" provider needs to be setup in ADDITION to the "google" provider
 # ---------------------------------------------------------------------------------------------------------------------
 provider "google" {
-  credentials = "${file("service_account.json")}"
+  credentials = "${file("../service_account.json")}"
   project     = var.project
   region      = var.location
   zone        = var.zone
 }
 
 provider "google-beta" {
-  credentials = "${file("service_account.json")}"
+  credentials = "${file("../service_account.json")}"
   project     = var.project
   region      = var.location
   zone        = var.zone
