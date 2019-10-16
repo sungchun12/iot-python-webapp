@@ -58,17 +58,6 @@ app.layout = html.Div(
     },
 )
 
-# Callbacks for stopping interval update
-# @app.callback(
-#     Output("interval-component", "disabled"),
-#     [Input("live-toggle-switch", "value")],
-# )
-# def stop_live_updates(value):
-#     if value == False:
-#         return "Live data stopped"
-#     else:
-#         return "Live data streaming"
-
 
 @app.callback(
     Output("live-update-text", "children"), [Input("interval-component", "n_intervals")]
