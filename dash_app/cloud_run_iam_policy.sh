@@ -16,6 +16,8 @@ export GOOGLE_APPLICATION_CREDENTIALS="/Users/sungwon.chung/Desktop/repos/server
 
 # steps to encrypt private key for cloud run
 # https://stackoverflow.com/questions/48602546/google-cloud-functions-how-to-securely-store-service-account-private-key-when
+
+# https://cloud.google.com/kms/docs/secret-management#choosing_a_secret_management_solution
 # TODO: can add the below scripts to a single script with file argument
 # create bucket for encrypted service account json private key
 gsutil mb -c standard -l us-central1 -p iconic-range-220603 -b on gs://secure-bucket-cloud-run
