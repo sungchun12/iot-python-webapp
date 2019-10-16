@@ -38,14 +38,6 @@ app.layout = html.Div(
     [
         html.H4("IoT Temperature Device Live Dashboard"),
         html.Div(id="live-update-text"),
-        daq.ToggleSwitch(
-            id="live-toggle-switch",
-            value=True,
-            label="Live Data Switch",
-            labelPosition="bottom",
-            color=colors["toggle-switch-text"],
-        ),
-        html.Div(id="toggle-switch-output"),
         dcc.Graph(
             id="live-update-graph",
             animate=False,
