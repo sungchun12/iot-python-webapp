@@ -24,7 +24,7 @@ class iot_pipeline_data(object):
             self.cloud_region = os.environ["CLOUD_REGION"]
             self.iot_registry = os.environ["IOT_REGISTRY"]
             self.row_filter_count = int(os.environ["ROW_FILTER"])
-            self.service_account_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+            self.__service_account_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
             # setup bigtable variables
             self.row_filter = row_filters.CellsColumnLimitFilter(
@@ -57,7 +57,7 @@ class iot_pipeline_data(object):
         """
         try:
             registries_list = iot_manager.list_registries(
-                self.service_account_json, self.project_id, self.cloud_region
+                self.__service_account_json, self.project_id, self.cloud_region
             )
             # ex: 'iot-registry'
             registry_id = [
@@ -68,7 +68,7 @@ class iot_pipeline_data(object):
 
             # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'}, {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'}, {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
             devices_list = iot_manager.list_devices(
-                self.service_account_json,
+                self.__service_account_json,
                 self.project_id,
                 self.cloud_region,
                 registry_id,
