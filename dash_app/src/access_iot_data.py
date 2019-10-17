@@ -7,6 +7,7 @@ import os
 from collections import deque
 
 from google.cloud import bigtable
+from google.cloud import kms_v1
 from google.cloud.bigtable import column_family
 from google.cloud.bigtable import row_filters
 
@@ -24,7 +25,11 @@ class iot_pipeline_data(object):
             self.cloud_region = os.environ["CLOUD_REGION"]
             self.iot_registry = os.environ["IOT_REGISTRY"]
             self.row_filter_count = int(os.environ["ROW_FILTER"])
-            self.__service_account_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+            self.key_ring_id = os.environ["KEY_RING_ID"]
+            self.crypto_key_id = os.environ["CRYPTO_KEY_ID"]
+            self.__service_account_ciphertext = os.environ[
+                "GOOGLE_APPLICATION_CREDENTIALS"
+            ]
 
             # setup bigtable variables
             self.row_filter = row_filters.CellsColumnLimitFilter(
@@ -44,6 +49,22 @@ class iot_pipeline_data(object):
             )
             sys.exit()
 
+    def decrpyt_symmetric_text(self, ciphertext):
+        """Decrypt data using KMS key used to encrypt file in the first place.
+        """
+        # Creates an API client for the KMS API.
+        client = kms_v1.KeyManagementServiceClient()
+
+        # The resource name of the CryptoKey.
+        name = client.crypto_key_path_path(
+            self.project_id, self.cloud_region, self.key_ring_id, self.crypto_key_id
+        )
+
+        # Use the KMS API to decrypt the data.
+        response = client.decrypt(name, ciphertext)
+
+        return response.plaintext
+
     def get_iot_devices_data(self, n_rows):
         """Main interface to retrieve IOT device data in one payload
         """
@@ -57,7 +78,9 @@ class iot_pipeline_data(object):
         """
         try:
             registries_list = iot_manager.list_registries(
-                self.__service_account_json, self.project_id, self.cloud_region
+                self.decrpyt_symmetric_text(self.__service_account_ciphertext),
+                self.project_id,
+                self.cloud_region,
             )
             # ex: 'iot-registry'
             registry_id = [
@@ -68,7 +91,7 @@ class iot_pipeline_data(object):
 
             # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'}, {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'}, {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
             devices_list = iot_manager.list_devices(
-                self.__service_account_json,
+                self.decrpyt_symmetric_text(self.__service_account_ciphertext),
                 self.project_id,
                 self.cloud_region,
                 registry_id,
