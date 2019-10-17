@@ -24,6 +24,21 @@ provider "google-beta" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
+# ENABLE APIS
+# These are expected to be passed in by the operator as a list
+# Note: https://github.com/terraform-google-modules/terraform-google-project-factory/tree/master/modules/project_services
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "project-services" {
+  source                      = "terraform-google-modules/project-factory/google//modules/project_services" #variables not allowed here
+  version                     = "2.1.3"                                                                     #variables not allowed here
+  project_id                  = var.project
+  activate_apis               = var.api_services
+  disable_services_on_destroy = var.disable_services_on_destroy_bool
+  enable_apis                 = var.enable_apis_bool
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
 # IMPORT MODULES
 # This root module imports and passes through project wide variables
 # Detailed variables contained within respective module directory
