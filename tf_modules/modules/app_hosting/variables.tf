@@ -40,6 +40,12 @@ variable "container_image" {
 }
 
 # variables below are passed through the root module from other modules to maintain consistent deployment configs
+variable "key_ring_id" {
+}
+
+variable "crypto_key_id" {
+}
+
 variable "google_application_credentials_ciphertext" {
 }
 

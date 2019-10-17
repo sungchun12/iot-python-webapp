@@ -99,6 +99,8 @@ module "app_hosting" {
   version_label         = var.version_label
 
   #pass the secrets manager variables
+  key_ring_id                               = module.secrets_manager.kms-keyring-metadata
+  crypto_key_id                             = module.secrets_manager.kms-crypto-key-metadata
   google_application_credentials_ciphertext = module.secrets_manager.application-credentials-ciphertext
 
   #pass the iot module variables

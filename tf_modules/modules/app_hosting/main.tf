@@ -65,6 +65,14 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
         value = var.row_filter
       }
       env {
+        name  = "KEY_RING_ID"
+        value = var.key_ring_id
+      }
+      env {
+        name  = "CRYPTO_KEY_ID"
+        value = var.crypto_key_id
+      }
+      env {
         name  = "GOOGLE_APPLICATION_CREDENTIALS"
         value = var.google_application_credentials_ciphertext
       }
