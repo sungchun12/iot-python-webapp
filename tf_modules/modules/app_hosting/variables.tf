@@ -27,6 +27,12 @@ variable "cloud_run_name" {
   default     = "tf-dash-cloud-run-demo"
 }
 
+variable "container_image_name" {
+  description = "Docker container image name"
+  type        = string
+  default     = "dash-cloudrun-demo"
+}
+
 variable "container_image" {
   description = "Docker container registry URL"
   type        = string

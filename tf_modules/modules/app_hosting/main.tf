@@ -8,9 +8,25 @@
 # CREATE THE CLOUD RUN SERVICE
 # ---------------------------------------------------------------------------------------------------------------------
 
+# need to push an image outside of terraform for the container repo and image can populate
+# data "google_container_registry_repository" "foo" {}
+
+# output "gcr_location" {
+#   value = "${data.google_container_registry_repository.foo.repository_url}"
+# }
+
+data "google_container_registry_image" "dash-cloudrun-demo" {
+  name    = var.container_image_name
+  project = var.project
+}
+
+# output "gcr_image_location" {
+#   value = "${data.google_container_registry_image.dash-cloudrun-demo.image_url}"
+# }
+
 resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
   provider = "google-beta"
-  name     = var.cloud_run_name
+  name     = "${data.google_container_registry_image.dash-cloudrun-demo.image_url}"
   location = var.location
   # policy_data = data.google_iam_policy.cloud-run-access.policy_data
 
