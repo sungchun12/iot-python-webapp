@@ -48,7 +48,7 @@ module "data_pipeline" {
   version_label         = var.version_label
 
   #pass the storage variables
-  source_code_bucket_name = "${module.storage.source-code-bucket-metadata}"
+  source_code_bucket_name = module.storage.source-code-bucket-metadata
 
 }
 
@@ -84,13 +84,13 @@ module "app_hosting" {
   version_label         = var.version_label
 
   #pass the secrets manager variables
-  google_application_credentials_ciphertext = "${module.secrets_manager.application-credentials-ciphertext}"
+  google_application_credentials_ciphertext = module.secrets_manager.application-credentials-ciphertext
 
   #pass the iot module variables
-  iot_registry_name = "${module.data_pipeline.iot-registry-metadata}"
+  iot_registry_name = module.data_pipeline.iot-registry-metadata
 
   #pass the bigtable module variables
-  bigtable_db_name    = "${module.data_pipeline.data-pipeline-bigtable-metadata}"
-  bigtable_table_name = "${module.data_pipeline.data-pipeline-bigtable-table-metadata}"
-  row_filter          = "${module.data_pipeline.data-pipeline-bigtable-rowfilter-metadata}"
+  bigtable_db_name    = module.data_pipeline.data-pipeline-bigtable-metadata
+  bigtable_table_name = module.data_pipeline.data-pipeline-bigtable-table-metadata
+  row_filter          = module.data_pipeline.data-pipeline-bigtable-rowfilter-metadata
 }

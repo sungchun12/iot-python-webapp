@@ -26,7 +26,7 @@ data "google_container_registry_image" "dash-cloudrun-demo" {
 
 resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
   provider = "google-beta"
-  name     = "${data.google_container_registry_image.dash-cloudrun-demo.image_url}"
+  name     = data.google_container_registry_image.dash-cloudrun-demo.image_url
   location = var.location
   # policy_data = data.google_iam_policy.cloud-run-access.policy_data
 
