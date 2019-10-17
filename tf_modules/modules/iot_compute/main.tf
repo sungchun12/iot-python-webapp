@@ -60,15 +60,15 @@ resource "google_compute_instance" "iot-device-1" {
   SCRIPT
 
   service_account {
-    email = var.service_account_email
+    email  = var.service_account_email
     scopes = var.service_account_scopes
   }
 }
 
 resource "google_compute_instance" "iot-device-2" {
-  name = var.device_name_2
+  name         = var.device_name_2
   machine_type = var.machine_type
-  zone = var.device_name_2_zone
+  zone         = var.device_name_2_zone
 
   tags = [var.version_label]
 
@@ -128,7 +128,7 @@ resource "google_compute_instance" "iot-device-3" {
   SCRIPT
 
   service_account {
-    email = var.service_account_email
+    email  = var.service_account_email
     scopes = var.service_account_scopes
   }
 }
