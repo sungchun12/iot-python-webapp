@@ -43,6 +43,10 @@ class iot_pipeline_data(object):
 
             # error handling messages
             self.index_error_message = "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
+
+            self.type_error_message = (
+                "Ensure GOOGLE_APPLICATION_CREDENTIALS env var is ciphertext"
+            )
         except KeyError as e:
             print(
                 f"Make sure this variable is defined in the application env vars: {str(e)}"
@@ -99,6 +103,9 @@ class iot_pipeline_data(object):
             return devices_list
         except IndexError:
             print(self.index_error_message)
+            sys.exit()
+        except TypeError:
+            print(self.type_error_message)
             sys.exit()
 
     def create_device_rowkeys(self, devices_list):
