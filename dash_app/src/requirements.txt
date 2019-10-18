@@ -11,3 +11,4 @@ google-auth==1.6.3
 google-auth-httplib2==0.0.3    
 google-auth-oauthlib==0.4.0
 google-cloud-pubsub==1.0.0
+google-cloud-kms==1.2.1
