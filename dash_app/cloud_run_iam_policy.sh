@@ -12,7 +12,9 @@ export TABLE_NAME="iot-stream-table"
 export CLOUD_REGION="us-central1"
 export IOT_REGISTRY="iot-registry"
 export ROW_FILTER=2
-export GOOGLE_APPLICATION_CREDENTIALS="/Users/sungwon.chung/Desktop/repos/serverless-dash-webapp/tf_modules/service_account.json"
+export KEY_RING_ID="cloud-run-keyring"
+export CRYPTO_KEY_ID="iot-python-webapp-key"
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/sungwon.chung/Desktop/repos/serverless-dash-webapp/service_account.json"
 
 # steps to encrypt private key for cloud run
 # https://stackoverflow.com/questions/48602546/google-cloud-functions-how-to-securely-store-service-account-private-key-when
