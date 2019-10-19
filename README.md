@@ -28,6 +28,17 @@ _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 
 - foo
 
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/sungchun12/iot-python-webapp.git)
+
+_OR_
+
+1.  Activate Cloud Shell: <https://cloud.google.com/shell/docs/quickstart#start_cloud_shell>
+2.  Clone repository
+
+```bash
+git clone https://github.com/sungchun12/iot-python-webapp.git
+```
+
 ## Order of Operations
 
 _Listed steps for how the application/pipeline works_
