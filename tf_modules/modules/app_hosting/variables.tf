@@ -33,11 +33,11 @@ variable "container_image_name" {
   default     = "dash-cloudrun-demo"
 }
 
-variable "container_image" {
-  description = "Docker container registry URL"
-  type        = string
-  default     = "gcr.io/iconic-range-220603/dash-cloudrun-demo"
-}
+# variable "container_image" {
+#   description = "Docker container registry URL"
+#   type        = string
+#   default     = "gcr.io/iconic-range-220603/dash-cloudrun-demo"
+# }
 
 # variables below are passed through the root module from other modules to maintain consistent deployment configs
 variable "key_ring_id" {
