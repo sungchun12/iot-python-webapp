@@ -27,12 +27,7 @@ external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-colors = {
-    "background": "#303030",
-    "text": "#FFFFFF",
-    "graph-text": "#FFFFFF",
-    "toggle-switch-text": "#07e9fe",
-}
+colors = {"background": "#303030", "text": "#FFFFFF", "graph-text": "#FFFFFF"}
 
 app.layout = html.Div(
     [
@@ -90,14 +85,14 @@ def update_metrics(n):
 def update_graph_live(n):
     # Create the graph with subplots
     fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.1)
-    fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
-    fig["layout"]["legend"] = {
-        "x": 0.5,
-        "y": 1.1,
-        "xanchor": "center",
-        "yanchor": "top",
-        "orientation": "h",
-    }
+    # fig["layout"]["margin"] = {"l": 30, "r": 10, "b": 30, "t": 10}
+    # fig["layout"]["legend"] = {
+    #     "x": 0.5,
+    #     "y": 1.1,
+    #     "xanchor": "center",
+    #     "yanchor": "top",
+    #     "orientation": "h",
+    # }
     fig.update_layout(
         autosize=True,
         width=700,
@@ -105,6 +100,14 @@ def update_graph_live(n):
         plot_bgcolor=colors["background"],
         paper_bgcolor=colors["background"],
         font={"color": colors["graph-text"]},
+        legend={
+            "x": 0.5,
+            "y": 1.1,
+            "xanchor": "center",
+            "yanchor": "top",
+            "orientation": "h",
+        },
+        margin={"l": 30, "r": 10, "b": 30, "t": 10},
     )
 
     # Update xaxis properties
