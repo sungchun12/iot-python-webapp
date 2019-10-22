@@ -83,9 +83,10 @@ class iot_pipeline_data(object):
         """Stores all gcp metadata needed to update live dashboard
         """
         try:
-            info = json.load(
-                self.decrpyt_symmetric_text(self.__service_account_ciphertext).decode()
-            )
+            info = self.decrpyt_symmetric_text(
+                self.__service_account_ciphertext
+            ).decode()
+            info = json.loads(info)
             registries_list = iot_manager.list_registries(
                 info, self.project_id, self.cloud_region
             )
