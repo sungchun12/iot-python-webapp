@@ -43,8 +43,17 @@ git clone https://github.com/sungchun12/iot-python-webapp.git
 
 _Listed steps for how the application/pipeline works_
 
-1. foo
-2. foo
+1. Create bucket for terraform tfstate backups to be stored. Use gcloud manually
+2. Create bucket for encrypted service account json. Use gcloud manually
+3. Build docker image using gcloud builds submit command(cloud build)
+4. Deploy terraform infrastructure(cloud build)
+5. Allow unauthenticated requests to app. Use gcloud(cloud build)
+
+_Destruction Steps_
+
+1. Delete devices in iot registry
+2. Terraform destroy
+3. Delete manually created buckets
 
 ## Technologies
 
