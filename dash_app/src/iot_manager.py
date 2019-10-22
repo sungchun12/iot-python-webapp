@@ -65,7 +65,7 @@ def get_client(service_account_json):
     discovery_api = 'https://cloudiot.googleapis.com/$discovery/rest'
     service_name = 'cloudiotcore'
 
-    credentials = service_account.Credentials.from_service_account_file(
+    credentials = service_account.Credentials.from_service_account_info(
             service_account_json)
     scoped_credentials = credentials.with_scopes(api_scopes)
 
