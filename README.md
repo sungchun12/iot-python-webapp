@@ -73,7 +73,8 @@ _Illustrate design choices, and highlight nuances worth pointing out_
 
 _Name pain points, pleasant surprises, and how I would develop this better next time/going forward_
 
-- foo
+- KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore
+- An IoT registry can not be force deleted if devices are tied to it
 
 ## Contribute
 
