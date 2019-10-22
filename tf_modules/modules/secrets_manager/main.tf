@@ -14,5 +14,5 @@ resource "google_kms_crypto_key" "iot-python-webapp-key" {
 
 data "google_kms_secret_ciphertext" "application-credentials" {
   crypto_key = google_kms_crypto_key.iot-python-webapp-key.self_link
-  plaintext  = var.credentials
+  plaintext  = var.secrets
 }

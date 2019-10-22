@@ -2,7 +2,7 @@
 # REQUIRED PARAMETERS
 # These variables are expected to be passed in by the operator
 # ---------------------------------------------------------------------------------------------------------------------
-variable "credentials" {
+variable "secrets" {
 }
 
 variable "project" {
@@ -21,7 +21,7 @@ variable "version_label" {
 variable "key_ring_name" {
   description = "name of the keyring to manage cryptographic keys"
   type        = string
-  default     = "cloud-run-keyring"
+  default     = "cloud-run-keyring-v8"
 
 }
 

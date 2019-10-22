@@ -82,7 +82,7 @@ module "secrets_manager" {
   source = "./modules/secrets_manager"
 
   #pass the root module variables to child module
-  credentials   = var.credentials
+  secrets       = "${file(var.credentials)}"
   project       = var.project
   location      = var.location
   version_label = var.version_label
