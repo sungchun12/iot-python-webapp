@@ -43,10 +43,10 @@ git clone https://github.com/sungchun12/iot-python-webapp.git
 
 _Listed steps for how the application/pipeline works_
 
-1. Create bucket for terraform tfstate backups to be stored. Use gcloud manually
-2. Create bucket for encrypted service account json. Use gcloud manually
-3. Build docker image using gcloud builds submit command(cloud build)
-4. Deploy terraform infrastructure(cloud build)
+1. Create bucket for terraform tfstate backups to be stored. Use gcloud manually(only needs to be done once upfront)
+2. Create bucket for encrypted service account json ONLY for decrypting KMS secret. Use gcloud manually(only needs to be done once upfront)
+3. Build and push docker image using gcloud builds submit command(cloud build)
+4. Deploy terraform infrastructure(cloud build, add permissions to cloud build default service account-check tutorial)
 5. Allow unauthenticated requests to app. Use gcloud(cloud build)
 
 _Destruction Steps_
@@ -84,6 +84,7 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 
 - KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore
 - An IoT registry can not be force deleted if devices are tied to it
+- Cloud Run for terraform is still needing further development. Need work outside terraform to allow app to expose to public internet
 
 ## Contribute
 
