@@ -1,24 +1,14 @@
-https://cloud.google.com/run/docs/authenticating/public
-
-
-gcloud beta run services add-iam-policy-binding tf-dash-cloud-run-demo \
---member="allUsers" \
---role="roles/run.invoker" \
---region="us-central1"
-
 export GCLOUD_PROJECT_NAME="iconic-range-220603"
 export BIGTABLE_CLUSTER="iot-stream-database"
 export TABLE_NAME="iot-stream-table"
-export CLOUD_REGION="us-central1"
+export CLOUD_REGION="global"
 export IOT_REGISTRY="iot-registry"
 export ROW_FILTER=2
-export KEY_RING_ID="cloud-run-keyring-v5"
-export CRYPTO_KEY_ID="iot-python-webapp-key"
+export KEY_RING_ID="cloud-run-keyring"
+export CRYPTO_KEY_ID="test-ring"
 export GOOGLE_APPLICATION_CREDENTIALS="/Users/sungwon.chung/Desktop/repos/serverless-dash-webapp/service_account.json"
 export GOOGLE_APP_CREDENTIALS="CiQA50Ad3WaKLGR3xlIgKzNz7caas4ceMEtfnote43POiHAQkV8SQACvmJFehfFm/gdai0gBG5HsVXdOyz+h13UtdIHMLS0LzP/atcZnsdtSKyBP2qV2mgZwnqzOs8EM7GID09p3YB4="
 
-import base64
-base64.b64encode(bytes(GOOGLE_APP_CREDENTIALS, 'utf-8'))
 
 # steps to encrypt private key for cloud run
 # https://stackoverflow.com/questions/48602546/google-cloud-functions-how-to-securely-store-service-account-private-key-when
@@ -77,6 +67,27 @@ gcloud kms decrypt \
 
 # ad hoc push to container registry from dockerfile
 gcloud builds submit --tag gcr.io/iconic-range-220603/dash-cloudrun-demo
+
+# deploy infrastructure
+terraform apply
+
+# https://cloud.google.com/run/docs/authenticating/public
+# make it public
+gcloud beta run services add-iam-policy-binding tf-dash-cloud-run-demo \
+--member="allUsers" \
+--role="roles/run.invoker" \
+--region="us-central1"
+
+#adjust memory limit
+gcloud beta run services update dash-cloudrun-demo --memory 2Gi --platform managed --region us-central1
+
+#destroy iot registry
+gcloud iot registries delete iot-registry --region=us-central1
+
+#destroy everything else
+terraform destroy
+
+# terraform destroy -target google_cloud_run_service.tf-dash-cloud-run-demo
 
 # cloud run example
 gcloud beta run deploy iot-python-webapp --platform managed --image gcr.io/iconic-range-220603/dash-demo-v2:latest --region us-central1 --allow-unauthenticated --set-env-vars=GCLOUD_PROJECT_NAME="iconic-range-220603",BIGTABLE_CLUSTER="iot-stream-database",TABLE_NAME="iot-stream-table",CLOUD_REGION="us-central1",IOT_REGISTRY="iot-registry",ROW_FILTER=2
