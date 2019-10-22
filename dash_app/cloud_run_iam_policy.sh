@@ -65,27 +65,30 @@ gcloud kms decrypt \
 # docker push gcr.io/<project-id>/<image-name>
 # docker push gcr.io/iconic-range-220603/dash-cloudrun-demo
 
-# ad hoc push to container registry from dockerfile
+# ad hoc push to container registry from dockerfile at root directory
 gcloud builds submit --tag gcr.io/iconic-range-220603/dash-cloudrun-demo
 
 # deploy infrastructure
 terraform apply
 
 # https://cloud.google.com/run/docs/authenticating/public
-# make it public
+# make cloud run public
 gcloud beta run services add-iam-policy-binding tf-dash-cloud-run-demo \
 --member="allUsers" \
 --role="roles/run.invoker" \
 --region="us-central1"
 
 #adjust memory limit
-gcloud beta run services update dash-cloudrun-demo --memory 2Gi --platform managed --region us-central1
+gcloud beta run services update dash-cloudrun-demo --memory 1Gi --platform managed --region us-central1
 
 #destroy iot registry
 gcloud iot registries delete iot-registry --region=us-central1
 
 #destroy everything else
 terraform destroy
+
+#adjust key ring name to another version name
+
 
 # terraform destroy -target google_cloud_run_service.tf-dash-cloud-run-demo
 
