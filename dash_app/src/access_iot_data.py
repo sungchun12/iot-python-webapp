@@ -4,6 +4,7 @@
 import sys
 import datetime
 import os
+import base64
 from collections import deque
 
 from google.cloud import bigtable
@@ -27,9 +28,9 @@ class iot_pipeline_data(object):
             self.row_filter_count = int(os.environ["ROW_FILTER"])
             self.key_ring_id = os.environ["KEY_RING_ID"]
             self.crypto_key_id = os.environ["CRYPTO_KEY_ID"]
-            self.__service_account_ciphertext = os.environ[
-                "GOOGLE_APPLICATION_CREDENTIALS"
-            ]
+            self.__service_account_ciphertext = base64.b64decode(
+                os.environ["GOOGLE_APP_CREDENTIALS"]
+            )
 
             # setup bigtable variables
             self.row_filter = row_filters.CellsColumnLimitFilter(
@@ -45,7 +46,7 @@ class iot_pipeline_data(object):
             self.index_error_message = "Refresh browser until live data starts flowing through and infrastructure is deployed! Exiting application now."
 
             self.type_error_message = (
-                "Ensure GOOGLE_APPLICATION_CREDENTIALS env var is ciphertext"
+                "Ensure GOOGLE_APP_CREDENTIALS env var is base64 decoded ciphertext"
             )
         except KeyError as e:
             print(
@@ -82,7 +83,7 @@ class iot_pipeline_data(object):
         """
         try:
             registries_list = iot_manager.list_registries(
-                self.decrpyt_symmetric_text(self.__service_account_ciphertext),
+                self.decrpyt_symmetric_text(self.__service_account_ciphertext).decode(),
                 self.project_id,
                 self.cloud_region,
             )
@@ -95,7 +96,7 @@ class iot_pipeline_data(object):
 
             # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'}, {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'}, {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
             devices_list = iot_manager.list_devices(
-                self.decrpyt_symmetric_text(self.__service_account_ciphertext),
+                self.decrpyt_symmetric_text(self.__service_account_ciphertext).decode(),
                 self.project_id,
                 self.cloud_region,
                 registry_id,
