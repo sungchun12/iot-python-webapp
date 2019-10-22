@@ -73,7 +73,7 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
         value = var.crypto_key_id
       }
       env {
-        name  = "GOOGLE_APPLICATION_CREDENTIALS"
+        name  = "GOOGLE_APP_CREDENTIALS"
         value = var.google_application_credentials_ciphertext
       }
     }
