@@ -83,12 +83,12 @@ class iot_pipeline_data(object):
         """Stores all gcp metadata needed to update live dashboard
         """
         try:
-            info = self.decrpyt_symmetric_text(
+            __info = self.decrpyt_symmetric_text(
                 self.__service_account_ciphertext
             ).decode()
-            info = json.loads(info)
+            __info = json.loads(__info)
             registries_list = iot_manager.list_registries(
-                info, self.project_id, self.cloud_region
+                __info, self.project_id, self.cloud_region
             )
             # ex: 'iot-registry'
             registry_id = [
@@ -99,7 +99,7 @@ class iot_pipeline_data(object):
 
             # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'}, {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'}, {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
             devices_list = iot_manager.list_devices(
-                info, self.project_id, self.cloud_region, registry_id
+                __info, self.project_id, self.cloud_region, registry_id
             )
             return devices_list
         except IndexError:
