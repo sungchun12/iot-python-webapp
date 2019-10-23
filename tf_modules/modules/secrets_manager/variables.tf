@@ -21,7 +21,7 @@ variable "version_label" {
 variable "key_ring_name" {
   description = "name of the keyring to manage cryptographic keys"
   type        = string
-  default     = "cloud-run-keyring-v15"
+  default     = "cloud-run-keyring-v16"
 
 }
 
