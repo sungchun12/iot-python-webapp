@@ -11,7 +11,7 @@ variable "credentials" {
 variable "project" {
   description = "name of your GCP project"
   type        = string
-  default     = "iconic-range-220603"
+  default     = "iot-python-webapp-demo"
 }
 
 variable "location" {
@@ -29,7 +29,7 @@ variable "zone" {
 variable "service_account_email" {
   description = "Service account used for VMs"
   type        = string
-  default     = "demo-service-account@iconic-range-220603.iam.gserviceaccount.com"
+  default     = "demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com"
 }
 
 variable "version_label" {
