@@ -14,6 +14,7 @@ data "google_container_registry_image" "dash-cloudrun-demo" {
   project = var.project
 }
 
+# add decrypter role to default compute engine service account
 data "google_compute_default_service_account" "default" {}
 
 resource "google_project_iam_binding" "service-account-decrypter" {
