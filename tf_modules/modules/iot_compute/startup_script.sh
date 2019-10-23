@@ -32,7 +32,7 @@ sudo wget https://pki.google.com/roots.pem
 sudo apt-get install google-cloud-sdk
 
 #set environment variables for creating devices on IOT registry
-PROJECT_ID=iconic-range-220603
+PROJECT_ID=iot-python-webapp-demo
 MY_REGION=us-central1
 IOT_REGISTRY=iot-registry
 DEVICE_ID=temp-sensor-$RANDOM #randomly generated integer id
