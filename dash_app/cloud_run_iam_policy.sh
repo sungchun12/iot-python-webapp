@@ -62,9 +62,10 @@ gcloud kms decrypt \
 # docker push gcr.io/iconic-range-220603/dash-cloudrun-demo
 
 #add parameters as part of deployment
-# startup_script.sh for your_username="realsww123" and projectid
+# startup_script.sh for your_username="realsww123" and projectid=iot-python-webapp-demo
 # variables.tf for project_id and service_account_emailfor terraform deployment
 # backend.tf for bucket name
+# use a random number generator similar to the startup script to create dynamic crypto key rings
 
 # all through cloud shell
 
@@ -98,6 +99,10 @@ gcloud projects add-iam-policy-binding iot-python-webapp-demo \
 gcloud projects add-iam-policy-binding iot-python-webapp-demo \
 --member serviceAccount:demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com \
 --role roles/iam.securityAdmin
+
+gcloud projects add-iam-policy-binding iot-python-webapp-demo \
+--member serviceAccount:demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com \
+--role roles/cloudkms.admin
 
 # check if roles updated
 # note: may not be accurate even though console shows the update
