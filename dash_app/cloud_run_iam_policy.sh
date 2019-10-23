@@ -65,8 +65,58 @@ gcloud kms decrypt \
 # docker push gcr.io/<project-id>/<image-name>
 # docker push gcr.io/iconic-range-220603/dash-cloudrun-demo
 
+# all through cloud shell
+
+#create a service account
+gcloud iam service-accounts create demo-service-account \
+--description "service account used to launch terraform locally" \
+--display-name "demo-service-account"
+
+# list service accounts to verify creation
+gcloud iam service-accounts list
+
+#enable newly created service account based on what's listed
+gcloud beta iam service-accounts enable \
+demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
+
+# add editor and encryptor role, so it has permissions to launch many kinds of terraform resources
+gcloud projects add-iam-policy-binding iot-python-webapp-demo \
+--member serviceAccount:demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com \
+--role roles/editor
+
+gcloud projects add-iam-policy-binding iot-python-webapp-demo \
+--member serviceAccount:demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com \
+--role roles/cloudkms.cryptoKeyEncrypter
+
+# check if roles updated
+# note: may not be accurate even though console shows the update
+gcloud iam service-accounts get-iam-policy \
+demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
+
+# clone git repo
+git clone https://github.com/sungchun12/iot-python-webapp.git
+
+# download the service account key
+gcloud iam service-accounts keys create ~/service_account.json \
+--iam-account demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
+
+# move the service account key to the repo
+# note: it'll be ignored
+mv service_account.json ~/iot-python-webapp
+
+# change directory to tf_modules
+cd tf_modules/
+
 # ad hoc push to container registry from dockerfile at root directory
-gcloud builds submit --tag gcr.io/iconic-range-220603/dash-cloudrun-demo
+gcloud builds submit --tag gcr.io/iot-python-webapp-demo/dash-cloudrun-demo
+
+# terraform deployment
+terraform init
+terraform plan
+terraform apply
+
+# ad hoc push to container registry from dockerfile at root directory
+gcloud builds submit --tag gcr.io/iot-python-webapp-demo/dash-cloudrun-demo
 
 # deploy infrastructure
 terraform apply
