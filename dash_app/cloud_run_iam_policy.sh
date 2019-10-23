@@ -15,8 +15,6 @@ export GOOGLE_APP_CREDENTIALS="CiQA50Ad3WaKLGR3xlIgKzNz7caas4ceMEtfnote43POiHAQk
 
 # https://cloud.google.com/kms/docs/secret-management#choosing_a_secret_management_solution
 # TODO: can add the below scripts to a single script with file argument
-# create bucket for encrypted service account json private key
-gsutil mb -c standard -l us-central1 -p iconic-range-220603 -b on gs://secure-bucket-cloud-run
 
 # delete the bucket as needed
 gsutil rm -r gs://secure-bucket-cloud-run
@@ -67,6 +65,12 @@ gcloud kms decrypt \
 
 # all through cloud shell
 
+# create bucket for encrypted service account json private key
+PROJECT_ID=iot-python-webapp-demo
+gsutil mb gs://$PROJECT_ID-secure-bucket-tfstate
+# gsutil mb -c standard -l us-central1 -p iot-python-webapp-demo -b on gs://$PROJECT_ID-secure-bucket-tfstate
+gsutil versioning set on gs://$PROJECT_ID-secure-bucket-tfstate
+
 #create a service account
 gcloud iam service-accounts create demo-service-account \
 --description "service account used to launch terraform locally" \
@@ -96,13 +100,17 @@ demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
 # clone git repo
 git clone https://github.com/sungchun12/iot-python-webapp.git
 
-# download the service account key
-gcloud iam service-accounts keys create ~/service_account.json \
+# download the service account key where gcloud lives
+gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json \
+--iam-account demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
+
+# download locally
+gcloud iam service-accounts keys create ~/Desktop/repos/serverless-dash-webapp/service_account.json \
 --iam-account demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
 
 # move the service account key to the repo
 # note: it'll be ignored
-mv service_account.json ~/iot-python-webapp
+# mv service_account.json ~/iot-python-webapp
 
 # change directory to tf_modules
 cd tf_modules/
@@ -115,6 +123,7 @@ terraform init
 terraform plan
 terraform apply
 
+#######################
 # ad hoc push to container registry from dockerfile at root directory
 gcloud builds submit --tag gcr.io/iot-python-webapp-demo/dash-cloudrun-demo
 
