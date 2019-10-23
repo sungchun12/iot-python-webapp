@@ -61,6 +61,11 @@ gcloud kms decrypt \
 # docker push gcr.io/<project-id>/<image-name>
 # docker push gcr.io/iconic-range-220603/dash-cloudrun-demo
 
+#add parameters as part of deployment
+# startup_script.sh for your_username="realsww123" and projectid
+# variables.tf for project_id and service_account_emailfor terraform deployment
+# backend.tf for bucket name
+
 # all through cloud shell
 
 # create bucket for encrypted service account json private key
@@ -81,7 +86,7 @@ gcloud iam service-accounts list
 gcloud beta iam service-accounts enable \
 demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
 
-# add editor and encryptor role, so it has permissions to launch many kinds of terraform resources
+# add editor encryptor, and security admin role, so it has permissions to launch many kinds of terraform resources
 gcloud projects add-iam-policy-binding iot-python-webapp-demo \
 --member serviceAccount:demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com \
 --role roles/editor
@@ -89,6 +94,10 @@ gcloud projects add-iam-policy-binding iot-python-webapp-demo \
 gcloud projects add-iam-policy-binding iot-python-webapp-demo \
 --member serviceAccount:demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com \
 --role roles/cloudkms.cryptoKeyEncrypter
+
+gcloud projects add-iam-policy-binding iot-python-webapp-demo \
+--member serviceAccount:demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com \
+--role roles/iam.securityAdmin
 
 # check if roles updated
 # note: may not be accurate even though console shows the update
@@ -136,7 +145,7 @@ gcloud beta run services add-iam-policy-binding tf-dash-cloud-run-demo \
 --region="us-central1"
 
 #adjust memory limit
-gcloud beta run services update dash-cloudrun-demo --memory 1Gi --platform managed --region us-central1
+gcloud beta run services update tf-dash-cloud-run-demo --memory 1Gi --platform managed --region us-central1
 
 #destroy iot registry
 gcloud iot registries delete iot-registry --region=us-central1
