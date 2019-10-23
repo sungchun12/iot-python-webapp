@@ -83,13 +83,13 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
 
 # The Service is ready to be used when the "Ready" condition is True
 # Due to Terraform and API limitations this is best accessed through a local variable
-locals {
-  cloud_run_status = {
-    for cond in google_cloud_run_service.tf-dash-cloud-run-demo.status[0].conditions :
-    cond.type => cond.status
-  }
-}
+# locals {
+#   cloud_run_status = {
+#     for cond in google_cloud_run_service.tf-dash-cloud-run-demo.status[0].conditions :
+#     cond.type => cond.status
+#   }
+# }
 
-output "isReady" {
-  value = local.cloud_run_status["Ready"] == "True"
-}
+# output "isReady" {
+#   value = local.cloud_run_status["Ready"] == "True"
+# }
