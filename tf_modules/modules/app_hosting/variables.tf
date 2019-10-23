@@ -21,12 +21,6 @@ variable "version_label" {
 # OPTIONAL MODULE PARAMETERS
 # These variables have defaults, but may be overridden by the operator
 # ---------------------------------------------------------------------------------------------------------------------
-variable "cloud_run_service_account" {
-  description = "Name of cloud run service account runner"
-  type        = string
-  default     = "tf-dash-demo-runner"
-}
-
 variable "cloud_run_name" {
   description = "Name of cloud run resource in console"
   type        = string

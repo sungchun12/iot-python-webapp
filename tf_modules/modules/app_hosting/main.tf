@@ -16,38 +16,6 @@ data "google_container_registry_image" "dash-cloudrun-demo" {
 
 data "google_compute_default_service_account" "default" {}
 
-# resource "google_service_account" "tf-dash-demo-runner" {
-#   account_id   = var.cloud_run_service_account
-#   display_name = var.cloud_run_service_account
-# }
-
-# resource "google_service_account_iam_binding" "run-service-agent" {
-#   service_account_id = google_service_account.tf-dash-demo-runner.name
-#   role               = "roles/serverless.serviceAgent"
-
-#   members = [
-#     "allAuthenticatedUsers",
-#   ]
-# }
-
-# resource "google_service_account_iam_binding" "run-service-account-user" {
-#   service_account_id = google_service_account.tf-dash-demo-runner.name
-#   role               = "roles/iam.serviceAccountUser"
-
-#   members = [
-#     "allAuthenticatedUsers",
-#   ]
-# }
-
-# resource "google_service_account_iam_binding" "run-decrypter" {
-#   service_account_id = data.google_compute_default_service_account.default.name
-#   role               = "roles/cloudkms.cryptoKeyDecrypter"
-
-#   members = [
-#     data.google_compute_default_service_account.default.email,
-#   ]
-# }
-
 resource "google_project_iam_binding" "service-account-decrypter" {
   project = var.project
   role    = "roles/cloudkms.cryptoKeyDecrypter"
@@ -56,15 +24,6 @@ resource "google_project_iam_binding" "service-account-decrypter" {
     join(":", ["serviceAccount", data.google_compute_default_service_account.default.email])
   ]
 }
-
-# resource "google_service_account_iam_binding" "run-bigtable-reader" {
-#   service_account_id = google_service_account.tf-dash-demo-runner.name
-#   role               = "roles/bigtable.reader"
-
-#   members = [
-#     "allAuthenticatedUsers",
-#   ]
-# }
 
 resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
   provider = "google-beta"
