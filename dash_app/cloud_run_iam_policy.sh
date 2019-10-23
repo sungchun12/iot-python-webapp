@@ -152,8 +152,13 @@ gcloud beta run services add-iam-policy-binding tf-dash-cloud-run-demo \
 #adjust memory limit
 gcloud beta run services update tf-dash-cloud-run-demo --memory 1Gi --platform managed --region us-central1
 
-#destroy iot registry
-gcloud iot registries delete iot-registry --region=us-central1
+
+# destroy iot devices
+for i in {1..3}
+do
+    device_id=$(gcloud iot devices list --registry=iot-registry --region=us-central1 | grep -v "^ID"  | shuf -n 1 | awk '{print $2}')
+    gcloud iot devices delete "$device_id" --registry=iot-registry --region=us-central1 --quiet
+done
 
 #destroy everything else
 terraform destroy
