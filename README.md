@@ -82,9 +82,10 @@ _Illustrate design choices, and highlight nuances worth pointing out_
 
 _Name pain points, pleasant surprises, and how I would develop this better next time/going forward_
 
-- KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore
+- KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore. If you're going to redeploy, you must rename the key ring or it'll error out.
 - An IoT registry can not be force deleted if devices are tied to it
 - Cloud Run for terraform is still needing further development. Need work outside terraform to allow app to expose to public internet
+- For google apis, if it's the first time enabling, it may error out and force you to manually enable or rerun the terraform build
 
 ## Contribute
 
