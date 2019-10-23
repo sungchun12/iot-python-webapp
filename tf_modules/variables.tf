@@ -41,7 +41,7 @@ variable "version_label" {
 variable "api_services" {
   description = "list of Google Cloud apis to enable when launching terraform"
   type        = list
-  default     = ["iam.googleapis.com", "cloudresourcemanager.googleapis.com", "cloudfunctions.googleapis.com", "pubsub.googleapis.com", "storage-component.googleapis.com", "bigquery-json.googleapis.com", "bigquery.googleapis.com", "cloudbuild.googleapis.com", "run.googleapis.com", "cloudiot.googleapis.com", "bigtable.googleapis.com", "dataflow.googleapis.com", "compute.googleapis.com", "cloudkms.googleapis.com"]
+  default     = ["iam.googleapis.com", "cloudresourcemanager.googleapis.com", "cloudfunctions.googleapis.com", "pubsub.googleapis.com", "storage-component.googleapis.com", "bigquery-json.googleapis.com", "bigquery.googleapis.com", "cloudbuild.googleapis.com", "run.googleapis.com", "cloudiot.googleapis.com", "bigtable.googleapis.com", "bigtableadmin.googleapis.com", "dataflow.googleapis.com", "compute.googleapis.com", "cloudkms.googleapis.com"]
 }
 
 variable "disable_services_on_destroy_bool" {
