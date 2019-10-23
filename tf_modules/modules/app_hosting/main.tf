@@ -8,20 +8,62 @@
 # CREATE THE CLOUD RUN SERVICE
 # ---------------------------------------------------------------------------------------------------------------------
 
-# need to push an image outside of terraform for the container repo and image can populate
-# data "google_container_registry_repository" "foo" {}
-
-# output "gcr_location" {
-#   value = "${data.google_container_registry_repository.foo.repository_url}"
-# }
-
+# need to push an image outside of terraform for the container repo and image to populate
 data "google_container_registry_image" "dash-cloudrun-demo" {
   name    = var.container_image_name
   project = var.project
 }
 
-# output "gcr_image_location" {
-#   value = "${data.google_container_registry_image.dash-cloudrun-demo.image_url}"
+data "google_compute_default_service_account" "default" {}
+
+# resource "google_service_account" "tf-dash-demo-runner" {
+#   account_id   = var.cloud_run_service_account
+#   display_name = var.cloud_run_service_account
+# }
+
+# resource "google_service_account_iam_binding" "run-service-agent" {
+#   service_account_id = google_service_account.tf-dash-demo-runner.name
+#   role               = "roles/serverless.serviceAgent"
+
+#   members = [
+#     "allAuthenticatedUsers",
+#   ]
+# }
+
+# resource "google_service_account_iam_binding" "run-service-account-user" {
+#   service_account_id = google_service_account.tf-dash-demo-runner.name
+#   role               = "roles/iam.serviceAccountUser"
+
+#   members = [
+#     "allAuthenticatedUsers",
+#   ]
+# }
+
+# resource "google_service_account_iam_binding" "run-decrypter" {
+#   service_account_id = data.google_compute_default_service_account.default.name
+#   role               = "roles/cloudkms.cryptoKeyDecrypter"
+
+#   members = [
+#     data.google_compute_default_service_account.default.email,
+#   ]
+# }
+
+resource "google_project_iam_binding" "service-account-decrypter" {
+  project = var.project
+  role    = "roles/cloudkms.cryptoKeyDecrypter"
+
+  members = [
+    join(":", ["serviceAccount", data.google_compute_default_service_account.default.email])
+  ]
+}
+
+# resource "google_service_account_iam_binding" "run-bigtable-reader" {
+#   service_account_id = google_service_account.tf-dash-demo-runner.name
+#   role               = "roles/bigtable.reader"
+
+#   members = [
+#     "allAuthenticatedUsers",
+#   ]
 # }
 
 resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
