@@ -81,18 +81,6 @@ resource "google_cloud_run_service" "tf-dash-cloud-run-demo" {
   }
 }
 
-#add iam policy binding for anyone to access the url
-data "google_iam_policy" "cloud-run-access" {
-  binding {
-    role = "roles/run.invoker"
-
-    members = [
-      "allUsers",
-    ]
-  }
-}
-
-
 # The Service is ready to be used when the "Ready" condition is True
 # Due to Terraform and API limitations this is best accessed through a local variable
 locals {
