@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # all through cloud shell
-# ./initial_setup.sh sungwonchung3@gmail.com sungchun12 ferrous-weaver-256122 demo-service-account
+# bash ./initial_setup.sh sungwonchung3@gmail.com sungchun12 ferrous-weaver-256122 demo-service-account
 
 #manual step
 # clone git repo
@@ -15,7 +15,7 @@ GITHUB_USERNAME=$2
 PROJECT_ID=$3
 SERVICE_ACCOUNT_NAME=$4
 
-if [[ (-n "$GITHUB_EMAIL") || (-n "$GITHUB_USERNAME") || (-n "$PROJECT_ID") || (-n "$SERVICE_ACCOUNT_NAME") ]]; then
+if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (-n "$SERVICE_ACCOUNT_NAME") ]]; then
     git config --global user.email $GITHUB_EMAIL
     git config --global user.name $GITHUB_USERNAME
     
@@ -60,11 +60,11 @@ if [[ (-n "$GITHUB_EMAIL") || (-n "$GITHUB_USERNAME") || (-n "$PROJECT_ID") || (
     gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json \
     --iam-account $SERVICE_ACCOUNT_EMAIL
     
-    # change directory to tf_modules
-    cd tf_modules/
-    
     # ad hoc push to container registry from dockerfile at root directory
     gcloud builds submit --tag gcr.io/$PROJECT_ID/dash-cloudrun-demo
+
+    # change directory to tf_modules
+    cd tf_modules/
 else
     echo "Make sure all these arguments are filled in the correct position GITHUB_EMAIL,GITHUB_USERNAME,PROJECT_ID,SERVICE_ACCOUNT_NAME, ex: ./initial_setup.sh example@gmail.com user_123 ferrous-weaver-256122 demo-service-account"
 fi
