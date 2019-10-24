@@ -3,8 +3,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 resource "google_storage_bucket" "data-store" {
 
-  name = var.raw_bucket_name
-
+  name          = join("-", [var.project, var.raw_bucket_name])
   location      = var.location
   project       = var.project
   storage_class = var.storage_class
@@ -25,8 +24,8 @@ resource "google_storage_bucket" "data-store" {
 }
 
 resource "google_storage_bucket" "dataflow-staging" {
-  
-  name = var.staging_bucket_name
+
+  name = join("-", [var.project, var.staging_bucket_name])
 
   location      = var.location
   project       = var.project
@@ -48,7 +47,7 @@ resource "google_storage_bucket" "dataflow-staging" {
 }
 
 resource "google_storage_bucket" "source-code-bucket" {
-  name = var.source_code_bucket_name
+  name = join("-", [var.project, var.source_code_bucket_name])
 
   location      = var.location
   project       = var.project
