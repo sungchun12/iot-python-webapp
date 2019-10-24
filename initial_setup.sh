@@ -5,7 +5,9 @@
 
 #manual step
 # clone git repo
+# gcloud config set project ferrous-weaver-256122
 # git clone https://github.com/sungchun12/iot-python-webapp.git
+# cd iot_python_webapp/
 
 # set command line arguments
 GITHUB_EMAIL=$1
@@ -16,8 +18,6 @@ SERVICE_ACCOUNT_NAME=$4
 if [[ (-n "$GITHUB_EMAIL") || (-n "$GITHUB_USERNAME") || (-n "$PROJECT_ID") || (-n "$SERVICE_ACCOUNT_NAME") ]]; then
     git config --global user.email $GITHUB_EMAIL
     git config --global user.name $GITHUB_USERNAME
-    
-    gcloud config set project $PROJECT_ID
     
     # create bucket for encrypted service account json private key
     gsutil mb gs://$PROJECT_ID-secure-bucket-tfstate
