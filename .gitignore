@@ -139,3 +139,4 @@ override.tf.json
 #ignore rsa public and private keys
 rsa_cert.pem
 rsa_private.pem
+kms_snippets.py
