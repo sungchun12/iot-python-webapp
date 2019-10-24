@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# all through cloud shell
+# all this is intended to run within cloud shell
 
 #manual steps in cloud shell
 # clone git repo
