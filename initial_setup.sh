@@ -17,7 +17,9 @@ GITHUB_USERNAME=$2
 PROJECT_ID=$3
 SERVICE_ACCOUNT_NAME=$4
 
+# checks if all the command line arguments are filled
 if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (-n "$SERVICE_ACCOUNT_NAME") ]]; then
+    # setup git configs for authorship
     git config --global user.email $GITHUB_EMAIL
     git config --global user.name $GITHUB_USERNAME
     
@@ -31,10 +33,10 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     --description "service account used to launch terraform locally" \
     --display-name $SERVICE_ACCOUNT_NAME
     
-    # list service accounts to verify creation
+    # list service account to verify creation and capture email
     SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=$SERVICE_ACCOUNT_NAME | grep -v "^NAME"  | shuf -n 1 | awk '{print $2}')
     
-    #enable newly created service account based on what's listed
+    # enable newly created service account based on what's listed
     gcloud beta iam service-accounts enable $SERVICE_ACCOUNT_EMAIL
     
     # add editor encryptor, and security admin role, so it has permissions to launch many kinds of terraform resources
@@ -62,7 +64,7 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json \
     --iam-account $SERVICE_ACCOUNT_EMAIL
     
-    #enable cloud build api
+    # enable cloud build api
     gcloud services enable cloudbuild.googleapis.com
     
     # ad hoc push to container registry from dockerfile at root directory
