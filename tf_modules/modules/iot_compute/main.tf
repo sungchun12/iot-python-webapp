@@ -56,6 +56,8 @@ resource "google_compute_instance" "iot-device-1" {
   }
 
   metadata_startup_script = <<SCRIPT
+  "your_username"="${var.startup_script_username}"
+  "PROJECT_ID"="${var.project}"
   ${file("${path.module}/startup_script.sh")}
   SCRIPT
 
@@ -90,6 +92,8 @@ resource "google_compute_instance" "iot-device-2" {
   }
 
   metadata_startup_script = <<SCRIPT
+  "your_username"="${var.startup_script_username}"
+  "PROJECT_ID"="${var.project}"
   ${file("${path.module}/startup_script.sh")}
   SCRIPT
 
@@ -124,6 +128,8 @@ resource "google_compute_instance" "iot-device-3" {
   }
 
   metadata_startup_script = <<SCRIPT
+  "your_username"="${var.startup_script_username}"
+  "PROJECT_ID"="${var.project}"
   ${file("${path.module}/startup_script.sh")}
   SCRIPT
 

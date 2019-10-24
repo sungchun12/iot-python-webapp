@@ -55,3 +55,9 @@ variable "enable_apis_bool" {
   type        = string
   default     = "true"
 }
+
+variable "startup_script_username" {
+  description = "user name for the startup script to work properly for each VM"
+  type        = string
+  default     = "realsww123"
+}

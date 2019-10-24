@@ -1,6 +1,5 @@
 #define temporary environment path variables
 #if you save files to root directory, it can not be easily found
-your_username="realsww123"
 iot_directory="/home/$your_username/iot"
 files_directory="/training-data-analyst/quests/iotlab/"
 demo_directory="$iot_directory$files_directory"
@@ -32,7 +31,6 @@ sudo wget https://pki.google.com/roots.pem
 sudo apt-get install google-cloud-sdk
 
 #set environment variables for creating devices on IOT registry
-PROJECT_ID=iot-python-webapp-demo
 MY_REGION=us-central1
 IOT_REGISTRY=iot-registry
 DEVICE_ID=temp-sensor-$RANDOM #randomly generated integer id

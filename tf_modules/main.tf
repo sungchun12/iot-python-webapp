@@ -71,11 +71,12 @@ module "iot_compute" {
   source = "./modules/iot_compute"
 
   #pass the root module variables to child module
-  project               = var.project
-  location              = var.location
-  zone                  = var.zone
-  service_account_email = var.service_account_email
-  version_label         = var.version_label
+  project                 = var.project
+  location                = var.location
+  zone                    = var.zone
+  service_account_email   = var.service_account_email
+  version_label           = var.version_label
+  startup_script_username = var.startup_script_username
 }
 
 module "secrets_manager" {
