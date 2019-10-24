@@ -60,7 +60,7 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     # note: may not be accurate even though console shows the update
     gcloud iam service-accounts get-iam-policy $SERVICE_ACCOUNT_EMAIL
     
-    # download the service account key where gcloud lives
+    # download the service account key into the repo
     gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json \
     --iam-account $SERVICE_ACCOUNT_EMAIL
     
