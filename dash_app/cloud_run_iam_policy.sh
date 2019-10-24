@@ -66,9 +66,16 @@ gcloud kms decrypt \
 # variables.tf for project_id and service_account_email for terraform deployment
 # backend.tf for bucket name
 # use a random number generator similar to the startup script to create dynamic crypto key rings
-# shell script for project id 
+# shell script for project id and service account
+# cloud run image name
 
+# download locally
+# gcloud iam service-accounts keys create ~/Desktop/repos/serverless-dash-webapp/service_account.json \
+# --iam-account demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
 
+# move the service account key to the repo
+# note: it'll be ignored
+# mv service_account.json ~/iot-python-webapp
 
 # terraform deployment
 terraform init
