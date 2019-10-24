@@ -62,12 +62,13 @@ gcloud kms decrypt \
 # docker push gcr.io/iconic-range-220603/dash-cloudrun-demo
 
 #add parameters as part of deployment
-# startup_script.sh for your_username="realsww123" and projectid=iot-python-webapp-demo
-# variables.tf for project_id and service_account_email for terraform deployment
-# backend.tf for bucket name
-# use a random number generator similar to the startup script to create dynamic crypto key rings
+# startup_script.sh for your_username="realsww123" and projectid=iot-python-webapp-demo[terraform.tfvars]
+# variables.tf for project_id and service_account_email for terraform deployment[terraform.tfvars and created with initial_setup.sh]
+# backend.tf for bucket name[will have to be created with initial_setup.sh]
+# use a random number generator similar to the startup script to create dynamic crypto key rings[added a random string instead]
 # shell script for project id and service account
-# cloud run image name
+# cloud run image name[leave as is hard coded]
+# storage module for consistent bucket names[done]
 
 # download locally
 # gcloud iam service-accounts keys create ~/Desktop/repos/serverless-dash-webapp/service_account.json \
