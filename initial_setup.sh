@@ -3,6 +3,10 @@
 # all through cloud shell
 # ./initial_setup.sh sungwonchung3@gmail.com sungchun12 ferrous-weaver-256122 demo-service-account
 
+#manual step
+# clone git repo
+# git clone https://github.com/sungchun12/iot-python-webapp.git
+
 # set command line arguments
 GITHUB_EMAIL=$1
 GITHUB_USERNAME=$2
@@ -51,9 +55,6 @@ if [[ (-n "$GITHUB_EMAIL") || (-n "$GITHUB_USERNAME") || (-n "$PROJECT_ID") || (
     # check if roles updated
     # note: may not be accurate even though console shows the update
     gcloud iam service-accounts get-iam-policy $SERVICE_ACCOUNT_EMAIL
-    
-    # clone git repo
-    git clone https://github.com/sungchun12/iot-python-webapp.git
     
     # download the service account key where gcloud lives
     gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json \
