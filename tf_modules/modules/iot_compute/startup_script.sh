@@ -14,7 +14,7 @@ sudo apt-get install python-pip openssl git git-core -y
 sudo pip install pyjwt paho-mqtt cryptography
 
 #make a new directory
-sudo mkdir $iot_directory
+sudo mkdir -p $iot_directory
 
 #add data to analyze
 cd $iot_directory; git clone https://github.com/sungchun12/training-data-analyst.git
