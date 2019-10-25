@@ -112,10 +112,8 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     --plaintext-file=service_account.json \
     --ciphertext-file=ciphertext_file.enc
     
-    ciphertext_base64_encoding=$( base64 ciphertext_file.enc )
-    
     #create terraform.tfvars file based on passed in parameters
-    printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\nkey_ring_id = "\"$keyring_name\""\ncrypto_key_id = "\"$key_name\""\nciphertext_base64_encoding = "\"$ciphertext_base64_encoding\""\n" > ./tf_modules/terraform.tfvars
+    printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\n" > ./tf_modules/terraform.tfvars
     
     #create the terraform backend.tf storage bucket config file
     printf "terraform {\n  backend "\"gcs\"" {\n    bucket = "\"$PROJECT_ID-secure-bucket-tfstate\""\n  }\n}\n" > ./tf_modules/backend.tf

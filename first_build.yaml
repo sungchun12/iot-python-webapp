@@ -4,6 +4,24 @@ steps:
     name: "gcr.io/cloud-builders/gcloud"
     args: ["builds", "submit", "--tag", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
 
+  - id: "decrypt secrets only during build"
+    name: gcr.io/cloud-builders/gcloud
+    args:
+      [
+        "kms",
+        "decrypt",
+        "--ciphertext-file",
+        "ciphertext_file.enc",
+        "--plaintext-file",
+        "service_account.json",
+        "--location",
+        "global",
+        "--keyring",
+        "$PROJECT_ID-keyring",
+        "--key",
+        "$PROJECT_ID-key",
+      ]
+
   ###############################################
   # deploy terraform infrastructure
   - id: "tf init"
