@@ -36,7 +36,6 @@ steps:
     args:
       - "-c"
       - |
-        cd tf_modules/modules/data_pipeline/cloud_function_src/
         zip -r cbt_function.zip tf_modules/modules/data_pipeline/cloud_function_src/
 
   ###############################################
