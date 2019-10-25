@@ -25,7 +25,7 @@ variable "raw_bucket_name" {
 variable "staging_bucket_name" {
   description = "bucket name where dataflow stages data during transformations"
   type        = string
-  default     = "iot-dataflow-stage-sung"
+  default     = "iot-dataflow-stage-sung/tmp"
 
 }
 

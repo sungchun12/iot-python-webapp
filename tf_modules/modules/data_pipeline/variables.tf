@@ -143,9 +143,6 @@ variable "template_gcs_path_location" {
 }
 
 variable "temp_staging_gcs_path" {
-  description = "Cloud storage bucket location for staging temporary dataflow data"
-  type        = string
-  default     = "gs://iot-dataflow-stage-sung/tmp"
 }
 
 variable "on_delete_option" {
