@@ -82,7 +82,7 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     
     gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$CLOUDBUILD_SA \
-    --role roles/cloudkms.cryptoKeyEncrypter
+    --role roles/cloudkms.cryptoKeyEncrypterDecrypter
     
     gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$CLOUDBUILD_SA \
