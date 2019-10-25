@@ -2,7 +2,7 @@ steps:
   # pull image from container registry to build from cache, bypasses error if first time building image
   - id: "pull docker image"
     name: "gcr.io/cloud-builders/docker"
-    entrypoint: "bash"
+    entrypoint: "sh"
     args:
       - "-c"
       - |
@@ -47,23 +47,8 @@ steps:
     args:
       - "-c"
       - |
-        if [ -d "environments/$BRANCH_NAME/" ]; then
-          cd environments/$BRANCH_NAME
-          terraform init
-        else
-          for dir in environments/*/
-          do 
-            cd ${dir}   
-            env=${dir%*/}
-            env=${env#*/}
-            echo ""
-            echo "*************** TERRAFORM INIT ******************"
-            echo "******* At environment: ${env} ********"
-            echo "*************************************************"
-            terraform init || exit 1
-            cd ../../
-          done
-        fi 
+        cd tf_modules/
+        terraform init
 
   # [START tf-plan]
   - id: "tf plan"
@@ -72,23 +57,8 @@ steps:
     args:
       - "-c"
       - |
-        if [ -d "environments/$BRANCH_NAME/" ]; then
-          cd environments/$BRANCH_NAME
-          terraform plan
-        else
-          for dir in environments/*/
-          do 
-            cd ${dir}   
-            env=${dir%*/}
-            env=${env#*/}  
-            echo ""
-            echo "*************** TERRAFOM PLAN ******************"
-            echo "******* At environment: ${env} ********"
-            echo "*************************************************"
-            terraform plan || exit 1
-            cd ../../
-          done
-        fi
+        cd tf_modules/
+        terraform plan
   # [END tf-plan]
 
   # [START tf-apply]
@@ -98,18 +68,11 @@ steps:
     args:
       - "-c"
       - |
-        if [ -d "environments/$BRANCH_NAME/" ]; then
-          cd environments/$BRANCH_NAME      
-          terraform apply -auto-approve
-        else
-          echo "***************************** SKIPPING APPLYING *******************************"
-          echo "Branch '$BRANCH_NAME' does not represent an official environment."
-          echo "*******************************************************************************"
-        fi
+        cd tf_modules/
+        terraform apply -auto-approve
   # [END tf-apply]
 
   # must set cloudbuild service account with Cloud Run Admin role
-  # TODO: add in step like the below if terraform for cloud run service isn't udpated in time
   - id: "allow cloud run unauthenticated"
     name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -125,6 +88,25 @@ steps:
         "us-central1",
         "--role",
         "roles/run.invoker",
+        "--platform",
+        "managed",
+      ]
+
+  - id: "upgrade container memory limit"
+    name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "beta",
+        "run",
+        "services",
+        "update",
+        "tf-dash-cloud-run-demo",
+        "--memory",
+        "1Gi",
+        "--region",
+        "us-central1",
+        "--platform",
+        "managed",
       ]
 
 images: ["gcr.io/$PROJECT_ID/dash-cloudrun-demo"] # save image to google container registry
