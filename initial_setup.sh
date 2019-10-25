@@ -9,7 +9,7 @@
 # cd iot_python_webapp/
 
 # example command below
-# bash ./initial_setup.sh example@gmail.com user_123 ferrous-weaver-256122 demo-service-account gcp_signup_name_3
+# bash ./initial_setup.sh sungwonchung3@gmail.com sungchun12 iot-python-webapp-demo another-service-account realsww123
 
 # set command line arguments
 GITHUB_EMAIL=$1
@@ -91,9 +91,6 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$CLOUDBUILD_SA \
     --role roles/cloudkms.admin
-    
-    # ad hoc push to container registry from dockerfile at root directory
-    gcloud builds submit --tag gcr.io/$PROJECT_ID/dash-cloudrun-demo
     
     #create terraform.tfvars file based on passed in parameters
     printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\n" > ./tf_modules/terraform.tfvars
