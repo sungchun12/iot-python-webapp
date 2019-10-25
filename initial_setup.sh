@@ -34,6 +34,9 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     --description "service account used to launch terraform locally" \
     --display-name $SERVICE_ACCOUNT_NAME
     
+    # wait for the service account to be created
+    sleep 10s
+    
     # list service account to verify creation and capture email
     SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=$SERVICE_ACCOUNT_NAME | grep -v "^NAME"  | shuf -n 1 | awk '{print $2}')
     
