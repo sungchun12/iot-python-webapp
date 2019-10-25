@@ -12,6 +12,24 @@ steps:
             gcloud iot devices delete "$device_id" --registry=iot-registry --region=us-central1 --quiet
         done
 
+  - id: "decrypt secrets only during build"
+    name: gcr.io/cloud-builders/gcloud
+    args:
+      [
+        "kms",
+        "decrypt",
+        "--ciphertext-file",
+        "ciphertext_file.enc",
+        "--plaintext-file",
+        "service_account.json",
+        "--location",
+        "global",
+        "--keyring",
+        "$PROJECT_ID-keyring",
+        "--key",
+        "$PROJECT_ID-key",
+      ]
+
   ###############################################
   # destroy terraform infrastructure
   - id: "tf init"
