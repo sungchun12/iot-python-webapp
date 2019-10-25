@@ -1,0 +1,75 @@
+steps:
+  # build and push docker image to container registry
+  - id: "build and push first docker image"
+    name: "gcr.io/cloud-builders/gcloud"
+    args: ["builds", "submit", "--tag", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
+
+  ###############################################
+  # deploy terraform infrastructure
+  - id: "tf init"
+    name: "hashicorp/terraform:0.12.9"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd tf_modules/
+        terraform init
+
+  # [START tf-plan]
+  - id: "tf plan"
+    name: "hashicorp/terraform:0.12.9"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd tf_modules/
+        terraform plan
+  # [END tf-plan]
+
+  # [START tf-apply]
+  - id: "tf apply"
+    name: "hashicorp/terraform:0.12.9"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd tf_modules/
+        terraform apply -auto-approve
+  # [END tf-apply]
+
+  # must set cloudbuild service account with Cloud Run Admin role
+  - id: "allow cloud run unauthenticated"
+    name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "beta",
+        "run",
+        "services",
+        "add-iam-policy-binding",
+        "tf-dash-cloud-run-demo",
+        "--member",
+        "allUsers",
+        "--region",
+        "us-central1",
+        "--role",
+        "roles/run.invoker",
+        "--platform",
+        "managed",
+      ]
+
+  - id: "upgrade container memory limit"
+    name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "beta",
+        "run",
+        "services",
+        "update",
+        "tf-dash-cloud-run-demo",
+        "--memory",
+        "1Gi",
+        "--region",
+        "us-central1",
+        "--platform",
+        "managed",
+      ]
