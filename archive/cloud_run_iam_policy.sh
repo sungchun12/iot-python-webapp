@@ -109,7 +109,7 @@ do
 done
 
 #destroy everything else
-terraform destroy
+terraform destroy --auto-approve
 
 #adjust key ring name to another version name
 
