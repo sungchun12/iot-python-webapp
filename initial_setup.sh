@@ -92,17 +92,39 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     --member serviceAccount:$CLOUDBUILD_SA \
     --role roles/cloudkms.admin
     
+    # create kms keyring and key for service account json file
+    keyring_name=$PROJECT_ID-keyring
+    key_name=$PROJECT_ID-key
+    
+    gcloud kms keyrings create $keyring_name \
+    --location=global
+    
+    gcloud kms keys create $key_name \
+    --purpose=encryption \
+    --location=global \
+    --keyring=$keyring_name \
+    --protection-level=software
+    
+    gcloud kms encrypt \
+    --key=$key_name \
+    --keyring=$keyring_name \
+    --location=global \
+    --plaintext-file=service_account.json \
+    --ciphertext-file=ciphertext_file.enc
+    
+    ciphertext_base64_encoding=$( base64 ciphertext_file.enc )
+    
     #create terraform.tfvars file based on passed in parameters
-    printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\n" > ./tf_modules/terraform.tfvars
+    printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\nkey_ring_id = "\"$keyring_name\""\ncrypto_key_id = "\"$key_name\""\nciphertext_base64_encoding = "\"$ciphertext_base64_encoding\""\n" > ./tf_modules/terraform.tfvars
     
     #create the terraform backend.tf storage bucket config file
     printf "terraform {\n  backend "\"gcs\"" {\n    bucket = "\"$PROJECT_ID-secure-bucket-tfstate\""\n  }\n}\n" > ./tf_modules/backend.tf
     
     # push changes to remote repo
-    git status
-    git add --all
-    git commit -m "Update project IDs and buckets"
-    git push origin
+    # git status
+    # git add --all
+    # git commit -m "Update project IDs and buckets"
+    # git push origin
 else
     echo "Make sure all these arguments are filled in the correct position GITHUB_EMAIL,GITHUB_USERNAME,PROJECT_ID,SERVICE_ACCOUNT_NAME,GCP_USERNAME ex: bash ./initial_setup.sh example@gmail.com user_123 ferrous-weaver-256122 demo-service-account gcp_signup_name_3"
 fi
