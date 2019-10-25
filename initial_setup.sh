@@ -75,10 +75,10 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     gcloud builds submit --tag gcr.io/$PROJECT_ID/dash-cloudrun-demo
     
     #create terraform.tfvars file based on passed in parameters
-    printf "project="\"$PROJECT_ID\""\nservice_account_email="\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username="\"$GCP_USERNAME\""\n" > ./tf_modules/terraform.tfvars
+    printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\n" > ./tf_modules/terraform.tfvars
     
     #create the terraform backend.tf storage bucket config file
-    printf "terraform {\n  backend "\"gcs\"" {\n    bucket="\"$PROJECT_ID-secure-bucket-tfstate\""\n  }\n}" > ./tf_modules/backend.tf
+    printf "terraform {\n  backend "\"gcs\"" {\n    bucket = "\"$PROJECT_ID-secure-bucket-tfstate\""\n  }\n}\n" > ./tf_modules/backend.tf
 else
     echo "Make sure all these arguments are filled in the correct position GITHUB_EMAIL,GITHUB_USERNAME,PROJECT_ID,SERVICE_ACCOUNT_NAME,GCP_USERNAME ex: bash ./initial_setup.sh example@gmail.com user_123 ferrous-weaver-256122 demo-service-account gcp_signup_name_3"
 fi
