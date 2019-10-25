@@ -112,3 +112,14 @@ module "app_hosting" {
   bigtable_table_name = module.data_pipeline.data-pipeline-bigtable-table-metadata
   row_filter          = module.data_pipeline.data-pipeline-bigtable-rowfilter-metadata
 }
+
+module "cicd" {
+  source = "./modules/cicd"
+
+  #pass the root module variables to child module
+  project               = var.project
+  location              = var.location
+  zone                  = var.zone
+  service_account_email = var.service_account_email
+  version_label         = var.version_label
+}

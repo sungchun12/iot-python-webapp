@@ -81,3 +81,7 @@ output "kms-keyring-metadata" {
 output "kms-crypto-key-metadata" {
   value = module.secrets_manager.kms-crypto-key-metadata
 }
+
+output "cloud-build-metadata" {
+  value = module.cicd.cloud-build-metadata
+}
