@@ -29,6 +29,16 @@ steps:
     name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
 
+  # zip up the bigtable cloud function src for any changes
+  - id: "zip bigtable cloud function"
+    name: "alpine"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd tf_modules/modules/data_pipeline/cloud_function_src/
+        zip -r cbt_function.zip tf_modules/modules/data_pipeline/cloud_function_src/
+
   ###############################################
   # deploy terraform infrastructure
   - id: "branch name"
