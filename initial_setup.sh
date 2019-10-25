@@ -3,9 +3,9 @@
 # all this is intended to run within cloud shell
 
 #manual steps in cloud shell
-# clone git repo
+# fork git repo
 # gcloud config set project <PROJECT_ID>
-# git clone https://github.com/sungchun12/iot-python-webapp.git
+# git clone https://github.com/<github username>/iot-python-webapp.git
 # cd iot_python_webapp/
 
 # example command below
@@ -71,6 +71,27 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     # enable cloud build api
     gcloud services enable cloudbuild.googleapis.com
     
+    # retrieve cloud build service account email
+    CLOUDBUILD_SA="$(gcloud projects describe $PROJECT_ID \
+    --format 'value(projectNumber)')@cloudbuild.gserviceaccount.com"
+    
+    # add roles to the cloud build service account that mimics the demo service account
+    gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:$CLOUDBUILD_SA \
+    --role roles/editor
+    
+    gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:$CLOUDBUILD_SA \
+    --role roles/cloudkms.cryptoKeyEncrypter
+    
+    gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:$CLOUDBUILD_SA \
+    --role roles/iam.securityAdmin
+    
+    gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:$CLOUDBUILD_SA \
+    --role roles/cloudkms.admin
+    
     # ad hoc push to container registry from dockerfile at root directory
     gcloud builds submit --tag gcr.io/$PROJECT_ID/dash-cloudrun-demo
     
@@ -79,6 +100,12 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     
     #create the terraform backend.tf storage bucket config file
     printf "terraform {\n  backend "\"gcs\"" {\n    bucket = "\"$PROJECT_ID-secure-bucket-tfstate\""\n  }\n}\n" > ./tf_modules/backend.tf
+    
+    # push changes to remote repo
+    git status
+    git add --all
+    git commit -m "Update project IDs and buckets"
+    git push origin master
 else
     echo "Make sure all these arguments are filled in the correct position GITHUB_EMAIL,GITHUB_USERNAME,PROJECT_ID,SERVICE_ACCOUNT_NAME,GCP_USERNAME ex: bash ./initial_setup.sh example@gmail.com user_123 ferrous-weaver-256122 demo-service-account gcp_signup_name_3"
 fi
