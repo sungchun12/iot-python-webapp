@@ -1,0 +1,35 @@
+steps:
+  # pull image from container registry to build from cache, bypasses error if first time building image
+  - id: "destory iot devices"
+    name: "alpine"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        for i in {1..3}
+          do
+              device_id=$(gcloud iot devices list --registry=iot-registry --region=us-central1 | grep -v "^ID"  | shuf -n 1 | awk '{print $2}')
+              gcloud iot devices delete "$device_id" --registry=iot-registry --region=us-central1 --quiet
+          done
+
+  ###############################################
+  # destroy terraform infrastructure
+  - id: "tf init"
+    name: "hashicorp/terraform:0.12.9"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd tf_modules/
+        terraform init
+
+  # [START tf-destroy]
+  - id: "tf destroy"
+    name: "hashicorp/terraform:0.12.9"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd tf_modules/
+        terraform destroy -auto-approve
+  # [END tf-destroy]
