@@ -1,7 +1,7 @@
 steps:
   # pull image from container registry to build from cache, bypasses error if first time building image
   - id: "destory iot devices"
-    name: "alpine"
+    name: "gcr.io/cloud-builders/gcloud"
     entrypoint: "sh"
     args:
       - "-c"
