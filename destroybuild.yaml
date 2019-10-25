@@ -7,10 +7,10 @@ steps:
       - "-c"
       - |
         for i in {1..3}
-          do
-              device_id=$(gcloud iot devices list --registry=iot-registry --region=us-central1 | grep -v "^ID"  | shuf -n 1 | awk '{print $2}')
-              gcloud iot devices delete "$device_id" --registry=iot-registry --region=us-central1 --quiet
-          done
+        do
+            device_id=$(gcloud iot devices list --registry=iot-registry --region=us-central1 | grep -v "^ID"  | shuf -n 1 | awk '{print $2}')
+            gcloud iot devices delete "$device_id" --registry=iot-registry --region=us-central1 --quiet
+        done
 
   ###############################################
   # destroy terraform infrastructure
