@@ -21,6 +21,12 @@ variable "version_label" {
 # OPTIONAL MODULE PARAMETERS
 # These variables have defaults, but may be overridden by the operator
 # ---------------------------------------------------------------------------------------------------------------------
+variable "owner" {
+  description = "Name of the owner for repo"
+  type        = string
+  default     = "sungchun12"
+}
+
 variable "branch_name" {
   description = "Name of branch to be triggered by in a new commit"
   type        = string

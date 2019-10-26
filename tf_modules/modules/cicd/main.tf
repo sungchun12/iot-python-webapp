@@ -8,9 +8,14 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "cloudbuild-trigger" {
-  trigger_template {
-    branch_name = var.branch_name
-    repo_name   = var.repo_name
+  provider = "google-beta"
+
+  github {
+    owner = var.owner
+    name  = var.repo_name
+    push {
+      branch = var.branch_name
+    }
   }
 
   filename = var.filename
