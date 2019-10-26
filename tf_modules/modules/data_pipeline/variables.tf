@@ -178,6 +178,12 @@ variable "outputFilenameSuffix" {
   default     = ".parquet"
 }
 
+variable "dataflow_gcs_zone" {
+  description = "Separate dataflow zone to avoid quota"
+  type        = string
+  default     = "us-east1-b"
+}
+
 # -----------------------------------------------------------------------
 # Cloud Function Variables
 # -----------------------------------------------------------------------

@@ -131,7 +131,7 @@ resource "google_dataflow_job" "dataflow-raw-data-stream-gcs" {
   service_account_email = var.service_account_email
   template_gcs_path     = var.template_gcs_path_location_gcs
   temp_gcs_location     = join("/", [var.temp_staging_gcs_path, "tmp-gcs"])
-  zone                  = var.zone
+  zone                  = var.dataflow_gcs_zone
   on_delete             = var.on_delete_option
   parameters = {
     inputTopic           = google_pubsub_topic.data-pipeline-topic.id
