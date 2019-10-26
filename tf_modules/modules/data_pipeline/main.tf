@@ -117,7 +117,7 @@ resource "google_dataflow_job" "dataflow-raw-data-stream" {
   name                  = var.dataflow_raw_data_job_name
   service_account_email = var.service_account_email
   template_gcs_path     = var.template_gcs_path_location
-  temp_gcs_location     = var.temp_staging_gcs_path
+  temp_gcs_location     = join("/", [var.temp_staging_gcs_path, "tmp"])
   zone                  = var.zone
   on_delete             = var.on_delete_option
   parameters = {
