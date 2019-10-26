@@ -7,5 +7,5 @@ output "dataflow-staging-metadata" {
 }
 
 output "source-code-bucket-metadata" {
-  value = google_storage_bucket.source-code-bucket.url
+  value = google_storage_bucket.source-code-bucket.name
 }
