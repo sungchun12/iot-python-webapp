@@ -130,25 +130,52 @@ variable "bigtable_column_family" {
 # -----------------------------------------------------------------------
 # Dataflow Variables
 # -----------------------------------------------------------------------
-variable "dataflow_raw_data_job_name" {
+variable "dataflow_raw_data_job_name_bq" {
   description = "Name of data flow job for raw data ingestion"
   type        = string
-  default     = "dataflow-raw-data-stream"
+  default     = "dataflow-raw-data-stream-bq"
 }
 
-variable "template_gcs_path_location" {
+variable "dataflow_raw_data_job_name_gcs" {
+  description = "Name of data flow job for raw data ingestion"
+  type        = string
+  default     = "dataflow-raw-data-stream-gcs"
+}
+
+variable "template_gcs_path_location_bq" {
   description = "Cloud storage bucket location for dataflow job"
   type        = string
   default     = "gs://dataflow-templates/2019-05-15-00/PubSub_to_BigQuery"
 }
 
+variable "template_gcs_path_location_gcs" {
+  description = "Cloud storage bucket location for dataflow job"
+  type        = string
+  default     = "gs://dataflow-templates/2019-10-18-00/Cloud_PubSub_to_GCS_Text"
+}
+
 variable "temp_staging_gcs_path" {
+}
+
+variable "text_raw_data_gcs_path" {
 }
 
 variable "on_delete_option" {
   description = "Drain or cancel the dataflow job"
   type        = string
   default     = "cancel"
+}
+
+variable "outputFilenamePrefix" {
+  description = "Prefix of each file created by dataflow"
+  type        = string
+  default     = "output-"
+}
+
+variable "outputFilenameSuffix" {
+  description = "Output file type"
+  type        = string
+  default     = ".parquet"
 }
 
 # -----------------------------------------------------------------------

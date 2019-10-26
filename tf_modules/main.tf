@@ -65,6 +65,7 @@ module "data_pipeline" {
   #pass the storage variables
   source_code_bucket_name = module.storage.source-code-bucket-metadata
   temp_staging_gcs_path   = module.storage.dataflow-staging-metadata
+  text_raw_data_gcs_path  = module.storage.data-store-metadata
 
 }
 

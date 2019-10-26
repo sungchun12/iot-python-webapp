@@ -27,8 +27,12 @@ output "data-pipeline-bigtable-table-metadata" {
 }
 
 
-output "dataflow-raw-data-stream-metadata" {
-  value = google_dataflow_job.dataflow-raw-data-stream.name
+output "dataflow-raw-data-stream-bq-metadata" {
+  value = google_dataflow_job.dataflow-raw-data-stream-bq.name
+}
+
+output "dataflow-raw-data-stream-gcs-metadata" {
+  value = google_dataflow_job.dataflow-raw-data-stream-gcs.name
 }
 
 output "cbt-function-object-metadata" {
