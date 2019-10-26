@@ -151,7 +151,7 @@ variable "template_gcs_path_location_bq" {
 variable "template_gcs_path_location_gcs" {
   description = "Cloud storage bucket location for dataflow job"
   type        = string
-  default     = "gs://dataflow-templates/2019-10-18-00/Cloud_PubSub_to_GCS_Text"
+  default     = "gs://dataflow-templates/2019-10-18-00_RC00/Cloud_PubSub_to_GCS_Text"
 }
 
 variable "temp_staging_gcs_path" {
