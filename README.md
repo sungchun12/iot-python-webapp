@@ -48,6 +48,7 @@ _Listed steps for how the application/pipeline works_
 3. Build and push docker image using gcloud builds submit command(cloud build)
 4. Deploy terraform infrastructure(cloud build, add permissions to cloud build default service account-check tutorial)
 5. Allow unauthenticated requests to app. Use gcloud(cloud build)
+6. Install Github Cloudbuild app manually through console. One-time setup
 
 _Destruction Steps_
 
