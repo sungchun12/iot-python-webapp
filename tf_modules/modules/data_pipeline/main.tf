@@ -135,7 +135,7 @@ resource "google_dataflow_job" "dataflow-raw-data-stream-gcs" {
   on_delete             = var.on_delete_option
   parameters = {
     inputTopic           = google_pubsub_topic.data-pipeline-topic.id
-    outputDirectory      = var.text_raw_data_gcs_path
+    outputDirectory      = join("", [var.text_raw_data_gcs_path, "/"]) # must end in a "/"
     outputFilenamePrefix = var.outputFilenamePrefix
     outputFilenameSuffix = var.outputFilenameSuffix
   }
