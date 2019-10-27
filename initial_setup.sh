@@ -9,7 +9,7 @@
 # cd iot_python_webapp/
 
 # example command below
-# bash ./initial_setup.sh sungwonchung3@gmail.com sungchun12 iot-python-webapp-demo another-service-account realsww123
+# bash ./initial_setup.sh example@gmail.com sungchun12 iot-python-webapp-demo another-service-account realsww123 master
 
 # set command line arguments
 GITHUB_EMAIL=$1
@@ -17,9 +17,10 @@ GITHUB_USERNAME=$2
 PROJECT_ID=$3
 SERVICE_ACCOUNT_NAME=$4
 GCP_USERNAME=$5
+GITHUB_BRANCH_NAME=$6
 
 # checks if all the command line arguments are filled
-if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (-n "$SERVICE_ACCOUNT_NAME") && (-n "$GCP_USERNAME")]]; then
+if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (-n "$SERVICE_ACCOUNT_NAME") && (-n "$GCP_USERNAME") && (-n "$GITHUB_BRANCH_NAME")]]; then
     # setup git configs for authorship
     git config --global user.email $GITHUB_EMAIL
     git config --global user.name $GITHUB_USERNAME
@@ -113,7 +114,7 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     --ciphertext-file=ciphertext_file.enc
     
     #create terraform.tfvars file based on passed in parameters
-    printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\n" > ./tf_modules/terraform.tfvars
+    printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\ngithub_owner = "\"$GITHUB_USERNAME\""\ngithub_branch_name = "\"$GITHUB_BRANCH_NAME\""\n" > ./tf_modules/terraform.tfvars
     
     #create the terraform backend.tf storage bucket config file
     printf "terraform {\n  backend "\"gcs\"" {\n    bucket = "\"$PROJECT_ID-secure-bucket-tfstate\""\n  }\n}\n" > ./tf_modules/backend.tf
@@ -124,5 +125,5 @@ if [[ (-n "$GITHUB_EMAIL") && (-n "$GITHUB_USERNAME") && (-n "$PROJECT_ID") && (
     # git commit -m "Update project IDs and buckets"
     # git push origin
 else
-    echo "Make sure all these arguments are filled in the correct position GITHUB_EMAIL,GITHUB_USERNAME,PROJECT_ID,SERVICE_ACCOUNT_NAME,GCP_USERNAME ex: bash ./initial_setup.sh example@gmail.com user_123 ferrous-weaver-256122 demo-service-account gcp_signup_name_3"
+    echo "Make sure all these arguments are filled in the correct position GITHUB_EMAIL,GITHUB_USERNAME,PROJECT_ID,SERVICE_ACCOUNT_NAME,GCP_USERNAME,GITHUB_BRANCH_NAME ex: bash ./initial_setup.sh example@gmail.com user_123 ferrous-weaver-256122 demo-service-account gcp_signup_name_3 dev-test"
 fi
