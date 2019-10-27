@@ -88,6 +88,7 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 - Cloud Run for terraform is still needing further development. Need work outside terraform to allow app to expose to public internet
 - For google apis, if it's the first time enabling, it may error out and force you to manually enable or rerun the terraform build
 - Managing secrets and setting up IAM at a granular level is a project of its own. You'll notice most of the roles grant wide permissions for demo purposes.
+- Setting up good parameters for interoperability across modules requires robust upfront repo planning
 
 ## Contribute
 
