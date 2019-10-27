@@ -134,5 +134,3 @@ steps:
         "--platform",
         "managed",
       ]
-
-images: ["gcr.io/$PROJECT_ID/dash-cloudrun-demo"] # save image to google container registry
