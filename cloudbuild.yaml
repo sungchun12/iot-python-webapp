@@ -36,7 +36,7 @@ steps:
     args:
       - "-c"
       - |
-        zip -r cbt_function.zip tf_modules/modules/data_pipeline/cloud_function_src/
+        zip -r tf_modules/modules/data_pipeline/cloud_function_src/cbt_function.zip tf_modules/modules/data_pipeline/cloud_function_src/
 
   - id: "decrypt secrets only during build"
     name: gcr.io/cloud-builders/gcloud

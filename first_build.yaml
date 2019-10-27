@@ -22,6 +22,15 @@ steps:
         "$PROJECT_ID-key",
       ]
 
+  # zip up the bigtable cloud function src for any changes
+  - id: "zip bigtable cloud function"
+    name: "alpine"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        zip -r tf_modules/modules/data_pipeline/cloud_function_src/cbt_function.zip tf_modules/modules/data_pipeline/cloud_function_src/
+
   ###############################################
   # deploy terraform infrastructure
   - id: "tf init"
