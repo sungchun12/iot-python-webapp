@@ -17,22 +17,16 @@ variable "service_account_email" {
 variable "version_label" {
 }
 
+variable "github_owner" {
+}
+
+variable "github_branch_name" {
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL MODULE PARAMETERS
 # These variables have defaults, but may be overridden by the operator
 # ---------------------------------------------------------------------------------------------------------------------
-variable "owner" {
-  description = "Name of the owner for repo"
-  type        = string
-  default     = "sungchun12"
-}
-
-variable "branch_name" {
-  description = "Name of branch to be triggered by in a new commit"
-  type        = string
-  default     = "master"
-}
-
 variable "repo_name" {
   description = "Name of the git repo"
   type        = string

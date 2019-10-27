@@ -124,4 +124,6 @@ module "cicd" {
   zone                  = var.zone
   service_account_email = var.service_account_email
   version_label         = var.version_label
+  github_owner         = var.github_owner
+  github_branch_name         = var.github_branch_name
 }

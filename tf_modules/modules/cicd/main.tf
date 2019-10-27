@@ -11,10 +11,10 @@ resource "google_cloudbuild_trigger" "cloudbuild-trigger" {
   provider = "google-beta"
 
   github {
-    owner = var.owner
+    owner = var.github_owner
     name  = var.repo_name
     push {
-      branch = var.branch_name
+      branch = var.github_branch_name
     }
   }
 

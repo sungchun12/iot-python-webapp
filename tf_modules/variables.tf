@@ -61,3 +61,15 @@ variable "startup_script_username" {
   type        = string
   default     = "realsww123"
 }
+
+variable "github_owner" {
+  description = "Name of the owner for repo"
+  type        = string
+  default     = "sungchun12"
+}
+
+variable "github_branch_name" {
+  description = "Name of branch to be triggered by in a new commit"
+  type        = string
+  default     = "master"
+}
