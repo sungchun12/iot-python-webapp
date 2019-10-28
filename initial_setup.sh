@@ -77,7 +77,7 @@ gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME \
 sleep 10s
 
 # list service account to verify creation and capture email
-SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=$SERVICE_ACCOUNT_NAME | grep -v "^NAME"  | shuf -n 1 | awk '{print $2}')
+SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=$SERVICE_ACCOUNT_NAME | grep -v "^NAME"  | head -n 1 | awk '{print $2}')
 
 # enable newly created service account based on what's listed
 gcloud beta iam service-accounts enable $SERVICE_ACCOUNT_EMAIL
