@@ -19,7 +19,7 @@ Main Docker Dev Components:
 - bash
 - git
 - gcloud SDK
-- terraform 0.12.1
+- terraform 0.12.9
 - pip install anything in "requirements.txt"
 
 ## Usage
@@ -28,27 +28,59 @@ _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 
 - foo
 
+1. Manually fork the repo through the github interface
+
+2. Manually connect the github app to cloud build through the GCP console
+
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/sungchun12/iot-python-webapp.git)
 
 _OR_
 
-1.  Activate Cloud Shell: <https://cloud.google.com/shell/docs/quickstart#start_cloud_shell>
-2.  Clone repository
+2.  Activate Cloud Shell: <https://cloud.google.com/shell/docs/quickstart#start_cloud_shell>
+3.  Clone repository
 
 ```bash
+# set the project ID within cloud shell
+gcloud config set project <PROJECT_ID>
 git clone https://github.com/sungchun12/iot-python-webapp.git
+# change directory into the repo
+cd iot_python_webapp/
+```
+
+4. Run the initial setup shell script that performs one-time tasks
+
+```bash
+# Example: bash $0 -e example@gmail.com -u user_123 -p ferrous-weaver-256122 -s demo-service-account -g gcp_signup_name_3 -b master
+
+#template
+bash /.initial_setup.sh [-e GITHUB_EMAIL] [-u GITHUB_USERNAME] [-p PROJECT_ID] [-s SERVICE_ACCOUNT_NAME] [-g GCP_USERNAME] [-b GITHUB_BRANCH_NAME]
+```
+
+5. Run the first cloud build job that sets up everything in your project
+
+```bash
+gcloud builds submit --config=first_build.yaml
+```
+
+6. Commit and push changes to your github repo
+
+```bash
+git status
+git add --all
+git commit -m "Update terraform config files"
+git push origin
+```
+
+7. Destroy ONLY terraform deployed resources
+
+```bash
+gcloud builds submit --config=destroy_build.yaml
 ```
 
 ## Order of Operations
 
 _Listed steps for how the application/pipeline works_
 
-1. Create bucket for terraform tfstate backups to be stored. Use gcloud manually(only needs to be done once upfront)
-2. Create bucket for encrypted service account json ONLY for decrypting KMS secret. Use gcloud manually(only needs to be done once upfront)
-3. Build and push docker image using gcloud builds submit command(cloud build)
-4. Deploy terraform infrastructure(cloud build, add permissions to cloud build default service account-check tutorial)
-5. Allow unauthenticated requests to app. Use gcloud(cloud build)
-6. Install Github Cloudbuild app manually through console. One-time setup
 
 _Destruction Steps_
 
