@@ -118,22 +118,6 @@ steps:
         "--platform",
         "managed",
       ]
-    # TODO: add in step like the below if terraform for cloud run service isn't udpated in time
-  # - name: "gcr.io/cloud-builders/gcloud"
-  #   args:
-  #     [
-  #       "beta",
-  #       "run",
-  #       "services",
-  #       "add-iam-policy-binding",
-  #       "tf-dash-cloud-run-demo",
-  #       "--member",
-  #       "allUsers",
-  #       "--region",
-  #       "us-central1",
-  #       "--role",
-  #       "roles/run.invoker",
-  #     ]
 
   - id: "upgrade container memory limit"
     name: "gcr.io/cloud-builders/gcloud"
