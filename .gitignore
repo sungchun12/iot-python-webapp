@@ -140,3 +140,6 @@ override.tf.json
 rsa_cert.pem
 rsa_private.pem
 kms_snippets.py
+
+# encrypted files
+ciphertext_file.enc
