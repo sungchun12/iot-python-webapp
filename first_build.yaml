@@ -1,11 +1,19 @@
 steps:
-  # build and push docker image to container registry
   - id: "build and push first docker image"
     name: "gcr.io/cloud-builders/gcloud"
     args: ["builds", "submit", "--tag", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
 
+  - id: "download encrypted secrets only during build"
+    name: "gcr.io/cloud-builders/gsutil"
+    args:
+      [
+        "cp",
+        "gs://$PROJECT_ID-secure-bucket-secrets/ciphertext_file.enc",
+        "ciphertext_file.enc",
+      ]
+
   - id: "decrypt secrets only during build"
-    name: gcr.io/cloud-builders/gcloud
+    name: "gcr.io/cloud-builders/gcloud"
     args:
       [
         "kms",
@@ -21,15 +29,6 @@ steps:
         "--key",
         "$PROJECT_ID-key",
       ]
-
-  # zip up the bigtable cloud function src for any changes
-  - id: "zip bigtable cloud function"
-    name: "alpine"
-    entrypoint: "sh"
-    args:
-      - "-c"
-      - |
-        zip -r tf_modules/modules/data_pipeline/cloud_function_src/cbt_function.zip tf_modules/modules/data_pipeline/cloud_function_src/
 
   ###############################################
   # deploy terraform infrastructure
@@ -64,7 +63,6 @@ steps:
         terraform apply -auto-approve
   # [END tf-apply]
 
-  # must set cloudbuild service account with Cloud Run Admin role
   - id: "allow cloud run unauthenticated"
     name: "gcr.io/cloud-builders/gcloud"
     args:
