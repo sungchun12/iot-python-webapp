@@ -53,6 +53,13 @@ gcloud kms decrypt \
 --plaintext-file=testFile.json \
 --ciphertext-file=gs://secure-bucket-cloud-run/ciphertext_file
 
+gcloud kms decrypt \
+--key=$PROJECT_ID-key \
+--keyring=$PROJECT_ID-keyring \
+--location=global \
+--plaintext-file=testFile.json \
+--ciphertext-file=ciphertext_file.enc
+
 #tag image for google container registry
 # docker tag <image-id> gcr.io/<project-id>/<image-name>
 # docker tag 5427d9091df4 gcr.io/iconic-range-220603/dash-cloudrun-demo
@@ -119,3 +126,4 @@ terraform destroy --auto-approve
 # cloud run example
 gcloud beta run deploy iot-python-webapp --platform managed --image gcr.io/iconic-range-220603/dash-demo-v2:latest --region us-central1 --allow-unauthenticated --set-env-vars=GCLOUD_PROJECT_NAME="iconic-range-220603",BIGTABLE_CLUSTER="iot-stream-database",TABLE_NAME="iot-stream-table",CLOUD_REGION="us-central1",IOT_REGISTRY="iot-registry",ROW_FILTER=2
 
+bash ./initial_setup.sh -e sungwonchung3@gmail.com -u sungchun12 -p iot-python-webapp-demo -s demo-service-account -g realsww123 -b master
