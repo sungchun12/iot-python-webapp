@@ -57,32 +57,46 @@ echo "SERVICE_ACCOUNT_NAME = $SERVICE_ACCOUNT_NAME"
 echo "GCP_USERNAME = $GCP_USERNAME"
 echo "GITHUB_BRANCH_NAME = $GITHUB_BRANCH_NAME"
 
-# setup git configs for authorship
+echo "***********************"
+echo "Setup git configs for authorship"
+echo "***********************"
 git config --global user.email $GITHUB_EMAIL
 git config --global user.name $GITHUB_USERNAME
 
-# create versioned buckets for tfstate and encrypted service account json private key
+echo "***********************"
+echo "Create versioned buckets for tfstate and encrypted service account json private key"
+echo "***********************"
 gsutil mb gs://$PROJECT_ID-secure-bucket-tfstate
 gsutil mb gs://$PROJECT_ID-secure-bucket-secrets
 # gsutil mb -c standard -l us-central1 -p iot-python-webapp-demo -b on gs://$PROJECT_ID-secure-bucket-tfstate
 gsutil versioning set on gs://$PROJECT_ID-secure-bucket-tfstate
 gsutil versioning set on gs://$PROJECT_ID-secure-bucket-secrets
 
-#create a service account
+echo "***********************"
+echo "Create a service account"
+echo "***********************"
 gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME \
 --description "service account used to launch terraform locally" \
 --display-name $SERVICE_ACCOUNT_NAME
 
-# wait for the service account to be created
+echo "***********************"
+echo "Wait for the service account to be created"
+echo "***********************"
 sleep 10s
 
-# list service account to verify creation and capture email
+echo "***********************"
+echo "List service account to verify creation and capture email"
+echo "***********************"
 SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=$SERVICE_ACCOUNT_NAME | grep -v "^NAME"  | head -n 1 | awk '{print $2}')
 
-# enable newly created service account based on what's listed
+echo "***********************"
+echo "Enable newly created service account based on what's listed"
+echo "***********************"
 gcloud beta iam service-accounts enable $SERVICE_ACCOUNT_EMAIL
 
-# add editor encryptor, and security admin role, so it has permissions to launch many kinds of terraform resources
+echo "***********************"
+echo "Add editor encryptor, and security admin role, so it has permissions to launch many kinds of terraform resources"
+echo "***********************"
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member serviceAccount:$SERVICE_ACCOUNT_EMAIL \
 --role roles/editor
@@ -99,22 +113,32 @@ gcloud projects add-iam-policy-binding $PROJECT_ID\
 --member serviceAccount:$SERVICE_ACCOUNT_EMAIL \
 --role roles/cloudkms.admin
 
-# check if roles updated
-# note: may not be accurate even though console shows the update
+echo "***********************"
+echo "Check if roles updated"
+echo "Note: may not be accurate even though console shows the update"
+echo "***********************"
 gcloud iam service-accounts get-iam-policy $SERVICE_ACCOUNT_EMAIL
 
-# download the service account key into the repo
+echo "***********************"
+echo "Download the service account key into the repo"
+echo "***********************"
 gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json \
 --iam-account $SERVICE_ACCOUNT_EMAIL
 
-# enable cloud build api
+echo "***********************"
+echo "Enable cloud build api"
+echo "***********************"
 gcloud services enable cloudbuild.googleapis.com
 
-# retrieve cloud build service account email
+echo "***********************"
+echo "Retrieve cloud build service account email"
+echo "***********************"
 CLOUDBUILD_SA="$(gcloud projects describe $PROJECT_ID \
 --format 'value(projectNumber)')@cloudbuild.gserviceaccount.com"
 
-# add roles to the cloud build service account that mimics the demo service account
+echo "***********************"
+echo "Add roles to the cloud build service account that mimics the demo service account"
+echo "***********************"
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member serviceAccount:$CLOUDBUILD_SA \
 --role roles/editor
@@ -131,7 +155,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member serviceAccount:$CLOUDBUILD_SA \
 --role roles/cloudkms.admin
 
-# create kms keyring and key for service account json file
+echo "***********************"
+echo "Create kms keyring and key for service account json file and then encrypt it into ciphertext"
+echo "***********************"
 keyring_name=$PROJECT_ID-keyring
 key_name=$PROJECT_ID-key
 
@@ -151,13 +177,19 @@ gcloud kms encrypt \
 --plaintext-file=service_account.json \
 --ciphertext-file=ciphertext_file.enc
 
-# Copy encrypted file to cloud storage bucket
+echo "***********************"
+echo "Copy encrypted file to cloud storage bucket"
+echo "***********************"
 gsutil cp ciphertext_file.enc gs://$PROJECT_ID-secure-bucket-secrets
 
-#create terraform.tfvars file based on passed in parameters
+echo "***********************"
+echo "Create terraform.tfvars file based on passed in parameters"
+echo "***********************"
 printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\ngithub_owner = "\"$GITHUB_USERNAME\""\ngithub_branch_name = "\"$GITHUB_BRANCH_NAME\""\n" > ./tf_modules/terraform.tfvars
 
-#create the terraform backend.tf storage bucket config file
+echo "***********************"
+echo "Create the terraform backend.tf storage bucket config file"
+echo "***********************"
 printf "terraform {\n  backend "\"gcs\"" {\n    bucket = "\"$PROJECT_ID-secure-bucket-tfstate\""\n  }\n}\n" > ./tf_modules/backend.tf
 
 echo "***********************"
