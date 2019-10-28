@@ -43,7 +43,9 @@ Write down multiple steps
 
 2. Create a new Google cloud project
 
-Insert image here of creating new google project
+<p align="center">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/create-gcp-project.gif">
+</p>
 
 3. Manually connect the github app to cloud build through the github/GCP interfaces: [Follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)
 
