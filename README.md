@@ -37,7 +37,9 @@ Write down multiple steps
 
 1. Manually fork the repo through the github interface
 
-Insert image here of circling fork repo from a stranger's perspective
+<p align="center">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/fork-git-repo.png">
+</p>
 
 2. Create a new Google cloud project
 
