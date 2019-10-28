@@ -6,7 +6,7 @@ steps:
     args:
       - "-c"
       - |
-        docker pull gcr.io/$PROJECT_ID/dash-cloudrun-demo:latest || exit 0
+        docker pull gcr.io/$PROJECT_ID/dash-cloudrun-demo:latest || true
 
   # build docker image in target project with git commit tag and latest
   # cache the previous build as a starting point for subsequent builds
@@ -15,10 +15,10 @@ steps:
     args:
       [
         "build",
-        "-tag",
-        "name:gcr.io/$PROJECT_ID/dash-cloudrun-demo:${SHORT_SHA}",
-        "-tag",
-        "name:gcr.io/$PROJECT_ID/dash-cloudrun-demo:latest",
+        "-t",
+        "gcr.io/$PROJECT_ID/dash-cloudrun-demo:${SHORT_SHA}",
+        "-t",
+        "gcr.io/$PROJECT_ID/dash-cloudrun-demo:latest",
         "--cache-from",
         "gcr.io/$PROJECT_ID/dash-cloudrun-demo:latest",
         ".",
@@ -29,17 +29,17 @@ steps:
     name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/dash-cloudrun-demo"]
 
-  # zip up the bigtable cloud function src for any changes
-  - id: "zip bigtable cloud function"
-    name: "alpine"
-    entrypoint: "sh"
+  - id: "download encrypted secrets only during build"
+    name: "gcr.io/cloud-builders/gsutil"
     args:
-      - "-c"
-      - |
-        zip -r tf_modules/modules/data_pipeline/cloud_function_src/cbt_function.zip tf_modules/modules/data_pipeline/cloud_function_src/
+      [
+        "cp",
+        "gs://$PROJECT_ID-secure-bucket-secrets/ciphertext_file.enc",
+        "ciphertext_file.enc",
+      ]
 
   - id: "decrypt secrets only during build"
-    name: gcr.io/cloud-builders/gcloud
+    name: "gcr.io/cloud-builders/gcloud"
     args:
       [
         "kms",
@@ -55,6 +55,7 @@ steps:
         "--key",
         "$PROJECT_ID-key",
       ]
+
   ###############################################
   # deploy terraform infrastructure
   - id: "branch name"
