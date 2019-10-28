@@ -28,6 +28,11 @@ _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 
 - foo
 
+## Reference Architecture Diagram
+
+Insert image of of one slide diagram. Color code phases of the infrastructure and purpose.
+Write down multiple steps
+
 ## Deployment Instructions
 
 1. Manually fork the repo through the github interface
