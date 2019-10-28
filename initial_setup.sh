@@ -61,10 +61,12 @@ echo "GITHUB_BRANCH_NAME = $GITHUB_BRANCH_NAME"
 git config --global user.email $GITHUB_EMAIL
 git config --global user.name $GITHUB_USERNAME
 
-# create bucket for encrypted service account json private key
+# create versioned buckets for tfstate and encrypted service account json private key
 gsutil mb gs://$PROJECT_ID-secure-bucket-tfstate
+gsutil mb gs://$PROJECT_ID-secure-bucket-secrets
 # gsutil mb -c standard -l us-central1 -p iot-python-webapp-demo -b on gs://$PROJECT_ID-secure-bucket-tfstate
 gsutil versioning set on gs://$PROJECT_ID-secure-bucket-tfstate
+gsutil versioning set on gs://$PROJECT_ID-secure-bucket-secrets
 
 #create a service account
 gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME \
@@ -148,6 +150,9 @@ gcloud kms encrypt \
 --location=global \
 --plaintext-file=service_account.json \
 --ciphertext-file=ciphertext_file.enc
+
+# Copy encrypted file to cloud storage bucket
+gsutil cp ciphertext_file.enc gs://$PROJECT_ID-secure-bucket-secrets
 
 #create terraform.tfvars file based on passed in parameters
 printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT_EMAIL\""\nstartup_script_username = "\"$GCP_USERNAME\""\ngithub_owner = "\"$GITHUB_USERNAME\""\ngithub_branch_name = "\"$GITHUB_BRANCH_NAME\""\n" > ./tf_modules/terraform.tfvars
