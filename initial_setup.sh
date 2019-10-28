@@ -160,6 +160,22 @@ printf "project = "\"$PROJECT_ID\""\nservice_account_email = "\"$SERVICE_ACCOUNT
 #create the terraform backend.tf storage bucket config file
 printf "terraform {\n  backend "\"gcs\"" {\n    bucket = "\"$PROJECT_ID-secure-bucket-tfstate\""\n  }\n}\n" > ./tf_modules/backend.tf
 
+echo "***********************"
+echo "Validate the secrets file is uploaded into bucket and expected changes in terraform config files"
+echo "***********************"
+echo "secrets file location..."
+echo " "
+gsutil ls -r gs://iot-python-webapp-demo-secure-bucket-secrets/
+echo "***********************"
+echo "terraform.tfvars contents..."
+echo " "
+cat ./tf_modules/terraform.tfvars
+echo "***********************"
+echo "backend.tf contents..."
+echo " "
+cat ./tf_modules/backend.tf
+echo "***********************"
+
 # push changes to remote repo
 # TODO: add to manual github instructions after first_build.yaml
 # git status
