@@ -110,19 +110,34 @@ resource "google_bigtable_table" "iot-stream-table" {
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY DATAFLOW JOB TO INGEST IOT DEVICE DATA INTO BIGQUERY
+# DEPLOY DATAFLOW JOB TO INGEST IOT DEVICE DATA INTO BIGQUERY AND TEXT FILES IN CLOUD STORAGE
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "google_dataflow_job" "dataflow-raw-data-stream" {
-  name                  = var.dataflow_raw_data_job_name
+resource "google_dataflow_job" "dataflow-raw-data-stream-bq" {
+  name                  = var.dataflow_raw_data_job_name_bq
   service_account_email = var.service_account_email
-  template_gcs_path     = var.template_gcs_path_location
-  temp_gcs_location     = var.temp_staging_gcs_path
+  template_gcs_path     = var.template_gcs_path_location_bq
+  temp_gcs_location     = join("/", [var.temp_staging_gcs_path, "tmp-bq"])
   zone                  = var.zone
   on_delete             = var.on_delete_option
   parameters = {
     inputTopic      = google_pubsub_topic.data-pipeline-topic.id
     outputTableSpec = google_bigquery_table.iot_raw_data.id
+  }
+}
+
+resource "google_dataflow_job" "dataflow-raw-data-stream-gcs" {
+  name                  = var.dataflow_raw_data_job_name_gcs
+  service_account_email = var.service_account_email
+  template_gcs_path     = var.template_gcs_path_location_gcs
+  temp_gcs_location     = join("/", [var.temp_staging_gcs_path, "tmp-gcs"])
+  zone                  = var.dataflow_gcs_zone
+  on_delete             = var.on_delete_option
+  parameters = {
+    inputTopic           = google_pubsub_topic.data-pipeline-topic.id
+    outputDirectory      = join("", [var.text_raw_data_gcs_path, "/"]) # must end in a "/"
+    outputFilenamePrefix = var.outputFilenamePrefix
+    outputFilenameSuffix = var.outputFilenameSuffix
   }
 }
 

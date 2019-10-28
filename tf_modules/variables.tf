@@ -55,3 +55,21 @@ variable "enable_apis_bool" {
   type        = string
   default     = "true"
 }
+
+variable "startup_script_username" {
+  description = "user name for the startup script to work properly for each VM"
+  type        = string
+  default     = "realsww123"
+}
+
+variable "github_owner" {
+  description = "Name of the owner for repo"
+  type        = string
+  default     = "sungchun12"
+}
+
+variable "github_branch_name" {
+  description = "Name of branch to be triggered by in a new commit"
+  type        = string
+  default     = "master"
+}

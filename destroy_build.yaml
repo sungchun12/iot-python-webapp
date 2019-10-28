@@ -1,0 +1,62 @@
+steps:
+  # pull image from container registry to build from cache, bypasses error if first time building image
+  - id: "destroy iot devices"
+    name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        for i in {1..3}
+        do
+            device_id=$(gcloud iot devices list --registry=iot-registry --region=us-central1 | grep -v "^ID"  | head -n 1 | awk '{print $2}')
+            gcloud iot devices delete "$device_id" --registry=iot-registry --region=us-central1 --quiet
+        done
+
+  - id: "download encrypted secrets only during build"
+    name: "gcr.io/cloud-builders/gsutil"
+    args:
+      [
+        "cp",
+        "gs://$PROJECT_ID-secure-bucket-secrets/ciphertext_file.enc",
+        "ciphertext_file.enc",
+      ]
+
+  - id: "decrypt secrets only during build"
+    name: gcr.io/cloud-builders/gcloud
+    args:
+      [
+        "kms",
+        "decrypt",
+        "--ciphertext-file",
+        "ciphertext_file.enc",
+        "--plaintext-file",
+        "service_account.json",
+        "--location",
+        "global",
+        "--keyring",
+        "$PROJECT_ID-keyring",
+        "--key",
+        "$PROJECT_ID-key",
+      ]
+
+  ###############################################
+  # destroy terraform infrastructure
+  - id: "tf init"
+    name: "hashicorp/terraform:0.12.9"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd tf_modules/
+        terraform init
+
+  # [START tf-destroy]
+  - id: "tf destroy"
+    name: "hashicorp/terraform:0.12.9"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd tf_modules/
+        terraform destroy -auto-approve
+  # [END tf-destroy]

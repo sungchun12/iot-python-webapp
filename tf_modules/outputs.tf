@@ -42,8 +42,12 @@ output "data-pipeline-bigtable-table-metadata" {
   value = module.data_pipeline.data-pipeline-bigtable-table-metadata
 }
 
-output "dataflow-raw-data-stream-metadata" {
-  value = module.data_pipeline.dataflow-raw-data-stream-metadata
+output "dataflow-raw-data-stream-bq-metadata" {
+  value = module.data_pipeline.dataflow-raw-data-stream-bq-metadata
+}
+
+output "dataflow-raw-data-stream-gcs-metadata" {
+  value = module.data_pipeline.dataflow-raw-data-stream-gcs-metadata
 }
 
 output "cbt-function-object-metadata" {
@@ -80,4 +84,8 @@ output "kms-keyring-metadata" {
 
 output "kms-crypto-key-metadata" {
   value = module.secrets_manager.kms-crypto-key-metadata
+}
+
+output "cloud-build-metadata" {
+  value = module.cicd.cloud-build-metadata
 }

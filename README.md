@@ -48,6 +48,7 @@ _Listed steps for how the application/pipeline works_
 3. Build and push docker image using gcloud builds submit command(cloud build)
 4. Deploy terraform infrastructure(cloud build, add permissions to cloud build default service account-check tutorial)
 5. Allow unauthenticated requests to app. Use gcloud(cloud build)
+6. Install Github Cloudbuild app manually through console. One-time setup
 
 _Destruction Steps_
 
@@ -86,6 +87,8 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 - An IoT registry can not be force deleted if devices are tied to it
 - Cloud Run for terraform is still needing further development. Need work outside terraform to allow app to expose to public internet
 - For google apis, if it's the first time enabling, it may error out and force you to manually enable or rerun the terraform build
+- Managing secrets and setting up IAM at a granular level is a project of its own. You'll notice most of the roles grant wide permissions for demo purposes.
+- Setting up good parameters for interoperability across modules requires robust upfront repo planning
 
 ## Contribute
 

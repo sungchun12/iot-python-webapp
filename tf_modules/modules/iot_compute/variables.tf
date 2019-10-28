@@ -17,6 +17,9 @@ variable "service_account_email" {
 variable "version_label" {
 }
 
+variable "startup_script_username" {
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL MODULE PARAMETERS
 # These variables have defaults, but may be overridden by the operator

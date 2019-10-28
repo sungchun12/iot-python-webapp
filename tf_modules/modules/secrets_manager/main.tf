@@ -1,9 +1,15 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # DEPLOY KEY MANAGEMENT SERVICES KEY RING, KEY, AND ENCRYPTED CREDENTIALS
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+resource "random_string" "random" {
+  length           = 10
+  special          = false
+}
+
 resource "google_kms_key_ring" "cloud-run-keyring" {
-  project  = var.project
-  name     = var.key_ring_name
+  project = var.project
+  # this prevent error when creating a new key as the old name cannot be overwritten within the project for recordkeeping
+  name     = join("-", [var.key_ring_name, random_string.random.result])
   location = var.location
 }
 

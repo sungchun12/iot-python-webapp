@@ -53,6 +53,13 @@ gcloud kms decrypt \
 --plaintext-file=testFile.json \
 --ciphertext-file=gs://secure-bucket-cloud-run/ciphertext_file
 
+gcloud kms decrypt \
+--key=$PROJECT_ID-key \
+--keyring=$PROJECT_ID-keyring \
+--location=global \
+--plaintext-file=testFile.json \
+--ciphertext-file=ciphertext_file.enc
+
 #tag image for google container registry
 # docker tag <image-id> gcr.io/<project-id>/<image-name>
 # docker tag 5427d9091df4 gcr.io/iconic-range-220603/dash-cloudrun-demo
@@ -62,13 +69,21 @@ gcloud kms decrypt \
 # docker push gcr.io/iconic-range-220603/dash-cloudrun-demo
 
 #add parameters as part of deployment
-# startup_script.sh for your_username="realsww123" and projectid=iot-python-webapp-demo
-# variables.tf for project_id and service_account_email for terraform deployment
-# backend.tf for bucket name
-# use a random number generator similar to the startup script to create dynamic crypto key rings
-# shell script for project id 
+# startup_script.sh for your_username="realsww123" and projectid=iot-python-webapp-demo[terraform.tfvars]
+# variables.tf for project_id and service_account_email for terraform deployment[terraform.tfvars and created with initial_setup.sh]
+# backend.tf for bucket name[will have to be created with initial_setup.sh]
+# use a random number generator similar to the startup script to create dynamic crypto key rings[added a random string instead]
+# shell script for project id and service account
+# cloud run image name[leave as is hard coded]
+# storage module for consistent bucket names[done]
 
+# download locally
+# gcloud iam service-accounts keys create ~/Desktop/repos/serverless-dash-webapp/service_account.json \
+# --iam-account demo-service-account@iot-python-webapp-demo.iam.gserviceaccount.com
 
+# move the service account key to the repo
+# note: it'll be ignored
+# mv service_account.json ~/iot-python-webapp
 
 # terraform deployment
 terraform init
@@ -101,7 +116,7 @@ do
 done
 
 #destroy everything else
-terraform destroy
+terraform destroy --auto-approve
 
 #adjust key ring name to another version name
 
@@ -111,3 +126,4 @@ terraform destroy
 # cloud run example
 gcloud beta run deploy iot-python-webapp --platform managed --image gcr.io/iconic-range-220603/dash-demo-v2:latest --region us-central1 --allow-unauthenticated --set-env-vars=GCLOUD_PROJECT_NAME="iconic-range-220603",BIGTABLE_CLUSTER="iot-stream-database",TABLE_NAME="iot-stream-table",CLOUD_REGION="us-central1",IOT_REGISTRY="iot-registry",ROW_FILTER=2
 
+bash ./initial_setup.sh -e sungwonchung3@gmail.com -u sungchun12 -p iot-python-webapp-demo -s demo-service-account -g realsww123 -b master

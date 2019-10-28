@@ -5,8 +5,5 @@
   "python.testing.nosetestsEnabled": false,
   "files.eol": "\n",
   "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": [
-    "./terraform/modules/data_pipeline/cloud_function_src"
-  ],
   "python.formatting.provider": "black"
 }

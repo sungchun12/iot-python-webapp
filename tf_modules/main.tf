@@ -64,6 +64,8 @@ module "data_pipeline" {
 
   #pass the storage variables
   source_code_bucket_name = module.storage.source-code-bucket-metadata
+  temp_staging_gcs_path   = module.storage.dataflow-staging-metadata
+  text_raw_data_gcs_path  = module.storage.data-store-metadata
 
 }
 
@@ -71,11 +73,12 @@ module "iot_compute" {
   source = "./modules/iot_compute"
 
   #pass the root module variables to child module
-  project               = var.project
-  location              = var.location
-  zone                  = var.zone
-  service_account_email = var.service_account_email
-  version_label         = var.version_label
+  project                 = var.project
+  location                = var.location
+  zone                    = var.zone
+  service_account_email   = var.service_account_email
+  version_label           = var.version_label
+  startup_script_username = var.startup_script_username
 }
 
 module "secrets_manager" {
@@ -110,4 +113,17 @@ module "app_hosting" {
   bigtable_db_name    = module.data_pipeline.data-pipeline-bigtable-metadata
   bigtable_table_name = module.data_pipeline.data-pipeline-bigtable-table-metadata
   row_filter          = module.data_pipeline.data-pipeline-bigtable-rowfilter-metadata
+}
+
+module "cicd" {
+  source = "./modules/cicd"
+
+  #pass the root module variables to child module
+  project               = var.project
+  location              = var.location
+  zone                  = var.zone
+  service_account_email = var.service_account_email
+  version_label         = var.version_label
+  github_owner         = var.github_owner
+  github_branch_name         = var.github_branch_name
 }
