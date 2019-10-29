@@ -53,15 +53,10 @@ Write down multiple steps
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)
 
-<p align="center">
-  <img src=[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)>
-</p>
 
-<p align="center">
-  _OR_
-</p>
+4. [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)
 
-4. [Activate Cloud Shell from the console](https://cloud.google.com/shell/)
+4. Clone the repo and get into starting position for deployment
 
 ```bash
 # set the project ID within cloud shell
