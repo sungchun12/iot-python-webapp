@@ -11,7 +11,7 @@ The repo sets up simulated real-time iot data, 3 data pipelines, cicd trigger au
 _What you can make too!_
 
 <p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/branch/documentation/live-webapp-demo.gif">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/live-webapp-demo.gif">
 </p>
 
 ## Use Cases
