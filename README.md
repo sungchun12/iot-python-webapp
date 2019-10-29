@@ -9,7 +9,7 @@ Use this repo template to isolate development workloads, and share it with your 
 Live, real-time dashboard in a cloud run web app end to end.
 
 <p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/iot-dashboard-example.gif">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/cloud-build-config/documentation/live-webapp-demo.gif">
 </p>
 
 Main Docker Dev Components:
@@ -49,11 +49,11 @@ Write down multiple steps
 
 3. Manually connect the github app to cloud build through the github/GCP interfaces: [Follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/sungchun12/iot-python-webapp.git)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)
 
 _OR_
 
-4.  Activate Cloud Shell: <https://cloud.google.com/shell/docs/quickstart#start_cloud_shell>
+4.  Activate Cloud Shell from the console
 5.  Clone repository
 
 ```bash
@@ -66,18 +66,24 @@ git clone https://github.com/<your-github-username>/iot-python-webapp.git
 cd iot_python_webapp/
 ```
 
-Insert image here of example terminal at this point
+<p align="center">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/verify-git-clone.png">
+</p>
 
 6. Run the initial setup shell script that performs one-time tasks
 
 ```bash
 # Example: bash $0 -e example@gmail.com -u user_123 -p ferrous-weaver-256122 -s demo-service-account -g gcp_signup_name_3 -b master
 
-#template
+# Notes: leave the GITHUB_BRANCH_NAME as "master" for this demo. You can find the GCP_USERNAME for your project in the cloud shell terminal before the "@" "realsww123@cloudshell"
+
+# template
 bash /.initial_setup.sh [-e GITHUB_EMAIL] [-u GITHUB_USERNAME] [-p PROJECT_ID] [-s SERVICE_ACCOUNT_NAME] [-g GCP_USERNAME] [-b GITHUB_BRANCH_NAME]
 ```
 
-Insert image of example terminal output
+<p align="center">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/verify-initial-setup.png">
+</p>
 
 7. Run the first cloud build job that sets up everything in your project
 
@@ -88,12 +94,14 @@ gcloud builds submit --config=first_build.yaml
 8. Check to see if the webapp exists in the url listed in the terminal after the `first_build.yaml` completes sucessfully
 
 ```bash
-gcloud beta run services list
+gcloud beta run services list --platform managed
 ```
 
-Insert image of example terminal output
+<p align="center">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/first-build-success.png">
+</p>
 
-### Triggering automatic deployment updates
+### Trigger Automatic Deployment Updates
 
 9. Commit and push changes to your github repo. This will automatically trigger a build.
 
@@ -104,15 +112,21 @@ git commit -m "Update terraform config files"
 git push origin
 ```
 
+<p align="center">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/trigger-build-example.gif">
+</p>
+
 10. Check to see if the app exists after the cloudbuild history updates.
 
 Insert link and image of cloud build history
 
 ```bash
-gcloud beta run services list
+gcloud beta run services list --platform managed
 ```
 
-### Destroying Terraform Resources
+### Destroy Terraform Resources
+
+Enter and run the below command into cloud shell
 
 ```bash
 # deletes devices in IoT registry
@@ -120,17 +134,15 @@ gcloud beta run services list
 gcloud builds submit --config=destroy_build.yaml
 ```
 
-Note: if you want to destroy everything, you can delete everything via the console OR simply delete the project you ran the deployment instructions in
+<p align="center">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/destroy-build-example.gif">
+</p>
+
+Note: if you want to destroy everything, you can delete everything via the console OR simply delete the project you ran the deployment instructions in for a clean slate!
 
 ## Order of Operations
 
 _Listed steps for how the application/pipeline works_
-
-_Destruction Steps_
-
-1. Delete devices in iot registry
-2. Terraform destroy
-3. Delete manually created buckets
 
 ## Technologies
 
@@ -164,7 +176,7 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 - Cloud Run for terraform is still needing further development. Need work outside terraform to allow app to expose to public internet
 - For google apis, if it's the first time enabling, it may error out and force you to manually enable or rerun the terraform build
 - Managing secrets and setting up IAM at a granular level is a project of its own. You'll notice most of the roles grant wide permissions for demo purposes.
-- Setting up good parameters for interoperability across modules requires robust upfront repo planning
+- Setting up good parameters for interoperability across modules requires robust, upfront repo planning
 
 ## Contribute
 
