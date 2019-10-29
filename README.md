@@ -2,31 +2,27 @@
 
 ## Repo Summary Statement
 
-_The TLDR of what this repo does and why someone should care._
+_The TL;DR of what this repo does and why you should care._
 
-Use this repo template to isolate development workloads, and share it with your team. Hopefully, this minimizes the administrative overhead in starting and documenting your projects.
+Learn how to deploy a live, real-time dashboard in a python web app powered by end to end infrastructrue as code!
 
-Live, real-time dashboard in a cloud run web app end to end.
+The web app runs on simulated real-time iot data, 3 data pipelines, setting up cicd trigger automation, and in total 40 GCP resources through terraform-all in under 10 minutes!
 
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/live-webapp-demo.gif">
 </p>
 
-Main Docker Dev Components:
-
-- Debian Linux
-- Python
-- bash
-- git
-- gcloud SDK
-- terraform 0.12.9
-- pip install anything in "requirements.txt"
-
 ## Usage
 
 _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 
-- foo
+- Use this as a demo for yourself and your team to launch an end to end data application
+- Gain familiarity with terraform infrastructure as code to make launching future data pipelines easier
+- Explore building a frontend in python using the open source [Dash Framework](https://plot.ly/dash/)
+- Reference the build yaml files as starter cicd templates for yourself
+- See how easy it is to build and push a docker image to a container registry
+- Get a look and feel for encrypting and decrypting credentials using KMS
+- Show me how to do it better ;)
 
 ## Reference Architecture Diagram
 
@@ -53,8 +49,8 @@ Write down multiple steps
 
 _OR_
 
-4.  Activate Cloud Shell from the console
-5.  Clone repository
+4. Activate Cloud Shell from the console
+5. Clone repository
 
 ```bash
 # set the project ID within cloud shell
@@ -65,6 +61,8 @@ git clone https://github.com/<your-github-username>/iot-python-webapp.git
 # change directory into the repo
 cd iot_python_webapp/
 ```
+
+_What your terminal should look like_
 
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/verify-git-clone.png">
@@ -80,6 +78,8 @@ cd iot_python_webapp/
 # template
 bash /.initial_setup.sh [-e GITHUB_EMAIL] [-u GITHUB_USERNAME] [-p PROJECT_ID] [-s SERVICE_ACCOUNT_NAME] [-g GCP_USERNAME] [-b GITHUB_BRANCH_NAME]
 ```
+
+_Double check the secrets file is uploaded to the bucket and terraform files reflect what you set your command line arguments_
 
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/verify-initial-setup.png">
@@ -97,6 +97,8 @@ gcloud builds submit --config=first_build.yaml
 gcloud beta run services list --platform managed
 ```
 
+_Click on the link to launch the web app_
+
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/first-build-success.png">
 </p>
@@ -112,21 +114,21 @@ git commit -m "Update terraform config files"
 git push origin
 ```
 
+_Explore the cloud build history to verify a successful build_
+
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/trigger-build-example.gif">
 </p>
 
 10. Check to see if the app exists after the cloudbuild history updates.
 
-Insert link and image of cloud build history
+_You should see an updated timestamp to the web app_
 
 ```bash
 gcloud beta run services list --platform managed
 ```
 
 ### Destroy Terraform Resources
-
-Enter and run the below command into cloud shell
 
 ```bash
 # deletes devices in IoT registry
@@ -144,16 +146,13 @@ Note: if you want to destroy everything, you can delete everything via the conso
 
 _Listed steps for how the application/pipeline works_
 
-## Technologies
-
-_List out the technical components(ex: database, serverless function, etc.)_
-
-- Database:
-- Middleware:
-
 ## Languages
 
 _ex: Python 3.7, SQL(Standard), Terraform, etc._
+
+- Python 3.7
+- Terraform 12.9
+- Bash 4.4.12
 
 ## Technical Concepts
 
