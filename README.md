@@ -24,6 +24,7 @@ _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 - Reference the build yaml files as starter cicd templates for yourself
 - See how easy it is to build and push a docker image to a container registry
 - Get a look and feel for encrypting and decrypting credentials using KMS
+- Explore how to read and write to a bigtable database with python
 - Show me how to do it better and how YOU are using it! ;)
 
 ## Reference Architecture Diagram
@@ -51,7 +52,9 @@ Write down multiple steps
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/connect-cloudbuild-to-github.gif">
 </p>
 
-4. [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)
+4. [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor) _OR_ [Download the SDK](https://cloud.google.com/sdk/docs/quickstarts)
+
+_Note: The rest of these instructions are written with cloud shell usage_
 
 5. Clone the repo and get into starting position for deployment
 
@@ -131,7 +134,7 @@ _You should see an updated timestamp to the web app_
 gcloud beta run services list --platform managed
 ```
 
-### Destroy Terraform Resources
+### Destroy Terraform-Managed Resources
 
 ```bash
 # deletes devices in IoT registry
@@ -150,8 +153,6 @@ Note: if you want to destroy everything, you can delete everything via the conso
 _Listed steps for how the application/pipeline works_
 
 ## Languages
-
-_ex: Python 3.7, SQL(Standard), Terraform, etc._
 
 - Python 3.7
 - Terraform 12.9
@@ -179,6 +180,8 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 - For google apis, if it's the first time enabling, it may error out and force you to manually enable or rerun the terraform build
 - Managing secrets and setting up IAM at a granular level is a project of its own. You'll notice most of the roles grant wide permissions for demo purposes.
 - Setting up good parameters for interoperability across modules requires robust, upfront repo planning
+- Dataflow jobs have to restart everytime you redeploy infrastructure with terraform-even if you don't make any changes! This will disrupt the live data flow, so be mindful when redeploying
+- Terraform features follow a couple months delay after a new GCP service is released
 
 ## Contribute
 
@@ -188,4 +191,3 @@ All feedback is welcome! You can use the issue tracker to submit bugs, ideas, et
 
 - [How to choose a repo license?](https://choosealicense.com/)
 - [Share a stackshare decision!](https://stackshare.io/sungchun12/my-stack)
-- [How to develop in vscode & docker?](https://github.com/sungchun12/dev-containers/blob/master/INSTALLME.md)
