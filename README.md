@@ -160,21 +160,13 @@ _Listed steps for how the application/pipeline works_
 - Terraform 12.9
 - Bash 4.4.12
 
-## Technical Concepts
+## Technical Design Highlights
 
 _Illustrate design choices, and highlight nuances worth pointing out_
 
 - We store the tfstate in a remote storage bucket to prevent multiple deployments overriding each other
 
 - Bigtable was used to taste and see how fast read/writes were for time series data. Turns out each read/write takes less than 500ms on average, which is pretty fast for python
-
-## Further Reading
-
-- [IoT Reference Example](https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana)
-
-- [Another IoT Reference Example](https://cloud.google.com/solutions/designing-connected-vehicle-platform)
-
-- [Terraform Cloud Build Example](https://github.com/GoogleCloudPlatform/solutions-terraform-cloudbuild-gitops)
 
 ## Lessons Learned
 
@@ -188,6 +180,14 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 - Setting up good parameters for interoperability across modules requires robust, upfront repo planning
 - Dataflow jobs have to restart everytime you redeploy infrastructure with terraform-even if you don't make any changes! This will disrupt the live data flow, so be mindful when redeploying
 - Terraform features follow a couple months delay after a new GCP service is released
+
+## Further Reading
+
+- [IoT Reference Example](https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana)
+
+- [Another IoT Reference Example](https://cloud.google.com/solutions/designing-connected-vehicle-platform)
+
+- [Terraform Cloud Build Example](https://github.com/GoogleCloudPlatform/solutions-terraform-cloudbuild-gitops)
 
 ## Contribute
 
