@@ -19,12 +19,12 @@ _What you can make too!_
 _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 
 - Use this as a demo for yourself and your team to launch an end to end data application
-- Gain familiarity with terraform infrastructure as code to make launching future data pipelines easier
+- Gain familiarity with terraform infrastructure as code to make launching future data pipelines easier: [terraform modules](/tf_modules/main.tf)
 - Explore building a frontend in python using the open source [Dash Framework](https://plot.ly/dash/)
-- Reference the build yaml files as starter cicd templates for yourself
-- See how easy it is to build and push a docker image to a container registry
-- Get a look and feel for encrypting and decrypting credentials using KMS
-- Explore how to read and write to a bigtable database with python
+- Reference the build yaml files as starter cicd templates for yourself: [first_build.yaml](first_build.yaml), [cloudbuild.yaml](cloudbuild.yaml), [destroy_build.yaml](destroy_build.yaml)
+- See how easy it is to build and push a docker image to a container registry: [Dockerfile](Dockerfile)
+- Get a look and feel for encrypting and decrypting credentials using KMS: [secrets creator](/tf_modules/modules/secrets_manager/main.tf)
+- Explore how to read and write to a bigtable database with python: [cloud function src](tf_modules/modules/data_pipeline/cloud_function_src/main.py)
 - Show me how to do it better and how YOU are using it! ;)
 
 _See bottom of this README for specific directories and links related to the above_
