@@ -51,12 +51,9 @@ Write down multiple steps
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/connect-cloudbuild-to-github.gif">
 </p>
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)
-
-
 4. [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)
 
-4. Clone the repo and get into starting position for deployment
+5. Clone the repo and get into starting position for deployment
 
 ```bash
 # set the project ID within cloud shell
