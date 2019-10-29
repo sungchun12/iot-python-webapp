@@ -27,6 +27,8 @@ _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 - Explore how to read and write to a bigtable database with python
 - Show me how to do it better and how YOU are using it! ;)
 
+_See bottom of this README for specific directories and links related to the above_
+
 ## Architecture Diagram
 
 Insert image of of one slide diagram. Color code phases of the infrastructure and purpose.
@@ -34,29 +36,31 @@ Write down multiple steps
 
 ## Deployment Instructions
 
-1. Manually fork the repo through the github interface
+1. [Sign up for a free trial](https://cloud.google.com/free/?hl=ar) _OR_ use an existing GCP account
+
+2. Manually fork the repo through the github interface
 
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/fork-git-repo.png">
 </p>
 
-2. Create a new Google cloud project
+3. Create a new Google cloud project
 
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/create-gcp-project.gif">
 </p>
 
-3. Manually connect the github app to cloud build through the github/GCP interfaces or [Follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)-note the link is for a different tutorial
+4. Manually connect the github app to cloud build through the github/GCP interfaces or [Follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)-note the link is for a different tutorial
 
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/connect-cloudbuild-to-github.gif">
 </p>
 
-4. [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor) _OR_ [Download the SDK](https://cloud.google.com/sdk/docs/quickstarts)
+5. [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor) _OR_ [Download the SDK](https://cloud.google.com/sdk/docs/quickstarts)
 
 _Note: The rest of these instructions are written with cloud shell usage_
 
-5. Clone the repo and get into starting position for deployment
+6. Clone the repo and get into starting position for deployment
 
 ```bash
 # set the project ID within cloud shell
@@ -74,7 +78,7 @@ _What your terminal should look like_
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/verify-git-clone.png">
 </p>
 
-6. Run the initial setup shell script that performs one-time tasks
+7. Run the initial setup shell script that performs one-time tasks
 
 ```bash
 # Example: bash $0 -e example@gmail.com -u user_123 -p ferrous-weaver-256122 -s demo-service-account -g gcp_signup_name_3 -b master
@@ -91,13 +95,13 @@ _Double check the secrets file is uploaded to the bucket and terraform files ref
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/verify-initial-setup.png">
 </p>
 
-7. Run the first cloud build job that sets up everything in your project
+8. Run the first cloud build job that sets up everything in your project
 
 ```bash
 gcloud builds submit --config=first_build.yaml
 ```
 
-8. Check to see if the webapp exists in the url listed in the terminal after the `first_build.yaml` completes sucessfully
+9. Check to see if the webapp exists in the url listed in the terminal after the `first_build.yaml` completes sucessfully
 
 ```bash
 gcloud beta run services list --platform managed
@@ -112,7 +116,7 @@ Replace with a gif
 
 ### Trigger Automatic Deployment Updates
 
-9. Commit and push changes to your github repo. This will automatically trigger a build.
+10. Commit and push changes to your github repo. This will automatically trigger a build.
 
 ```bash
 # this will create a new commit to the master branch in github
@@ -128,7 +132,7 @@ _Explore the cloud build history to verify a successful build_
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/trigger-build-example.gif">
 </p>
 
-10. Check to see if the app exists after the cloudbuild history updates.
+11. Check to see if the app exists after the cloudbuild history updates.
 
 _You should see an updated timestamp to the web app_
 
