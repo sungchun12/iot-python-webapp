@@ -162,7 +162,9 @@ _Listed steps for how the application/pipeline works_
 
 _Illustrate design choices, and highlight nuances worth pointing out_
 
-- foo
+- We store the tfstate in a remote storage bucket to prevent multiple deployments overriding each other
+
+- Bigtable was used to taste and see how fast read/writes were for time series data. Turns out each read/write takes less than 500ms on average, which is pretty fast for python
 
 ## Further Reading
 
