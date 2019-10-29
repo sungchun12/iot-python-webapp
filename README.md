@@ -4,9 +4,11 @@
 
 _The TL;DR of what this repo does and why you should care._
 
-Learn how to deploy a live, real-time dashboard in a python web app powered by end to end infrastructrue as code!
+Learn how to deploy a live, real-time dashboard in a python web app powered by end to end infrastructure as code!
 
-The web app runs on simulated real-time iot data, 3 data pipelines, setting up cicd trigger automation, and in total 40 GCP resources through terraform-all in under 10 minutes!
+The repo sets up simulated real-time iot data, 3 data pipelines, cicd trigger automation, and 40 GCP resources in total through terraform-all in under 10 minutes!
+
+_What you can make too!_
 
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/live-webapp-demo.gif">
@@ -22,7 +24,7 @@ _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 - Reference the build yaml files as starter cicd templates for yourself
 - See how easy it is to build and push a docker image to a container registry
 - Get a look and feel for encrypting and decrypting credentials using KMS
-- Show me how to do it better ;)
+- Show me how to do it better and how YOU are using it! ;)
 
 ## Reference Architecture Diagram
 
@@ -43,14 +45,23 @@ Write down multiple steps
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/create-gcp-project.gif">
 </p>
 
-3. Manually connect the github app to cloud build through the github/GCP interfaces: [Follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)
+3. Manually connect the github app to cloud build through the github/GCP interfaces or [Follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)-note the link is for a different tutorial
+
+<p align="center">
+  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/connect-cloudbuild-to-github.gif">
+</p>
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)
 
-_OR_
+<p align="center">
+  <img src=[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor)>
+</p>
 
-4. Activate Cloud Shell from the console
-5. Clone repository
+<p align="center">
+  _OR_
+</p>
+
+4. [Activate Cloud Shell from the console](https://cloud.google.com/shell/)
 
 ```bash
 # set the project ID within cloud shell
