@@ -1,6 +1,6 @@
 # iot-python-webapp
 
-## Repo Summary Statement
+## Repo Summary
 
 _The TL;DR of what this repo does and why you should care._
 
@@ -14,7 +14,7 @@ _What you can make too!_
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/live-webapp-demo.gif">
 </p>
 
-## Usage
+## Use Cases
 
 _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 
@@ -27,7 +27,7 @@ _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 - Explore how to read and write to a bigtable database with python
 - Show me how to do it better and how YOU are using it! ;)
 
-## Reference Architecture Diagram
+## Architecture Diagram
 
 Insert image of of one slide diagram. Color code phases of the infrastructure and purpose.
 Write down multiple steps
@@ -104,6 +104,7 @@ gcloud beta run services list --platform managed
 ```
 
 _Click on the link to launch the web app_
+Replace with a gif
 
 <p align="center">
   <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/first-build-success.png">
@@ -114,6 +115,7 @@ _Click on the link to launch the web app_
 9. Commit and push changes to your github repo. This will automatically trigger a build.
 
 ```bash
+# this will create a new commit to the master branch in github
 git status
 git add --all
 git commit -m "Update terraform config files"
@@ -169,6 +171,8 @@ _Illustrate design choices, and highlight nuances worth pointing out_
 ## Further Reading
 
 - [IoT Reference Example](https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana)
+
+- [Another IoT Reference Example](https://cloud.google.com/solutions/designing-connected-vehicle-platform)
 
 - [Terraform Cloud Build Example](https://github.com/GoogleCloudPlatform/solutions-terraform-cloudbuild-gitops)
 
