@@ -96,9 +96,8 @@ gcloud beta run services list --platform managed
 ```
 
 _Click on the link to launch the web app_
-Replace with a gif
 
-![first build success](/documentation/first-build-success.png)
+![launch web app](/documentation/launch-web-app.gif)
 
 ### Trigger Automatic Deployment Updates
 
