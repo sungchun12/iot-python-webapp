@@ -31,7 +31,7 @@ _See bottom of this README for specific directories and links related to the abo
 
 _What you can ALSO make!_
 
-![architecture diagram](/documentation/architecture-diagram.png)
+![architecture diagram](/documentation/architecture-drawio.png)
 
 1. Buckets and core infrastructure to kick off the data pipelines. Decrypts and re-encrypts private service account keys each build
 2. Streaming real-time data with Dataflow templates written in Java and a custom python cloud function to write to Bigtable
