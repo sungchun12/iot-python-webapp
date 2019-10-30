@@ -10,9 +10,7 @@ The repo sets up simulated real-time iot data, 3 data pipelines, cicd trigger au
 
 _What you can make too!_
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/live-webapp-demo.gif">
-</p>
+![Live Webapp Demo](/documentation/live-webapp-demo.gif)
 
 ## Use Cases
 
@@ -40,21 +38,15 @@ Write down multiple steps
 
 2. Manually fork the repo through the github interface
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/fork-git-repo.png">
-</p>
+![fork git repo](/documentation/fork-git-repo.png)
 
 3. Create a new Google cloud project
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/create-gcp-project.gif">
-</p>
+![create gcp project](/documentation/create-gcp-project.gif)
 
 4. Manually connect the github app to cloud build through the github/GCP interfaces or [Follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)-note the link is for a different tutorial
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/connect-cloudbuild-to-github.gif">
-</p>
+![create gcp project](/documentation/connect-cloudbuild-to-github.gif)
 
 5. [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor) _OR_ [Download the SDK](https://cloud.google.com/sdk/docs/quickstarts)
 
@@ -74,9 +66,7 @@ cd iot_python_webapp/
 
 _What your terminal should look like_
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/verify-git-clone.png">
-</p>
+![verify git clone](/documentation/verify-git-clone.png)
 
 7. Run the initial setup shell script that performs one-time tasks
 
@@ -91,9 +81,7 @@ bash /.initial_setup.sh [-e GITHUB_EMAIL] [-u GITHUB_USERNAME] [-p PROJECT_ID] [
 
 _Double check the secrets file is uploaded to the bucket and terraform files reflect what you set your command line arguments_
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/verify-initial-setup.png">
-</p>
+![verify initial setup](/documentation/verify-initial-setup.png)
 
 8. Run the first cloud build job that sets up everything in your project
 
@@ -110,9 +98,7 @@ gcloud beta run services list --platform managed
 _Click on the link to launch the web app_
 Replace with a gif
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/first-build-success.png">
-</p>
+![first build success](/documentation/first-build-success.png)
 
 ### Trigger Automatic Deployment Updates
 
@@ -128,9 +114,7 @@ git push origin
 
 _Explore the cloud build history to verify a successful build_
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/trigger-build-example.gif">
-</p>
+![trigger build example](/documentation/trigger-build-example.gif)
 
 11. Check to see if the app exists after the cloudbuild history updates.
 
@@ -148,21 +132,15 @@ gcloud beta run services list --platform managed
 gcloud builds submit --config=destroy_build.yaml
 ```
 
-<p align="center">
-  <img src="https://github.com/sungchun12/iot-python-webapp/blob/documentation/documentation/destroy-build-example.gif">
-</p>
+![destroy build example](/documentation/destroy-build-example.gif)
 
-Note: if you want to destroy everything, you can delete everything via the console OR simply delete the project you ran the deployment instructions in for a clean slate!
-
-## Order of Operations
-
-_Listed steps for how the application/pipeline works_
+_Note: if you want to destroy everything, you can delete everything via the console OR simply delete the project you ran the deployment instructions in for a clean slate!_
 
 ## Languages
 
-- Python 3.7
-- Terraform 12.9
-- Bash 4.4.12
+- [Python 3.7](https://www.python.org/downloads/release/python-370/)
+- [Terraform 12.9](https://www.terraform.io/)
+- [Bash 4.4.12](https://www.gnu.org/software/bash/)
 
 ## Technical Design Highlights
 
@@ -184,8 +162,11 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 - Setting up good parameters for interoperability across modules requires robust, upfront repo planning
 - Dataflow jobs have to restart everytime you redeploy infrastructure with terraform-even if you don't make any changes! This will disrupt the live data flow, so be mindful when redeploying
 - Terraform features follow a couple months delay after a new GCP service is released
+- Next time, I would create distinct pub/sub pull subscriptions for each of the data pipelines to the same topic to ensure at least once delivery for each ingestion point
 
 ## Further Reading
+
+- [My stackshare decision!](https://stackshare.io/sungchun12/my-stack)
 
 - [IoT Reference Example](https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana)
 
@@ -197,7 +178,4 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 
 All feedback is welcome! You can use the issue tracker to submit bugs, ideas, etc. Pull requests are splendid!
 
-## Resources
-
-- [How to choose a repo license?](https://choosealicense.com/)
-- [Share a stackshare decision!](https://stackshare.io/sungchun12/my-stack)
+My master branch will be protected, so no changes will come through without my formal approval.
