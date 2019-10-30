@@ -99,9 +99,9 @@ _Click on the link to launch the web app_
 
 ![launch web app](/documentation/launch-web-app.gif)
 
-### Trigger Automatic Deployment Updates
+## Trigger Automatic Deployment Updates
 
-10. Commit and push changes to your github repo. This will automatically trigger a build.
+Commit and push changes to your github repo. This will automatically trigger a build.
 
 ```bash
 # this will create a new commit to the master branch in github
@@ -115,7 +115,7 @@ _Explore the cloud build history to verify a successful build_
 
 ![trigger build example](/documentation/trigger-build-example.gif)
 
-11. Check to see if the app exists after the cloudbuild history updates.
+Check to see if the app exists after the cloudbuild history updates.
 
 _You should see an updated timestamp to the web app_
 
@@ -123,7 +123,7 @@ _You should see an updated timestamp to the web app_
 gcloud beta run services list --platform managed
 ```
 
-### Destroy Terraform-Managed Resources
+## Destroy Terraform-Managed Resources
 
 ```bash
 # deletes devices in IoT registry
