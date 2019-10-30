@@ -8,7 +8,7 @@ Learn how to deploy a live, real-time dashboard in a python web app powered by e
 
 The repo sets up simulated real-time iot data, 3 data pipelines, cicd trigger automation, and 40 GCP resources in total through terraform-all in under 10 minutes!
 
-_What you can make too!_
+_What you can make!_
 
 ![Live Webapp Demo](/documentation/live-webapp-demo.gif)
 
@@ -48,9 +48,9 @@ Write down multiple steps
 
 ![create gcp project](/documentation/connect-cloudbuild-to-github.gif)
 
-5. [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/editor) _OR_ [Download the SDK](https://cloud.google.com/sdk/docs/quickstarts)
+5. [Open in Cloud Shell](https://console.cloud.google.com/cloudshell/editor) _OR_ [Download the SDK](https://cloud.google.com/sdk/docs/quickstarts)
 
-_Note: The rest of these instructions are written with cloud shell usage_
+_Note: The rest of these instructions are written for cloud shell_
 
 6. Clone the repo and get into starting position for deployment
 
@@ -71,12 +71,12 @@ _What your terminal should look like_
 7. Run the initial setup shell script that performs one-time tasks
 
 ```bash
-# Example: bash $0 -e example@gmail.com -u user_123 -p ferrous-weaver-256122 -s demo-service-account -g gcp_signup_name_3 -b master
+# Example: bash ./initial_setup.sh -e example@gmail.com -u user_123 -p ferrous-weaver-256122 -s demo-service-account -g gcp_signup_name_3 -b master
 
 # Notes: leave the GITHUB_BRANCH_NAME as "master" for this demo. You can find the GCP_USERNAME for your project in the cloud shell terminal before the "@" "realsww123@cloudshell"
 
 # template
-bash /.initial_setup.sh [-e GITHUB_EMAIL] [-u GITHUB_USERNAME] [-p PROJECT_ID] [-s SERVICE_ACCOUNT_NAME] [-g GCP_USERNAME] [-b GITHUB_BRANCH_NAME]
+bash ./initial_setup.sh [-e GITHUB_EMAIL] [-u GITHUB_USERNAME] [-p PROJECT_ID] [-s SERVICE_ACCOUNT_NAME] [-g GCP_USERNAME] [-b GITHUB_BRANCH_NAME]
 ```
 
 _Double check the secrets file is uploaded to the bucket and terraform files reflect what you set your command line arguments_
@@ -152,7 +152,7 @@ _Illustrate design choices, and highlight nuances worth pointing out_
 
 ## Lessons Learned
 
-_Name pain points, pleasant surprises, and how I would develop this better next time/going forward_
+_Pain points, pleasant surprises, and how I would develop this better next time/going forward_
 
 - KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore. If you're going to redeploy, you must rename the key ring or it'll error out.
 - An IoT registry can not be force deleted if devices are tied to it
@@ -160,9 +160,9 @@ _Name pain points, pleasant surprises, and how I would develop this better next 
 - For google apis, if it's the first time enabling, it may error out and force you to manually enable or rerun the terraform build
 - Managing secrets and setting up IAM at a granular level is a project of its own. You'll notice most of the roles grant wide permissions for demo purposes.
 - Setting up good parameters for interoperability across modules requires robust, upfront repo planning
-- Dataflow jobs have to restart everytime you redeploy infrastructure with terraform-even if you don't make any changes! This will disrupt the live data flow, so be mindful when redeploying
+- Dataflow jobs have to be replaced everytime you redeploy infrastructure with terraform-even if you don't make any changes! This will disrupt the live data flow, so be mindful when redeploying
 - Terraform features follow a couple months delay after a new GCP service is released
-- Next time, I would create distinct pub/sub pull subscriptions for each of the data pipelines to the same topic to ensure at least once delivery for each ingestion point
+- Next time, I would create a distinct pub/sub push subscription for the cloud function and pull subscriptions for the dataflow jobs for the same topic to employ the [proper throughput mechanisms](https://cloud.google.com/pubsub/docs/subscriber#push-subscription)
 
 ## Further Reading
 
