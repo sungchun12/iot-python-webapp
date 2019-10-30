@@ -10,7 +10,7 @@ steps:
         do
             device_id=$(gcloud iot devices list --registry=iot-registry --region=us-central1 | grep -v "^ID"  | head -n 1 | awk '{print $2}')
             gcloud iot devices delete "$device_id" --registry=iot-registry --region=us-central1 --quiet
-        done
+        done || exit 0
 
   - id: "download encrypted secrets only during build"
     name: "gcr.io/cloud-builders/gsutil"
