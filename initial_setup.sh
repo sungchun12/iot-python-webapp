@@ -109,7 +109,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member serviceAccount:$SERVICE_ACCOUNT_EMAIL \
 --role roles/iam.securityAdmin
 
-gcloud projects add-iam-policy-binding $PROJECT_ID\
+gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member serviceAccount:$SERVICE_ACCOUNT_EMAIL \
 --role roles/cloudkms.admin
 
