@@ -29,8 +29,16 @@ _See bottom of this README for specific directories and links related to the abo
 
 ## Architecture Diagram
 
-Insert image of of one slide diagram. Color code phases of the infrastructure and purpose.
-Write down multiple steps
+_What you can ALSO make!_
+
+![architecture diagram](/documentation/architecture-diagram.png)
+
+1. Buckets and core infrastructure to kick off the data pipelines. Decrypts and re-encrypts private service account keys each build
+2. Streaming real-time data with Dataflow templates written in Java and a custom python cloud function to write to Bigtable
+3. Store and consume data in multiple ways
+4. The frontend webapp as demonstrated by the gif above! Decrypts once to access IoT Core registered devices
+5. Most important part: people worth sharing all this juicy data with
+6. Logging and monitoring automatically happen in the background. Some IAM access is created in terraform
 
 ## Deployment Instructions
 
