@@ -132,7 +132,8 @@ gcloud services enable \
 cloudbuild.googleapis.com \
 cloudkms.googleapis.com \
 compute.googleapis.com \
-iam.googleapis.com
+iam.googleapis.com \
+cloudresourcemanager.googleapis.com
 
 
 echo "***********************"
