@@ -126,9 +126,10 @@ gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json
 --iam-account $SERVICE_ACCOUNT_EMAIL
 
 echo "***********************"
-echo "Enable cloud build api"
+echo "Enable cloud build and kms apis"
 echo "***********************"
 gcloud services enable cloudbuild.googleapis.com
+gcloud services enable cloudkms.googleapis.com
 
 echo "***********************"
 echo "Retrieve cloud build service account email"
