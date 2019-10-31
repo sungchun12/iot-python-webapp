@@ -2,19 +2,25 @@
 
 ## Repo Summary
 
-_The TL;DR of what this repo does and why you should care._
-
 Learn how to deploy a live, real-time dashboard in a python web app powered by end to end infrastructure as code!
 
 The repo sets up simulated real-time iot data, 3 data pipelines, cicd trigger automation, and 40 GCP resources in total through terraform-all in under 10 minutes!
 
-_What you can make!_
+Questions Explored:
+
+- How do I make future Sung's life easier with this repo?
+- Is terraform as easy as to pick up as random internet dwellers say?
+- Can I build a frontend application in python?
+- What's it like working with Bigtable and are read/writes as fast as advertised?
+- Is cicd worth the setup effort?
+- What's it like working with KMS encryption/decryption?
+- How do I make your life easier exploring the above with this repo?
+
+_What you'll be making!_
 
 ![Live Webapp Demo](/documentation/live-webapp-demo.gif)
 
 ## Use Cases
-
-_Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 
 - Use this as a demo for yourself and your team to launch an end to end data application
 - Gain familiarity with terraform infrastructure as code to make launching future data pipelines easier: [terraform modules](/tf_modules/main.tf)
@@ -25,8 +31,6 @@ _Listed use cases(ex: template code, utility to make workflows easier, etc.)_
 - Explore how to read and write to a bigtable database with python: [cloud function src](tf_modules/modules/data_pipeline/cloud_function_src/main.py)
 - Show me how to do it better and how YOU are using it! ;)
 
-_See bottom of this README for specific directories and links related to the above_
-
 ## Architecture Diagram
 
 _What you can ALSO make!_
@@ -34,8 +38,8 @@ _What you can ALSO make!_
 ![architecture diagram](/documentation/architecture-drawio.png)
 
 1. Buckets and core infrastructure to kick off the data pipelines. Decrypts and re-encrypts private service account keys each build
-2. Streaming real-time data with Dataflow templates written in Java and a custom python cloud function to write to Bigtable
-3. Store and consume data in multiple ways
+2. Streaming real-time data with Dataflow-provided templates written in Java and a custom python cloud function to write to Bigtable
+3. Store and consume data for multiple audiences
 4. The frontend webapp as demonstrated by the gif above! Decrypts once to access IoT Core registered devices
 5. Most important part: people worth sharing all this juicy data with
 6. Logging and monitoring automatically happen in the background. Some IAM access is created in terraform
@@ -151,15 +155,12 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 
 ## Technical Design Highlights
 
-_Illustrate design choices, and highlight nuances worth pointing out_
-
 - We store the tfstate in a remote storage bucket to prevent multiple deployments overriding each other
 
 - Bigtable was used to taste and see how fast read/writes were for time series data. Turns out each read/write takes less than 500ms on average, which is pretty fast for python
+- _More to come_
 
 ## Lessons Learned
-
-_Pain points, pleasant surprises, and how I would develop this better next time/going forward_
 
 - KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore. If you're going to redeploy, you must rename the key ring or it'll error out.
 - An IoT registry can not be force deleted if devices are tied to it
@@ -173,13 +174,13 @@ _Pain points, pleasant surprises, and how I would develop this better next time/
 
 ## Further Reading
 
-- [My stackshare decision!](https://stackshare.io/sungchun12/my-stack)
+- [My stackshare decision!](https://stackshare.io/sungchun12/my-stack) _to be updated_
 
-- [IoT Reference Example](https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana)
+- [IoT Reference Example](https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana): The java equivalent of what this repo does
 
-- [Another IoT Reference Example](https://cloud.google.com/solutions/designing-connected-vehicle-platform)
+- [Another IoT Reference Example](https://cloud.google.com/solutions/designing-connected-vehicle-platform): Official GCP documentation for reference architecture
 
-- [Terraform Cloud Build Example](https://github.com/GoogleCloudPlatform/solutions-terraform-cloudbuild-gitops)
+- [Terraform Cloud Build Example](https://github.com/GoogleCloudPlatform/solutions-terraform-cloudbuild-gitops): If you want to focus on cloudbuild setup
 
 ## Contribute
 
