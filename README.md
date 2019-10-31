@@ -33,7 +33,7 @@ _What you'll be making!_
 
 ## Architecture Diagram
 
-_What you can ALSO make!_
+_What you'll ALSO be making!_
 
 ![architecture diagram](/documentation/architecture-drawio.png)
 
