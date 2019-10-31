@@ -2,12 +2,6 @@
 
 # all this is intended to run within cloud shell bash
 
-#manual steps in cloud shell
-# fork git repo into your own github account
-# gcloud config set project <PROJECT_ID>
-# git clone https://github.com/<github username>/iot-python-webapp.git
-# cd iot_python_webapp/
-
 usage() { echo "Usage: bash $0 [-e GITHUB_EMAIL] [-u GITHUB_USERNAME] [-p PROJECT_ID] [-s SERVICE_ACCOUNT_NAME] [-g GCP_USERNAME] [-b GITHUB_BRANCH_NAME] | \
 Example: bash $0 -e example@gmail.com -u user_123 -p ferrous-weaver-256122 -s demo-service-account -g gcp_signup_name_3 -b master" 1>&2; exit 1;}
 
@@ -68,7 +62,7 @@ echo "Create versioned buckets for tfstate and encrypted service account json pr
 echo "***********************"
 gsutil mb gs://$PROJECT_ID-secure-bucket-tfstate
 gsutil mb gs://$PROJECT_ID-secure-bucket-secrets
-# gsutil mb -c standard -l us-central1 -p iot-python-webapp-demo -b on gs://$PROJECT_ID-secure-bucket-tfstate
+
 gsutil versioning set on gs://$PROJECT_ID-secure-bucket-tfstate
 gsutil versioning set on gs://$PROJECT_ID-secure-bucket-secrets
 
@@ -213,10 +207,3 @@ echo "backend.tf contents..."
 echo " "
 cat ./tf_modules/backend.tf
 echo "***********************"
-
-# push changes to remote repo
-# TODO: add to manual github instructions after first_build.yaml
-# git status
-# git add --all
-# git commit -m "Update project IDs and buckets"
-# git push origin
