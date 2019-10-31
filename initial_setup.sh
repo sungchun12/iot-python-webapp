@@ -114,7 +114,7 @@ echo "***********************"
 gcloud iam service-accounts get-iam-policy $SERVICE_ACCOUNT_EMAIL
 
 echo "***********************"
-echo "Download the service account key into the repo"
+echo "Download the service account key into the local directory"
 echo "***********************"
 gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json \
 --iam-account $SERVICE_ACCOUNT_EMAIL
