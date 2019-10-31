@@ -143,3 +143,6 @@ kms_snippets.py
 
 # encrypted files
 ciphertext_file.enc
+
+# ignore local development settings
+.vscode/*
