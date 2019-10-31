@@ -1,6 +1,5 @@
 {
   "python.pythonPath": "/Users/sungwon.chung/opt/anaconda3/bin/python",
-  // "python.testing.pytestArgs": ["terraform"],
   "python.testing.unittestEnabled": false,
   "python.testing.nosetestsEnabled": false,
   "files.eol": "\n",
