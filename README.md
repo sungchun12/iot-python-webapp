@@ -87,6 +87,11 @@ _What your terminal should look like_
 
 # Notes: leave the GITHUB_BRANCH_NAME as "master" for this demo. You can find the GCP_USERNAME for your project in the cloud shell terminal before the "@" in "realsww123@cloudshell"
 
+# append this syntax to the end of the bash command if you want to save your terminal output to a text file
+####
+2>&1 | tee SomeFile.txt
+####
+
 # template
 bash ./initial_setup.sh [-e GITHUB_EMAIL] [-u GITHUB_USERNAME] [-p PROJECT_ID] [-s SERVICE_ACCOUNT_NAME] [-g GCP_USERNAME] [-b GITHUB_BRANCH_NAME]
 ```
