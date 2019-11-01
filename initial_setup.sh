@@ -127,7 +127,8 @@ cloudbuild.googleapis.com \
 cloudkms.googleapis.com \
 compute.googleapis.com \
 iam.googleapis.com \
-cloudresourcemanager.googleapis.com
+cloudresourcemanager.googleapis.com \
+dataflow.googleapis.com
 
 
 echo "***********************"
