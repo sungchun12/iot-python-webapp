@@ -1,5 +1,5 @@
 terraform {
   backend "gcs" {
-    bucket = "iot-python-webapp-demo-secure-bucket-tfstate"
+    bucket = "test-demo-257714-secure-bucket-tfstate"
   }
 }
