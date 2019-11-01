@@ -31,5 +31,3 @@ variable "webapp_key_name" {
   default     = "iot-python-webapp-key"
 
 }
-
-

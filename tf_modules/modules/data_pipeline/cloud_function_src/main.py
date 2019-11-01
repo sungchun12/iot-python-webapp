@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
 """Demonstrates how to connect to Cloud Bigtable and run some basic operations.

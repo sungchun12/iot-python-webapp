@@ -1,7 +1,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # DEPLOY IOT REGISTRY ALONG WITH DATA INGESTION ALONG WITH NoSQL DB AND DATA WAREHOUSE
 # This module creates an iot registry, pubsub topics, dataflow jobs
-# , bigtable instance and cluster, and bigquery dataset/table
+# , bigtable instance and cluster, bigquery dataset/table, and a cloud function
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -26,13 +26,6 @@ resource "google_cloudiot_registry" "iot-registry" {
   mqtt_config = {
     mqtt_enabled_state = var.mqtt_config_state
   }
-
-  # credentials {
-  #   public_key_certificate = {
-  #     format      = "X509_CERTIFICATE_PEM"
-  #     certificate = "rsa_cert.pem"
-  #   }
-  # }
 }
 
 resource "google_pubsub_topic" "data-pipeline-topic" {
@@ -112,7 +105,6 @@ resource "google_bigtable_table" "iot-stream-table" {
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY DATAFLOW JOB TO INGEST IOT DEVICE DATA INTO BIGQUERY AND TEXT FILES IN CLOUD STORAGE
 # ---------------------------------------------------------------------------------------------------------------------
-
 resource "google_dataflow_job" "dataflow-raw-data-stream-bq" {
   name                  = var.dataflow_raw_data_job_name_bq
   service_account_email = var.service_account_email
@@ -144,13 +136,6 @@ resource "google_dataflow_job" "dataflow-raw-data-stream-gcs" {
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY CLOUD FUNCTION TO INGEST IOT DEVICE DATA FROM PUBSUB AND WRITE TO BIGTABLE
 # ---------------------------------------------------------------------------------------------------------------------
-
-# https://codelabs.developers.google.com/codelabs/cpb104-bigtable-cbt/#5
-# https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/bigtable/hello/main.py
-# may need to use cloud function to send data from pubsub
-# into bigtable using the python api
-# but this will make the pipeline code feel fragmented
-
 resource "google_storage_bucket_object" "big-table-function-code" {
   name   = var.big_table_function_code_name
   bucket = var.source_code_bucket_name
@@ -189,4 +174,3 @@ resource "google_cloudfunctions_function" "big-table-function" {
     ROW_FILTER          = var.row_filter
   }
 }
-

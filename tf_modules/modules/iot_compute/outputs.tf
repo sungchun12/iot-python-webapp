@@ -17,4 +17,3 @@ output "vpc-network-metadata" {
 output "ssh-access-firewall-metadata" {
   value = google_compute_firewall.ssh-access-firewall.name
 }
-

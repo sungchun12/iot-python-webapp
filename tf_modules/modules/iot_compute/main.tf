@@ -49,7 +49,7 @@ resource "google_compute_instance" "iot-device-1" {
   }
 
   network_interface {
-    # link creatd vpc network
+    # link created vpc network
     network = google_compute_network.demo-network.self_link
     access_config {
     }
@@ -85,7 +85,7 @@ resource "google_compute_instance" "iot-device-2" {
   }
 
   network_interface {
-    # link creatd vpc network
+    # link created vpc network
     network = google_compute_network.demo-network.self_link
     access_config {
     }
@@ -121,7 +121,7 @@ resource "google_compute_instance" "iot-device-3" {
   }
 
   network_interface {
-    # link creatd vpc network
+    # link created vpc network
     network = google_compute_network.demo-network.self_link
     access_config {
     }
