@@ -2,7 +2,7 @@
 
 ## Repo Summary
 
-Learn how to deploy a live, real-time dashboard in a python web app powered by end to end infrastructure as code!
+Learn how to deploy a live, real-time dashboard in a Python web app powered by end to end infrastructure as code!
 
 The repo sets up simulated real-time iot data, 3 data pipelines, cicd trigger automation, and 40 GCP resources in total through terraform-all in under 10 minutes!
 
@@ -10,7 +10,7 @@ Questions Explored:
 
 - How do I make future Sung's life easier with this repo?
 - Is terraform as easy as to pick up as random internet dwellers say?
-- Can I build a frontend application in python?
+- Can I build a frontend application in Python?
 - What's it like working with Bigtable and are read/writes as fast as advertised?
 - Is cicd worth the setup effort?
 - What's it like working with KMS encryption/decryption?
@@ -24,11 +24,11 @@ _What you'll be making!_
 
 - Use this as a demo for yourself and your team to launch an end to end data application
 - Gain familiarity with terraform infrastructure as code to make launching future data pipelines easier: [terraform modules](/tf_modules/main.tf)
-- Explore building a frontend in python using the open source [Dash Framework](https://plot.ly/dash/)
+- Explore building a frontend in Python using the open source [Dash Framework](https://plot.ly/dash/)
 - Reference the build yaml files as starter cicd templates for yourself: [first_build.yaml](first_build.yaml), [cloudbuild.yaml](cloudbuild.yaml), [destroy_build.yaml](destroy_build.yaml)
 - See how easy it is to build and push a docker image to a container registry: [Dockerfile](Dockerfile)
 - Get a look and feel for encrypting and decrypting credentials using KMS: [secrets creator](/tf_modules/modules/secrets_manager/main.tf)
-- Explore how to read and write to a bigtable database with python: [cloud function src](tf_modules/modules/data_pipeline/cloud_function_src/main.py)
+- Explore how to read and write to a bigtable database with Python: [cloud function src](tf_modules/modules/data_pipeline/cloud_function_src/main.py)
 - Show me how to do it better and how YOU are using it! ;)
 
 ## Architecture Diagram
@@ -38,7 +38,7 @@ _What you'll ALSO be making!_
 ![architecture diagram](/documentation/architecture-drawio.png)
 
 1. Buckets and core infrastructure to kick off the data pipelines. Decrypts and re-encrypts private service account keys each build
-2. Streaming real-time data with Dataflow-provided templates written in Java and a custom python cloud function to write to Bigtable
+2. Streaming real-time data with Dataflow-provided templates written in Java and a custom Python cloud function to write to Bigtable
 3. Store and consume data for multiple audiences
 4. The frontend webapp as demonstrated by the gif above! Decrypts once to access IoT Core registered devices
 5. Most important part: people worth sharing all this juicy data with
@@ -170,7 +170,7 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 
 - I store the tfstate in a remote storage bucket to prevent multiple deployments overriding each other
 
-- Bigtable was used to taste and see how fast read/writes were for time series data. Turns out each read/write takes less than 500ms on average, which is pretty fast for python
+- Bigtable was used to taste and see how fast read/writes were for time series data. Turns out each read/write takes less than 500ms on average, which is pretty fast for Python
 
 - Terraform has yet to create an official module dependency framework. They currently have resource dependency, but it's an incredible amount of code overhead to implement: [click here](https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607). Thankfully, module dependency is on the official roadmap, so I'm leaving this in the backlog to enhance after this feature is released: [click here](https://github.com/hashicorp/terraform/issues/10462#issuecomment-527651371)
 
