@@ -1,8 +1,0 @@
-{
-  "python.pythonPath": "/Users/sungwon.chung/opt/anaconda3/bin/python",
-  "python.testing.unittestEnabled": false,
-  "python.testing.nosetestsEnabled": false,
-  "files.eol": "\n",
-  "python.testing.pytestEnabled": true,
-  "python.formatting.provider": "black"
-}
