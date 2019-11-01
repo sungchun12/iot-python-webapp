@@ -121,6 +121,8 @@ gcloud iam service-accounts keys create ~/iot-python-webapp/service_account.json
 
 echo "***********************"
 echo "Enable apis for first_build to work properly for a NEW project"
+echo "These are redundant to what Terraform implements"
+echo "The majority of these will be removed once terraform updates module dependencies"
 echo "***********************"
 gcloud services enable \
 cloudbuild.googleapis.com \
