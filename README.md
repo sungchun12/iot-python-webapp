@@ -75,7 +75,7 @@ gcloud config set project <PROJECT_ID>
 git clone https://github.com/<your-github-username>/iot-python-webapp.git
 
 # change directory into the repo
-cd iot_python_webapp/
+cd iot-python-webapp/
 ```
 
 _What your terminal should look like_
