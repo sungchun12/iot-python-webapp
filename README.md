@@ -90,7 +90,7 @@ _What your terminal should look like_
 # Notes: leave the GITHUB_BRANCH_NAME as "master" for this demo
 # You can find the GCP_USERNAME for your project in the cloud shell terminal before the "@" in "realsww123@cloudshell"
 
-# append this syntax to the end of the bash command 
+# append this syntax to the end of the bash command
 # if you want to save your terminal output to a text file
 ####
 2>&1 | tee SomeFile.txt
@@ -168,26 +168,41 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 
 ## Technical Design Highlights
 
-- We store the tfstate in a remote storage bucket to prevent multiple deployments overriding each other
+- I store the tfstate in a remote storage bucket to prevent multiple deployments overriding each other
 
 - Bigtable was used to taste and see how fast read/writes were for time series data. Turns out each read/write takes less than 500ms on average, which is pretty fast for python
-- _More to come_
+
+- Terraform has yet to create an official module dependency framework. They currently have resource dependency, but it's an incredible amount of code overhead to implement: [click here](https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607). Thankfully, module dependency is on the official roadmap, so I'm leaving this in the backlog to enhance after this feature is released: [click here](https://github.com/hashicorp/terraform/issues/10462#issuecomment-527651371)
+
+- Cloud function writes to Bigtable because it's more than enough to handle 3 devices sending concurrent invocations. Dataflow is an alternative
+
+- Dataflow Java templates are used to write to BigQuery and GCS because it was easy as pie to implement
+
+- KMS is used to launch terraform services with specific role access AND for cloud run to access the IoT device registry. In a real-world context, it'd follow least-privilege access principles
 
 ## Lessons Learned
 
-- KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore. If you're going to redeploy, you must rename the key ring or it'll error out.
+- KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore. If you're going to redeploy, you must rename the key ring or it'll error out
+
 - An IoT registry can not be force deleted if devices are tied to it
+
 - Cloud Run for terraform is still needing further development. Need work outside terraform to allow app to expose to public internet
+
 - For google apis, if it's the first time enabling, it may error out and force you to manually enable or rerun the terraform build
-- Managing secrets and setting up IAM at a granular level is a project of its own. You'll notice most of the roles grant wide permissions for demo purposes.
+
+- Managing secrets and setting up IAM at a granular level is a project of its own. You'll notice most of the roles grant wide permissions for demo purposes
+
 - Setting up good parameters for interoperability across modules requires robust, upfront repo planning
+
 - Dataflow jobs have to be replaced everytime you redeploy infrastructure with terraform-even if you don't make any changes! This will disrupt the live data flow, so be mindful when redeploying
+
 - Terraform features follow a couple months delay after a new GCP service is released
+
 - Next time, I would create a distinct pub/sub push subscription for the cloud function and pull subscriptions for the dataflow jobs for the same topic to employ the [proper throughput mechanisms](https://cloud.google.com/pubsub/docs/subscriber#push-subscription)
 
 ## Further Reading
 
-- [My stackshare decision!](https://stackshare.io/sungchun12/my-stack) _to be updated_
+- [My stackshare decision!](https://stackshare.io/sungchun12/my-stack) _to be updated!_
 
 - [IoT Reference Example](https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana): The java equivalent of what this repo does
 
