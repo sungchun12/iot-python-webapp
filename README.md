@@ -174,7 +174,7 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 
 - Bigtable was used to taste and see how fast read/writes were for time series data. Turns out each read/write takes less than 500ms on average, which is pretty fast for Python
 
-- Terraform has yet to create an official module dependency framework. They currently have resource dependency, but it's an incredible amount of code overhead to implement: [click here](https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607). Thankfully, module dependency is on the official roadmap, so I'm leaving this in the backlog to enhance after this feature is released: [click here](https://github.com/hashicorp/terraform/issues/10462#issuecomment-527651371)
+- Terraform has yet to create an official module dependency framework. They currently have resource dependency, but it's an incredible amount of code overhead to implement for enabling google apis: [click here](https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607). Thankfully, module dependency is on the official roadmap, so I'm leaving this in the backlog to enhance after this feature is released: [click here](https://github.com/hashicorp/terraform/issues/10462#issuecomment-527651371)
 
 - Cloud function writes to Bigtable because it's more than enough to handle 3 devices sending concurrent invocations. Dataflow is an alternative
 
