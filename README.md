@@ -87,9 +87,11 @@ _What your terminal should look like_
 ```bash
 # Example: bash ./initial_setup.sh -e example@gmail.com -u user_123 -p ferrous-weaver-256122 -s demo-service-account -g gcp_signup_name_3 -b master
 
-# Notes: leave the GITHUB_BRANCH_NAME as "master" for this demo. You can find the GCP_USERNAME for your project in the cloud shell terminal before the "@" in "realsww123@cloudshell"
+# Notes: leave the GITHUB_BRANCH_NAME as "master" for this demo
+# You can find the GCP_USERNAME for your project in the cloud shell terminal before the "@" in "realsww123@cloudshell"
 
-# append this syntax to the end of the bash command if you want to save your terminal output to a text file
+# append this syntax to the end of the bash command 
+# if you want to save your terminal output to a text file
 ####
 2>&1 | tee SomeFile.txt
 ####
