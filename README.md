@@ -56,7 +56,9 @@ _What you'll ALSO be making!_
 
 ![create gcp project](/documentation/create-gcp-project.gif)
 
-4. Manually connect the github app to cloud build through the github/GCP interfaces or [Follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)-note the link is for a different tutorial
+4. Manually connect the github app to cloud build through the github/GCP interfaces or [follow these instructions](https://cloud.google.com/solutions/managing-infrastructure-as-code#directly_connecting_cloud_build_to_your_github_repository)-note the link is for a different tutorial
+
+_Note: you may likely be prompted to manually enable the Cloud Build api_
 
 ![create gcp project](/documentation/connect-cloudbuild-to-github.gif)
 
@@ -122,6 +124,10 @@ Commit and push changes to your github repo. This will automatically trigger a b
 
 ```bash
 # this will create a new commit to the master branch in github
+# Note: MUST be the first commit to trigger build properly
+# Any other commit will not reference the appropriate terraform config
+# you recently created above
+
 git status
 git add --all
 git commit -m "Update terraform config files"
