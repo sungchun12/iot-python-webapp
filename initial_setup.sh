@@ -198,7 +198,7 @@ echo "Validate the secrets file is uploaded into bucket and expected changes in 
 echo "***********************"
 echo "secrets file location..."
 echo " "
-gsutil ls -r gs://iot-python-webapp-demo-secure-bucket-secrets/
+gsutil ls -r gs://$PROJECT_ID-secure-bucket-secrets/
 echo "***********************"
 echo "terraform.tfvars contents..."
 echo " "
