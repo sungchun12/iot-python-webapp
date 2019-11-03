@@ -186,6 +186,8 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 
 - KMS is used to launch terraform services with specific role access AND for cloud run to access the IoT device registry. In a real-world context, it'd follow least-privilege access principles
 
+- There is no formal testing of this demo outside of multiple walkthroughs of the deployment instructions. My goal was to explore, not to create the most robust app for production on day one
+
 ## Lessons Learned
 
 - KMS key rings can NOT be deleted, so that GCP has a record of key ring names that can't be used anymore. If you're going to redeploy, you must rename the key ring or it'll error out
