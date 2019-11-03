@@ -131,8 +131,15 @@ compute.googleapis.com \
 iam.googleapis.com \
 cloudresourcemanager.googleapis.com \
 dataflow.googleapis.com \
-bigtableadmin.googleapis.com
-
+bigtableadmin.googleapis.com \
+bigquery.googleapis.com \
+bigquery-json.googleapis.com \
+cloudfunctions.googleapis.com \
+pubsub.googleapis.com \
+storage-component.googleapis.com \
+run.googleapis.com \
+cloudiot.googleapis.com \
+bigtable.googleapis.com 
 
 echo "***********************"
 echo "Retrieve cloud build service account email"
