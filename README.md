@@ -218,6 +218,8 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 
 - [Terraform Cloud Build Example](https://github.com/GoogleCloudPlatform/solutions-terraform-cloudbuild-gitops): If you want to focus on cloudbuild setup
 
+- [IoT Pipeline Qwiklab](https://www.qwiklabs.com/focuses/605?parent=catalog): Where I got the device simulator scripts and general starting point
+
 ## Contribute
 
 All feedback is welcome! You can use the issue tracker to submit bugs, ideas, etc. Pull requests are splendid!
