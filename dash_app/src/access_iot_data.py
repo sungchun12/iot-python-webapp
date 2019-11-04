@@ -97,7 +97,9 @@ class iot_pipeline_data(object):
                 if registry.get("id") == self.iot_registry
             ][0]
 
-            # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'}, {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'}, {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
+            # ex: [{u'numId': u'2770786279715094', u'id': u'temp-sensor-1482'},
+            # {u'numId': u'2566845666382786', u'id': u'temp-sensor-21231'},
+            # {u'numId': u'2776213510215167', u'id': u'temp-sensor-2719'}]
             devices_list = iot_manager.list_devices(
                 __info, self.project_id, self.cloud_region, registry_id
             )
@@ -120,8 +122,6 @@ class iot_pipeline_data(object):
         """Create list of nested dictionaries of single iot device with respective
         temperature and timestamp data
         """
-        # TODO: try and except block for list index out of range error
-        # https://stackoverflow.com/questions/11902458/i-want-to-exception-handle-list-index-out-of-range
         row_key_filter = row_key_prefix.encode()
         row_data = self.table.read_rows(start_key=row_key_filter, limit=n_rows)
         read_rows = [row for row in row_data]
@@ -155,7 +155,9 @@ class iot_pipeline_data(object):
             device_row_list = self.create_device_rows(row_key_prefix, n_rows)
             all_device_row_list.append(device_row_list)
 
-        # ex: [[{'device#temp-sensor-14608#9223372035284285863': {'temp': 26.095061796938726, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], [{'device#temp-sensor-9944#9223372035284285864': {'temp': 27.361626128931505, 'temp_timestamp': '2019-10-07 23:12:23'}}], [{'device#temp-sensor-9944#9223372035284285864': {'temp': 27.361626128931505, 'temp_timestamp': '2019-10-07 23:12:23'}}]]
+        # ex: [[{'device#temp-sensor-14608#9223372035284285863': {'temp': 26.095061796938726, 'temp_timestamp': '2019-10-07 23:12:24'}}], 
+        # [{'device#temp-sensor-24716#9223372035284285863': {'temp': 16.624428948909912, 'temp_timestamp': '2019-10-07 23:12:24'}}], 
+        # [{'device#temp-sensor-9944#9223372035284285864': {'temp': 27.361626128931505, 'temp_timestamp': '2019-10-07 23:12:23'}}]]
         return all_device_row_list
 
     def get_name_temp_time(self, all_device_row_list, device_index):
