@@ -209,7 +209,7 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 
 ## Further Reading
 
-- [My stackshare decision!](https://stackshare.io/sungchun12/my-stack) _to be updated!_
+- [My stackshare decision!](https://stackshare.io/sungchun12/decisions/103080800236049641): Think twitter for developers
 
 - [IoT Reference Example](https://github.com/GoogleCloudPlatform/professional-services/tree/master/examples/iot-nirvana): The java equivalent of what this repo does
 
