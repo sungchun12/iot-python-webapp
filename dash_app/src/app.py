@@ -27,7 +27,7 @@ external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-colors = {"background": "#07e9fe", "text": "#FFFFFF", "graph-text": "#FFFFFF"}
+colors = {"background": "#303030", "text": "#FFFFFF", "graph-text": "#FFFFFF"}
 
 app.layout = html.Div(
     [
