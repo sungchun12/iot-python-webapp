@@ -18,7 +18,8 @@ cbt_data_generator = access_iot_data.iot_pipeline_data()
 devices_list = cbt_data_generator.get_device_names()
 row_keys_list = cbt_data_generator.create_device_rowkeys(devices_list)
 
-# setup empty dictionary lists
+# setup empty dictionary lists to be used by live graph
+# define max number of data points per graph
 device_1 = cbt_data_generator.set_graph_data_limit(n_items=20)
 device_2 = cbt_data_generator.set_graph_data_limit(n_items=20)
 device_3 = cbt_data_generator.set_graph_data_limit(n_items=20)
@@ -29,6 +30,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 colors = {"background": "#303030", "text": "#FFFFFF", "graph-text": "#FFFFFF"}
 
+# setup placement, update frequency, and general formatting
 app.layout = html.Div(
     [
         html.H4("IoT Temperature Device Live Dashboard"),
@@ -53,24 +55,33 @@ app.layout = html.Div(
     },
 )
 
-
+# mechanism defining live updates
 @app.callback(
     Output("live-update-text", "children"), [Input("interval-component", "n_intervals")]
 )
 def update_metrics(n):
+    """Updates the top level metrics
+    in the web app every refresh interval
+    """
     style = {"padding": "5px", "fontSize": "16px"}
     all_device_row_list = cbt_data_generator.create_all_device_rows(
         row_keys_list, n_rows=1
     )
-    device_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_name_temp_time(
-        all_device_row_list, 0
-    )
-    device_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_name_temp_time(
-        all_device_row_list, 1
-    )
-    device_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_name_temp_time(
-        all_device_row_list, 2
-    )
+    (
+        device_name_1,
+        device_temp_1,
+        temp_timestamp_1,
+    ) = cbt_data_generator.get_name_temp_time(all_device_row_list, 0)
+    (
+        device_name_2,
+        device_temp_2,
+        temp_timestamp_2,
+    ) = cbt_data_generator.get_name_temp_time(all_device_row_list, 1)
+    (
+        device_name_3,
+        device_temp_3,
+        temp_timestamp_3,
+    ) = cbt_data_generator.get_name_temp_time(all_device_row_list, 2)
     return [
         html.Span("{0}: {1:.2f}".format(device_name_1, device_temp_1), style=style),
         html.Span("{0}: {1:0.2f}".format(device_name_2, device_temp_2), style=style),
@@ -78,11 +89,15 @@ def update_metrics(n):
     ]
 
 
-# Multiple components can update everytime interval gets fired.
+# Multiple components can update everytime interval gets fired
 @app.callback(
     Output("live-update-graph", "figure"), [Input("interval-component", "n_intervals")]
 )
 def update_graph_live(n):
+    """Updates the 3 line charts with each new data point
+    refreshing a list object that holds n data points
+    depending on limit defined above
+    """
     # Create the graph with subplots
     fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.1)
     fig.update_layout(
@@ -112,15 +127,21 @@ def update_graph_live(n):
     all_device_row_list = cbt_data_generator.create_all_device_rows(
         row_keys_list, n_rows=1
     )
-    device_name_1, device_temp_1, temp_timestamp_1 = cbt_data_generator.get_name_temp_time(
-        all_device_row_list, 0
-    )
-    device_name_2, device_temp_2, temp_timestamp_2 = cbt_data_generator.get_name_temp_time(
-        all_device_row_list, 1
-    )
-    device_name_3, device_temp_3, temp_timestamp_3 = cbt_data_generator.get_name_temp_time(
-        all_device_row_list, 2
-    )
+    (
+        device_name_1,
+        device_temp_1,
+        temp_timestamp_1,
+    ) = cbt_data_generator.get_name_temp_time(all_device_row_list, 0)
+    (
+        device_name_2,
+        device_temp_2,
+        temp_timestamp_2,
+    ) = cbt_data_generator.get_name_temp_time(all_device_row_list, 1)
+    (
+        device_name_3,
+        device_temp_3,
+        temp_timestamp_3,
+    ) = cbt_data_generator.get_name_temp_time(all_device_row_list, 2)
 
     device_1["device_name"] = device_name_1
     device_1["temp"].append(float(device_temp_1))
