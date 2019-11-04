@@ -8,7 +8,11 @@ PROJECT_ID="iot-python-webapp-demo"
 gcloud builds submit --tag gcr.io/$PROJECT_ID/mock-example-demo
 
 # deploy cloud run app
-gcloud beta run deploy iot-python-webapp --platform managed --image gcr.io/$PROJECT_ID/mock-example-demo:latest --region us-central1 --allow-unauthenticated
+gcloud beta run deploy iot-python-webapp \
+--platform managed \
+--image gcr.io/$PROJECT_ID/mock-example-demo:latest \
+--region us-central1 \
+--allow-unauthenticated
 ###################
 
 ###################
@@ -30,7 +34,8 @@ APP_NAME="whatever-you-like"
 docker tag $SOURCE_IMAGE $HOSTNAME/$PROJECT_ID/$IMAGE
 docker push $HOSTNAME/$PROJECT_ID/$IMAGE
 
-# deploy docker image to cloud run and click on the url that pops up in your terminal output
+# deploy docker image to cloud run
+# click on the url that pops up in your terminal output
 gcloud beta run deploy $APP_NAME \
 --platform managed \
 --image $HOSTNAME/$PROJECT_ID/$IMAGE \
