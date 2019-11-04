@@ -110,8 +110,7 @@ _Double check the secrets file is uploaded to the bucket and terraform files ref
 
 ```bash
 # note: enabling apis may lag behind other services
-# relying on those apis
-# rerun this command if error message reflects the above note
+# it is accounted for in the initial setup script above
 
 gcloud builds submit --config=first_build.yaml
 ```
