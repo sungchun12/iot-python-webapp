@@ -1,5 +1,5 @@
 terraform {
   backend "gcs" {
-    bucket = "test-demo-257714-secure-bucket-tfstate"
+    bucket = "final-test-258000-secure-bucket-tfstate"
   }
 }

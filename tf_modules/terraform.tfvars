@@ -1,5 +1,5 @@
-project = "test-demo-257714"
-service_account_email = "demo-service-account@test-demo-257714.iam.gserviceaccount.com"
+project = "final-test-258000"
+service_account_email = "demo-service-account@final-test-258000.iam.gserviceaccount.com"
 startup_script_username = "realsww123"
 github_owner = "sungchun12"
 github_branch_name = "master"
