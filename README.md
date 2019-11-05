@@ -44,6 +44,11 @@ _What you'll ALSO be making!_
 5. Most important part: people worth sharing all this juicy data with
 6. Logging and monitoring automatically happen in the background. Some IAM access is created in terraform
 
+| Component    | Product Overview | Purpose      | Related Files | AWS Equivalent |
+| ------------ | ---------------- | ------------ | ------------- | -------------- |
+| Content Cell | Content Cell     | Content Cell | Content Cell  | Content Cell   |
+| Content Cell | Content Cell     |
+
 ## Deployment Instructions
 
 1. [Sign up for a free trial](https://cloud.google.com/free/?hl=ar) _OR_ use an existing GCP account
