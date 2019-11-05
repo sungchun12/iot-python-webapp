@@ -1,5 +1,4 @@
 steps:
-  # pull image from container registry to build from cache, bypasses error if first time building image
   - id: "destroy iot devices"
     name: "gcr.io/cloud-builders/gcloud"
     entrypoint: "bash"
