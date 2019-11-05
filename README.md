@@ -44,10 +44,20 @@ _What you'll ALSO be making!_
 5. Most important part: people worth sharing all this juicy data with
 6. Logging and monitoring automatically happen in the background. Some IAM access is created in terraform
 
-| Component    | Product Overview | Purpose      | Related Files | AWS Equivalent |
-| ------------ | ---------------- | ------------ | ------------- | -------------- |
-| Content Cell | Content Cell     | Content Cell | Content Cell  | Content Cell   |
-| Content Cell | Content Cell     |
+| Component              | Product Overview                                                        | Purpose                                                                                                                                         | Related Files | AWS Equivalent |
+| ---------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------------- |
+| Cloud Storage          | Object store for all kinds of file types                                | Store sensitive files such as tfstate and the private service account key                                                                       | Content Cell  | Content Cell   |
+| Cloud Build            | Build workflows for testing and deployment across multiple environments | Deploy, CICD, and destroy terraform-managed infrastructure                                                                                      | Content Cell  | Content Cell   |
+| Compute Engine         | Scalable virtual machines                                               | Simulate devices registering to IoT Core                                                                                                        | Content Cell  | Content Cell   |
+| Cloud IoT Core         | Manage, deploy, and ingest data from dispersed devices                  | Manages the simulated devices and ingests their data to Pub/Sub                                                                                 | Content Cell  | Content Cell   |
+| Cloud Pub/Sub          | Message queue for ingesting and delivering data ot other services       | Middleware that serves as a shock-absorber and funnels data for further transformation                                                          | Content Cell  | Content Cell   |
+| Key Management Service | Managed encryption keys for secrets protection                          | Encrypts and decrypts the private service account key for each deployment                                                                       | Content Cell  | Content Cell   |
+| Cloud Dataflow         | Serverless stream and batch data processing                             | Loads data into parquet files and into a BigQuery table                                                                                         | Content Cell  | Content Cell   |
+| Cloud Functions        | Event driven serverless compute                                         | Writes simulated temperature device data to Bigtable                                                                                            | Content Cell  | Content Cell   |
+| Cloud Bigtable         | NoSQL database for large workloads                                      | Stores simulated device data and [configured for time series read operations](https://cloud.google.com/bigtable/docs/schema-design-time-series) | Content Cell  | Content Cell   |
+| BigQuery               | Serverless analytics data warehouse                                     | Stores simulated device data for aggregate reporting metrics using standard SQL                                                                 | Content Cell  | Content Cell   |
+| Cloud Run              | Run Docker containers in a fully-managed, serverless app                | Hosts the dash app that visualizes simulated device data in real-time by querying Bigtable every second                                         | Content Cell  | Content Cell   |
+| Cloud IAM              | Access control for managing cloud resources                             | Gives cloud build and terraform access to deploy and edit the servies in scope                                                                  | Content Cell  | Content Cell   |
 
 ## Deployment Instructions
 
