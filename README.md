@@ -6,7 +6,9 @@ Learn how to deploy a live, real-time dashboard in a Python web app powered by e
 
 The repo sets up simulated real-time iot data, 3 data pipelines, cicd trigger automation, and 40 GCP resources in total through terraform-all in under 10 minutes!
 
-Questions Explored:
+**Main Goal**: Get something living and breathing on YOUR screen. Take away what's USEFUL FOR YOU even if it's simply some code snippets! :scissors: :clipboard:
+
+**Questions Explored**:
 
 - How do I make future Sung's life easier with this repo?
 - Is terraform as easy as to pick up as random internet dwellers say?
