@@ -10,13 +10,13 @@ The repo sets up simulated real-time iot data, 3 data pipelines, cicd trigger au
 
 **Questions Explored**:
 
-- How do I make future Sung's life easier with this repo?
-- Is terraform as easy as to pick up as random internet dwellers say?
-- Can I build a frontend application in Python?
-- What's it like working with Bigtable and are read/writes as fast as advertised?
-- Is cicd worth the setup effort?
-- What's it like working with KMS encryption/decryption?
-- How do I make your life easier exploring the above with this repo?
+- How do I make future Sung's life easier with this repo? Using this for code snippets and conversation starters
+- Is terraform as easy as to pick up as random internet dwellers say? Yes
+- Can I build a frontend application in Python? Yes, easier than expected
+- What's it like working with Bigtable and are read/writes as fast as advertised? It's cumbersome in general setting up and reading/writing to a NoSQL database, but it is pretty fast. Reads/writes usually less than 500ms
+- Is cicd worth the setup effort? Yes if you do it gitops style. I did not do so. However, it serves as a good, automated paper trail for what's deployed/destroyed in your environments
+- What's it like working with KMS encryption/decryption? Functionality is easier than expected. Curating IAM rules is hard
+- How do I make your life easier exploring the above with this repo? You tell me :wink:
 
 _What you'll be making!_
 
