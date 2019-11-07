@@ -185,7 +185,7 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 ## Languages
 
 - [Python 3.7](https://www.python.org/downloads/release/python-370/)
-- [Terraform HCL 12.9](https://www.terraform.io/)
+- [Terraform HCL 0.12.9](https://www.terraform.io/)
 - [Bash 4.4.12](https://www.gnu.org/software/bash/)
 
 ## Technical Design Highlights
