@@ -151,10 +151,13 @@ _Click on the link to launch the web app_
 
 ## Trigger Automatic Deployment Updates
 
-Commit and push changes to your github repo. This will automatically trigger a build.
+Instead of manually clicking ever-changing interfaces in the console for any changes, this step looks through the code and robustly applies those changes in a transparent way. This allows for an easy to follow paper trail and rollbacks by simply rerunning a previous build.
+
+Commit and push changes to your github repo. This will automatically trigger a build using the logic in [cloudbuild.yaml](cloudbuild.yaml)
+
 
 ```bash
-# this will create a new commit to the master branch in github
+# This will create a new commit to the master branch in github
 # Note: MUST be the first commit to trigger build properly
 # Any other commit will not reference the appropriate terraform config
 # you recently created above
@@ -162,7 +165,7 @@ Commit and push changes to your github repo. This will automatically trigger a b
 git status
 git add --all
 git commit -m "Update terraform config files"
-git push origin
+git push origin master
 ```
 
 _Explore the cloud build history to verify a successful build_
