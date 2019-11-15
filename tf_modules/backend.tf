@@ -1,5 +1,5 @@
 terraform {
   backend "gcs" {
-    bucket = "lumpy-space-princess-secure-bucket-tfstate"
+    bucket = "lumpy-space-pirate-secure-bucket-tfstate"
   }
 }

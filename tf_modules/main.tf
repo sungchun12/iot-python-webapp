@@ -14,6 +14,7 @@ provider "google" {
   project     = var.project
   region      = var.location
   zone        = var.zone
+  version     = "~> 3.0.0-beta.1"
 }
 
 provider "google-beta" {
@@ -21,6 +22,7 @@ provider "google-beta" {
   project     = var.project
   region      = var.location
   zone        = var.zone
+  version     = "~> 3.0.0-beta.1"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

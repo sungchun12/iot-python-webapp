@@ -46,6 +46,7 @@ resource "google_compute_instance" "iot-device-1" {
 
   # Local SSD disk
   scratch_disk {
+    interface = "SCSI"
   }
 
   network_interface {
@@ -82,6 +83,7 @@ resource "google_compute_instance" "iot-device-2" {
 
   # Local SSD disk
   scratch_disk {
+    interface = "SCSI"
   }
 
   network_interface {
@@ -118,6 +120,7 @@ resource "google_compute_instance" "iot-device-3" {
 
   # Local SSD disk
   scratch_disk {
+    interface = "SCSI"
   }
 
   network_interface {
