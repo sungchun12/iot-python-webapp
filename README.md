@@ -234,6 +234,7 @@ _Note: if you want to destroy everything, you can delete everything via the cons
 
 - Next time, I would create a distinct pub/sub push subscription for the cloud function and pull subscriptions for the dataflow jobs for the same topic to employ the [proper throughput mechanisms](https://cloud.google.com/pubsub/docs/subscriber#push-subscription)
 
+- **PLEASE EXPLICITLY VERSION ALL YOUR DEPENDENCIES SUCH AS TERRAFORM PROVIDER VERSIONS AND PYTHON PACKAGES OR THEY WILL BITE YOU IN THE BUTT**
 ## Further Reading
 
 - [My stackshare decision!](https://stackshare.io/sungchun12/decisions/103080800236049641): Think twitter for developers

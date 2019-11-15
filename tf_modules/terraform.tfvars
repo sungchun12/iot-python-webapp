@@ -1,5 +1,5 @@
-project = "lumpy-space-pirate"
-service_account_email = "demo-service-account@lumpy-space-pirate.iam.gserviceaccount.com"
+project = "boom-baby"
+service_account_email = "demo-service-account@boom-baby.iam.gserviceaccount.com"
 startup_script_username = "realsww123"
 github_owner = "sungchun12"
 github_branch_name = "master"
