@@ -1,4 +1,4 @@
-dash==0.42.0
+dash==2.15.0
 dash-daq==0.1.0
 pandas==0.25.1
 numpy==1.16.5 
